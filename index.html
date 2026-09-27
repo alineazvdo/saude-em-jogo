@@ -167,11 +167,12 @@ var CATEGORIAS = [
   { id:'fichas', rotulo:'Ficha e sistema' },
   { id:'campo', rotulo:'Investigação de campo' },
   { id:'analise', rotulo:'Análise de situação' },
+  { id:'clinica', rotulo:'Manejo clínico' },
   { id:'breve', rotulo:'Em breve' }
 ];
 /* blocos da página, na ordem em que aparecem; cada um reúne uma ou mais categorias */
 var BLOCOS = [
-  { id:'simulacoes', titulo:'Simulações', sub:'Fichas, investigações e análises para treinar o dia a dia da vigilância.', cats:['fichas','campo','analise','breve'] },
+  { id:'simulacoes', titulo:'Simulações', sub:'Fichas, investigações e análises para treinar o dia a dia da vigilância.', cats:['fichas','campo','analise','clinica','breve'] },
   { id:'cruzadinhas', titulo:'Cruzadinhas', sub:'Palavras cruzadas em desafios progressivos.', cats:['cruzadinhas'], compacto:true }
 ];
 var JOGOS = [
@@ -192,7 +193,10 @@ var JOGOS = [
     chips:['8 etapas','Protótipo'], arte:'surto', tom:'violet', key:'detetive-surtos:v1', tipo:'ficha' },
   { cat:'analise', href:'territorio-em-alerta.html', titulo:'Território em Alerta',
     desc:'Leia mapas de uma região de saúde: taxas, semáforo do LIRAa, tendência, vizinhança e cobertura vacinal.',
-    chips:['5 missões','Protótipo'], arte:'mapa', tom:'rose', key:'territorio-alerta:v1', tipo:'ficha' }
+    chips:['5 missões','Protótipo'], arte:'mapa', tom:'rose', key:'territorio-alerta:v1', tipo:'ficha' },
+  { cat:'clinica', href:'fluxograma-dengue.html', titulo:'Fluxograma vivo: dengue',
+    desc:'Classifique casos fictícios em A, B, C ou D e acerte a conduta imediata, nó por nó do fluxograma.',
+    chips:['8 casos','Protótipo'], arte:'fluxo', tom:'blue', key:'fluxograma-dengue', tipo:'fluxo' }
 ];
 
 /* ---------- ilustrações (SVG que herda as cores do tema) ---------- */
@@ -243,7 +247,17 @@ function arteMapa(){
   o+='<circle cx="98" cy="68" r="5" fill="var(--sel)" stroke="var(--ink)" stroke-width="2"/>';
   return svg(o);
 }
-var ARTE={cruz:arteCruz, ficha:arteFicha, surto:arteSurto, mapa:arteMapa};
+function arteFluxo(){
+  var o='<path d="M110 8 L142 30 L110 52 L78 30 Z" fill="var(--cell)" stroke="var(--tone)" stroke-width="2.5" stroke-linejoin="round"/>';
+  o+='<line x1="90" y1="42" x2="50" y2="70" stroke="var(--tone)" stroke-width="2.5"/>';
+  o+='<line x1="130" y1="42" x2="170" y2="70" stroke="var(--tone)" stroke-width="2.5"/>';
+  o+='<rect x="26" y="78" width="48" height="22" rx="5" fill="var(--sel)" stroke="var(--tone)" stroke-width="2"/>';
+  o+='<path d="M170 62 L186 76 L170 90 L154 76 Z" fill="var(--cell)" stroke="var(--tone)" stroke-width="2.5" stroke-linejoin="round"/>';
+  o+='<line x1="170" y1="90" x2="170" y2="98" stroke="var(--tone)" stroke-width="2.5"/>';
+  o+='<rect x="146" y="98" width="48" height="10" rx="5" fill="var(--tone)" fill-opacity=".3" stroke="var(--tone)" stroke-width="2"/>';
+  return svg(o);
+}
+var ARTE={cruz:arteCruz, ficha:arteFicha, surto:arteSurto, mapa:arteMapa, fluxo:arteFluxo};
 
 /* ---------- progresso salvo pelos próprios jogos (mesmo navegador) ---------- */
 function progresso(j){
@@ -255,6 +269,7 @@ function progresso(j){
       return n ? (n+' de '+j.total+' desafios concluídos') : null;
     }
     if(j.tipo==='ficha') return raw.best ? ('Melhor pontuação: '+raw.best+'%') : null;
+    if(j.tipo==='fluxo') return raw.melhorSequencia ? ('Sequência recorde: '+raw.melhorSequencia) : null;
   }catch(e){}
   return null;
 }
