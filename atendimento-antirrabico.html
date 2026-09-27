@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="light dark">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Atendimento antirrábico | Saúde em jogo</title>
+<meta name="description" content="Decida entre observar o animal, iniciar vacina, ou soro e vacina, conforme a gravidade do ferimento e a possibilidade de observação.">
+<meta name="theme-color" content="#F6F1E7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1A14" media="(prefers-color-scheme: dark)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#F6F1E7; --surface:#FFFFFF; --ink:#22392E; --muted:#647062; --line:#D5CBB4; --edge:#22392E; --emph:#22392E;
+  --cell:#FFFFFF; --sel:#FFD23F; --sel-ink:#22392E; --focus:#0B5FA5;
+  --t-green:#0E7C66; --t-orange:#B4470A; --t-blue:#1F5FA8; --t-violet:#5B3FB4; --t-rose:#B0356B; --t-soon:#75806F;
+  --a-bg:#0E7C66; --b-bg:#1F5FA8; --c-bg:#B4470A; --d-bg:#B0356B;
+  --ok:#0E7C66; --bad:#B0356B;
+  --display:'Bricolage Grotesque','Trebuchet MS','Segoe UI',system-ui,sans-serif;
+  --body:'Atkinson Hyperlegible','Segoe UI',Verdana,system-ui,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0F1A14; --surface:#182A20; --ink:#F1EBDD; --muted:#B3BCA9; --line:#33483B; --edge:#6F8B78; --emph:#FFD23F;
+    --cell:#1D3327; --sel:#FFD23F; --sel-ink:#16241B; --focus:#7CC0FF;
+    --t-green:#3FCFAA; --t-orange:#FF9A5C; --t-blue:#7CB7FF; --t-violet:#B79CFF; --t-rose:#FF8FBB; --t-soon:#8D9885;
+    --a-bg:#3FCFAA; --b-bg:#7CB7FF; --c-bg:#FF9A5C; --d-bg:#FF8FBB;
+    --ok:#3FCFAA; --bad:#FF8FBB;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0F1A14; --surface:#182A20; --ink:#F1EBDD; --muted:#B3BCA9; --line:#33483B; --edge:#6F8B78; --emph:#FFD23F;
+  --cell:#1D3327; --sel:#FFD23F; --sel-ink:#16241B; --focus:#7CC0FF;
+  --t-green:#3FCFAA; --t-orange:#FF9A5C; --t-blue:#7CB7FF; --t-violet:#B79CFF; --t-rose:#FF8FBB; --t-soon:#8D9885;
+  --a-bg:#3FCFAA; --b-bg:#7CB7FF; --c-bg:#FF9A5C; --d-bg:#FF8FBB;
+  --ok:#3FCFAA; --bad:#FF8FBB;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+button{font-family:inherit}
+
+.app{max-width:980px;margin:0 auto;padding:22px 16px 64px}
+.back{margin:0 0 14px;font-size:.95rem}
+.back a{font-weight:700}
+
+.brand{display:flex;flex-wrap:wrap;align-items:center;gap:18px 22px;margin-bottom:6px}
+.tiles{display:flex;gap:5px}
+.tile{width:clamp(36px,9vw,52px);aspect-ratio:1;display:grid;place-items:center;background:var(--cell);border:2px solid var(--edge);border-radius:5px;font-family:var(--display);font-weight:800;font-size:clamp(1.15rem,4.6vw,1.7rem);line-height:1}
+.tile.hl{background:var(--sel);color:var(--sel-ink);border-color:var(--emph)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(1.7rem,5.8vw,2.6rem);line-height:1.05;letter-spacing:-0.02em;margin:14px 0 0}
+.lede{margin:12px 0 0;color:var(--muted);max-width:62ch;font-size:1.05rem}
+
+.modebar{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 4px}
+.chip{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:8px 16px;font-family:var(--display);font-weight:700;font-size:.9rem;cursor:pointer}
+.chip[aria-pressed="true"]{border-color:var(--emph);background:var(--sel);color:var(--sel-ink)}
+.hint{margin:8px 0 26px;color:var(--muted);font-size:.9rem;max-width:62ch}
+
+.hud{display:flex;flex-wrap:wrap;gap:10px 24px;align-items:center;margin-bottom:18px;font-family:var(--display);font-weight:700;font-size:.95rem}
+.hud b{font-weight:800}
+.hud .timer{color:var(--t-orange)}
+.hud .lives{letter-spacing:2px}
+
+.trail{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.crumb{border:2px solid var(--line);border-radius:10px;padding:6px 12px;font-size:.85rem;background:var(--surface);color:var(--muted)}
+.crumb b{color:var(--ink)}
+
+.board{display:grid;grid-template-columns:1fr;gap:18px}
+@media (min-width:760px){ .board{grid-template-columns:0.85fr 1.15fr} }
+
+.card{background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:18px 20px}
+.card h2{font-family:var(--display);font-weight:800;font-size:1rem;margin:0 0 10px;text-transform:none}
+.paciente dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:5px 10px;font-size:.92rem}
+.paciente dt{color:var(--muted)}
+.paciente dd{margin:0}
+
+.node h2{font-size:1.15rem;margin-bottom:14px}
+.opts{display:grid;gap:10px}
+.opt{border:2px solid var(--edge);background:var(--cell);color:var(--ink);border-radius:12px;padding:13px 16px;font-size:1rem;text-align:left;cursor:pointer;line-height:1.35}
+.opt:hover{background:var(--sel);color:var(--sel-ink);border-color:var(--emph)}
+.opt.correct{background:var(--ok);border-color:var(--ok);color:#fff}
+.opt.wrong{background:var(--bad);border-color:var(--bad);color:#fff}
+
+.feedback{margin-top:14px;border-radius:12px;padding:12px 14px;font-size:.95rem;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:color-mix(in srgb, var(--ok) 16%, transparent);border:2px solid var(--ok)}
+.feedback.bad{background:color-mix(in srgb, var(--bad) 16%, transparent);border:2px solid var(--bad)}
+.feedback button{margin-top:10px;border:none;background:var(--edge);color:var(--bg);border-radius:8px;padding:8px 14px;font-weight:700;cursor:pointer}
+
+.outcome{border-radius:12px;padding:14px 16px;margin-bottom:14px;color:#fff;font-family:var(--display)}
+.outcome.Observar{background:var(--a-bg)} .outcome.Vacina{background:var(--b-bg)} .outcome.SoroObs{background:var(--c-bg)} .outcome.SoroCompleto{background:var(--d-bg)}
+.outcome b{display:block;font-size:1.1rem;font-weight:800}
+
+.endscreen{display:none}
+.endscreen.show{display:block}
+.heat{display:grid;gap:10px;margin:14px 0 20px}
+.heatrow{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;font-size:.9rem}
+.bar{background:var(--line);border-radius:8px;height:10px;overflow:hidden}
+.bar > span{display:block;height:100%;background:var(--bad)}
+.cta{border:none;background:var(--emph);color:var(--bg);border-radius:10px;padding:12px 20px;font-family:var(--display);font-weight:800;font-size:1rem;cursor:pointer}
+
+footer{margin-top:44px;color:var(--muted);font-size:.9rem;max-width:70ch}
+</style>
+</head>
+<body>
+<div class="app">
+  <p class="back"><a href="index.html">‹ Saúde em jogo</a></p>
+  <div class="brand">
+    <div class="tiles" aria-hidden="true">
+      <span class="tile">R</span><span class="tile hl">A</span><span class="tile">I</span><span class="tile">V</span><span class="tile">A</span>
+    </div>
+  </div>
+  <h1>Atendimento antirrábico</h1>
+  <p class="lede">Mordida de cão é rotina em qualquer UBS. Decida entre observar o animal, vacina, ou soro e vacina, conforme o ferimento e o animal agressor.</p>
+
+  <div class="modebar" role="group" aria-label="Modo de jogo">
+    <button class="chip" data-mode="treino" aria-pressed="true">Treino livre</button>
+    <button class="chip" data-mode="blitz" aria-pressed="false">Blitz (misturado, com tempo)</button>
+  </div>
+  <p class="hint" id="modeHint">Sem tempo, tentativas ilimitadas em cada nó.</p>
+
+  <div class="modebar" id="groupBar" role="group" aria-label="Filtrar por desfecho">
+    <button class="chip" data-grupo="todos" aria-pressed="true">Todos</button>
+    <button class="chip" data-grupo="Observar" aria-pressed="false">Observar</button>
+    <button class="chip" data-grupo="Vacina" aria-pressed="false">Vacina</button>
+    <button class="chip" data-grupo="SoroObs" aria-pressed="false">Soro + observação</button>
+    <button class="chip" data-grupo="SoroCompleto" aria-pressed="false">Soro completo</button>
+  </div>
+
+  <div class="hud">
+    <span><b id="hudCaso">Caso 1</b> de <span id="hudTotal">8</span></span>
+    <span>Sequência perfeita: <b id="hudStreak">0</b></span>
+    <span id="hudTimerWrap" style="display:none">Tempo: <b class="timer" id="hudTimer">40</b>s</span>
+    <span id="hudLivesWrap" style="display:none">Vidas: <b class="lives" id="hudLives">♥♥♥</b></span>
+  </div>
+
+  <div class="trail" id="trail"></div>
+
+  <div class="board" id="board">
+    <div class="card paciente">
+      <h2>Ocorrência</h2>
+      <dl id="pacienteInfo"></dl>
+    </div>
+    <div class="card node" id="nodeCard">
+      <div id="outcomeBanner"></div>
+      <h2 id="questionText"></h2>
+      <div class="opts" id="opts"></div>
+      <div class="feedback" id="feedback">
+        <p id="feedbackText"></p>
+        <button id="feedbackBtn">Continuar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="endscreen" id="endscreen">
+    <div class="card">
+      <h2>Mapa mestre</h2>
+      <p id="endSummary" style="color:var(--muted)"></p>
+      <div class="heat" id="heat"></div>
+      <button class="cta" id="playAgain">Jogar de novo</button>
+    </div>
+  </div>
+
+  <footer>
+    <p>Base: Normas Técnicas de Profilaxia da Raiva Humana (Ministério da Saúde) e Guia de Vigilância em Saúde. Casos e dados são fictícios — na prática, siga o protocolo e os instrutivos da sua UF. Progresso salvo só neste navegador.</p>
+  </footer>
+</div>
+
+<script>
+const casos = [
+  {grupo:'Observar', grave:false, observavel:true,
+    dados:{Animal:'Cão da vizinhança, vacinado, saudável', Ferimento:'Mordedura única no braço', Observação:'Dono disponível para manter o animal em observação'}},
+  {grupo:'Observar', grave:false, observavel:true,
+    dados:{Animal:'Gato doméstico, saudável', Ferimento:'Arranhadura superficial na perna', Observação:'Animal disponível para observação'}},
+  {grupo:'Vacina', grave:false, observavel:false,
+    dados:{Animal:'Cão errante, fugiu logo após o episódio', Ferimento:'Mordedura superficial no tronco', Observação:'Animal não pôde ser localizado'}},
+  {grupo:'Vacina', grave:false, observavel:false,
+    dados:{Animal:'Gato de rua, desaparecido após o episódio', Ferimento:'Arranhadura leve no braço', Observação:'Sem possibilidade de observação'}},
+  {grupo:'SoroObs', grave:true, observavel:true,
+    dados:{Animal:'Cão do vizinho, saudável, disponível', Ferimento:'Mordedura profunda na mão', Observação:'Pode ser observado por 10 dias'}},
+  {grupo:'SoroObs', grave:true, observavel:true,
+    dados:{Animal:'Cão de guarda, vacinado, saudável', Ferimento:'Mordedura múltipla e extensa na perna', Observação:'Pode ser observado por 10 dias'}},
+  {grupo:'SoroCompleto', grave:true, observavel:false,
+    dados:{Animal:'Cão errante, desapareceu após o episódio', Ferimento:'Mordedura no rosto', Observação:'Sem possibilidade de observação'}},
+  {grupo:'SoroCompleto', grave:true, observavel:false,
+    dados:{Animal:'Morcego', Ferimento:'Mordedura na mão', Observação:'Morcego não é passível de observação'}},
+];
+
+const condutas = {
+  Observar:'Observar o animal por 10 dias. Só iniciar o esquema se ele adoecer, morrer ou desaparecer nesse período.',
+  Vacina:'Iniciar o esquema de vacina antirrábica; sem indicação de soro nesse caso.',
+  SoroObs:'Iniciar soro e vacina imediatamente; pode suspender o esquema se o animal permanecer sadio durante os 10 dias de observação.',
+  SoroCompleto:'Iniciar soro e vacina, completando o esquema todo — sem suspensão, o animal não pode ser observado.'
+};
+
+const groupLabel = {Observar:'Observar o animal', Vacina:'Iniciar vacina', SoroObs:'Soro + vacina, com possível suspensão', SoroCompleto:'Soro + vacina completos'};
+
+let mode = 'treino';
+let grupoFiltro = 'todos';
+let fila = [];
+let idx = 0;
+let streak = 0;
+let lives = 3;
+let timer = null, timeLeft = 40;
+let mistakes = {n1:0, n2:0, cond:0};
+let stepState = null;
+
+const el = id => document.getElementById(id);
+
+function embaralha(a){ const b=[...a]; for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [b[i],b[j]]=[b[j],b[i]];} return b; }
+
+function montaFila(){
+  let base = grupoFiltro==='todos' ? casos : casos.filter(c=>c.grupo===grupoFiltro);
+  fila = embaralha(base);
+  idx = 0;
+}
+
+function iniciaPartida(){
+  streak = 0; lives = 3; mistakes = {n1:0,n2:0,cond:0};
+  montaFila();
+  el('endscreen').classList.remove('show');
+  el('board').style.display='grid';
+  document.querySelector('.hud').style.display='flex';
+  el('trail').style.display='flex';
+  el('hudLivesWrap').style.display = mode==='blitz' ? 'inline' : 'none';
+  el('hudTimerWrap').style.display = mode==='blitz' ? 'inline' : 'none';
+  atualizaLives();
+  carregaCaso();
+}
+
+function atualizaLives(){ el('hudLives').textContent = '♥'.repeat(Math.max(lives,0)) + '♡'.repeat(Math.max(3-lives,0)); }
+
+function carregaCaso(){
+  clearInterval(timer);
+  if(idx >= fila.length){ return fimDePartida(); }
+  const caso = fila[idx];
+  el('hudCaso').textContent = 'Caso ' + (idx+1);
+  el('hudTotal').textContent = fila.length;
+  el('hudStreak').textContent = streak;
+  const dl = el('pacienteInfo'); dl.innerHTML='';
+  for(const [k,v] of Object.entries(caso.dados)){
+    dl.innerHTML += `<dt>${k}</dt><dd>${v}</dd>`;
+  }
+  el('trail').innerHTML='';
+  el('outcomeBanner').innerHTML='';
+  stepState = {caso, node:'n1'};
+  if(mode==='blitz'){
+    timeLeft = 40;
+    el('hudTimer').textContent = timeLeft;
+    timer = setInterval(()=>{
+      timeLeft--; el('hudTimer').textContent = timeLeft;
+      if(timeLeft<=0){ clearInterval(timer); perdeVida('O tempo acabou antes de fechar a conduta.'); }
+    },1000);
+  }
+  renderNode();
+}
+
+function renderNode(){
+  el('feedback').classList.remove('show');
+  const {caso, node} = stepState;
+  let pergunta, opts;
+  if(node==='n1'){
+    pergunta = 'O ferimento é grave? (cabeça, face, pescoço, mão, polpa digital, planta do pé, múltiplo/profundo/extenso, lambedura de mucosa, ou mordedura por morcego)';
+    opts = [{t:'Sim, é grave', v:true},{t:'Não, é leve', v:false}];
+  } else if(node==='n2'){
+    pergunta = 'O animal agressor pode ser observado por 10 dias? (cão ou gato saudável e identificável, não é morcego nem animal silvestre)';
+    opts = [{t:'Sim, pode ser observado', v:true},{t:'Não, não é possível observar', v:false}];
+  } else if(node==='cond'){
+    const grupo = caso.grupo;
+    el('outcomeBanner').innerHTML = `<div class="outcome ${grupo}"><b>${groupLabel[grupo]}</b></div>`;
+    pergunta = 'Qual a conduta correta?';
+    const todas = Object.entries(condutas).map(([g,t])=>({t}));
+    opts = embaralha(todas).map(o=>({t:o.t, v:o.t===condutas[grupo]}));
+  }
+  el('questionText').textContent = pergunta;
+  const optsEl = el('opts'); optsEl.innerHTML='';
+  opts.forEach(o=>{
+    const b = document.createElement('button');
+    b.className='opt'; b.textContent=o.t;
+    b.onclick = ()=> responde(o.v, b, node);
+    optsEl.appendChild(b);
+  });
+}
+
+function correta(node, caso){
+  if(node==='n1') return caso.grave;
+  if(node==='n2') return caso.observavel;
+  return true;
+}
+
+function responde(valor, botao, node){
+  const {caso} = stepState;
+  const certo = node==='cond' ? valor===true : valor===correta(node, caso);
+  document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+  if(certo){
+    botao.classList.add('correct');
+    avancaTrilha(node, valor);
+  } else {
+    botao.classList.add('wrong');
+    mistakes[node]++;
+    if(mode==='blitz'){ perdeVida(explicaErro(node, caso)); return; }
+    mostraFeedback(false, explicaErro(node, caso), ()=>{ document.querySelectorAll('.opt').forEach(b=>{b.disabled=false;b.classList.remove('wrong');}); });
+  }
+}
+
+function explicaErro(node, caso){
+  if(node==='n1') return caso.grave ? 'Esse ferimento entra nos critérios de gravidade — tratar como leve muda soro e observação.' : 'Esse ferimento não entra nos critérios de gravidade — tratar como grave indicaria soro sem necessidade.';
+  if(node==='n2') return caso.observavel ? 'O animal está disponível e é passível de observação — descartar essa opção perde a chance de evitar tratamento desnecessário.' : 'O animal não pode ser observado (desaparecido, selvagem ou morcego) — contar com observação aqui é arriscado.';
+  return 'Essa conduta é de outro desfecho. Revise antes de continuar.';
+}
+
+function avancaTrilha(node, valor){
+  const rotulo = node==='n1' ? (valor?'Ferimento grave':'Ferimento leve')
+    : node==='n2' ? (valor?'Animal observável':'Não observável')
+    : 'Conduta correta';
+  el('trail').innerHTML += `<span class="crumb"><b>${rotulo}</b></span>`;
+  let prox;
+  if(node==='n1') prox = 'n2';
+  else if(node==='n2') prox = 'cond';
+  else prox = 'fim';
+  if(prox==='fim'){
+    clearInterval(timer);
+    streak++;
+    setTimeout(()=>{ idx++; carregaCaso(); }, 900);
+  } else {
+    stepState.node = prox;
+    setTimeout(renderNode, 500);
+  }
+}
+
+function perdeVida(msg){
+  lives--; atualizaLives(); streak = 0;
+  mostraFeedback(false, msg, ()=>{
+    if(lives<=0){ fimDePartida(true); }
+    else { idx++; carregaCaso(); }
+  });
+}
+
+function mostraFeedback(ok, texto, onNext){
+  const f = el('feedback'); f.classList.add('show'); f.className = 'feedback show ' + (ok?'ok':'bad');
+  el('feedbackText').textContent = texto;
+  el('feedbackBtn').onclick = ()=>{ f.classList.remove('show'); onNext(); };
+}
+
+function fimDePartida(zerouVidas){
+  clearInterval(timer);
+  el('board').style.display='none';
+  document.querySelector('.hud').style.display='none';
+  el('trail').style.display='none';
+  el('endscreen').classList.add('show');
+  el('endSummary').textContent = zerouVidas
+    ? `Vidas esgotadas no Blitz. Sequência perfeita: ${streak}.`
+    : `Casos deste filtro encerrados. Sequência perfeita: ${streak}.`;
+  const total = Object.values(mistakes).reduce((a,b)=>a+b,0) || 1;
+  const nomes = {n1:'Nó: "o ferimento é grave?"', n2:'Nó: "o animal é observável?"', cond:'Escolha da conduta'};
+  const heat = el('heat'); heat.innerHTML='';
+  Object.entries(mistakes).forEach(([k,v])=>{
+    const pct = Math.round((v/total)*100);
+    heat.innerHTML += `<div class="heatrow"><span>${nomes[k]} — ${v} erro(s)</span><div class="bar"><span style="width:${v?Math.max(pct,8):0}%"></span></div></div>`;
+  });
+  salvaRecorde();
+}
+
+function salvaRecorde(){
+  try{
+    const atual = JSON.parse(localStorage.getItem('atendimento-antirrabico')||'{}');
+    const melhor = Math.max(atual.melhorSequencia||0, streak);
+    localStorage.setItem('atendimento-antirrabico', JSON.stringify({melhorSequencia:melhor}));
+  }catch(e){}
+}
+
+document.querySelectorAll('[data-mode]').forEach(b=>{
+  b.onclick = ()=>{
+    document.querySelectorAll('[data-mode]').forEach(x=>x.setAttribute('aria-pressed','false'));
+    b.setAttribute('aria-pressed','true');
+    mode = b.dataset.mode;
+    el('modeHint').textContent = mode==='blitz'
+      ? 'Casos de todos os desfechos, misturados. 40s por caso, 3 vidas, qualquer erro custa uma vida.'
+      : 'Sem tempo, tentativas ilimitadas em cada nó.';
+    el('groupBar').style.display = mode==='blitz' ? 'none' : 'flex';
+    if(mode==='blitz') grupoFiltro='todos';
+    iniciaPartida();
+  };
+});
+document.querySelectorAll('[data-grupo]').forEach(b=>{
+  b.onclick = ()=>{
+    document.querySelectorAll('[data-grupo]').forEach(x=>x.setAttribute('aria-pressed','false'));
+    b.setAttribute('aria-pressed','true');
+    grupoFiltro = b.dataset.grupo;
+    iniciaPartida();
+  };
+});
+el('playAgain').onclick = iniciaPartida;
+
+iniciaPartida();
+</script>
+</body>
+</html>
