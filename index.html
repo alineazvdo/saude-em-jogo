@@ -101,6 +101,9 @@ a.card:hover{border-color:var(--tone);transform:translateY(-3px)}
 /* bloco das cruzadinhas: painel próprio, cartões compactos na horizontal */
 .bloco.cruz{background:color-mix(in srgb,var(--t-green) 7%,var(--bg));border:2px solid var(--line);border-radius:20px;padding:20px 20px 22px}
 .bloco.cruz .sub{margin-bottom:16px}
+/* bloco do fluxograma vivo: mesmo formato de painel, tonalidade diferente */
+.bloco.fluxo{background:color-mix(in srgb,var(--t-blue) 7%,var(--bg));border:2px solid var(--line);border-radius:20px;padding:20px 20px 22px}
+.bloco.fluxo .sub{margin-bottom:16px}
 .cards.duo{grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr))}
 .duo .card{flex-direction:row;align-items:stretch}
 .duo .art{flex:0 0 120px;height:auto;min-height:112px;border-bottom:0;border-right:2px solid var(--line);padding:8px}
@@ -117,6 +120,7 @@ a.card:hover{border-color:var(--tone);transform:translateY(-3px)}
   .art{flex:0 0 112px;height:auto;min-height:112px;border-bottom:0;border-right:2px solid var(--line);padding:8px}
   .card.soon .art{border-bottom:0;border-right-style:dashed}
   .bloco.cruz{padding:14px 12px 16px;border-radius:16px}
+  .bloco.fluxo{padding:14px 12px 16px;border-radius:16px}
   .art svg{max-width:none}
   .body{padding:12px 14px;gap:4px}
   .card h3{font-size:1.02rem}
@@ -168,12 +172,16 @@ var CATEGORIAS = [
   { id:'campo', rotulo:'Investigação de campo' },
   { id:'analise', rotulo:'Análise de situação' },
   { id:'clinica', rotulo:'Manejo clínico' },
+  { id:'trabalhador', rotulo:'Saúde do trabalhador' },
   { id:'breve', rotulo:'Em breve' }
 ];
-/* blocos da página, na ordem em que aparecem; cada um reúne uma ou mais categorias */
+/* blocos da página, na ordem em que aparecem; cada um reúne uma ou mais categorias.
+   "cats" decide o que entra no bloco (mecânica/formato de apresentação);
+   a categoria de cada jogo (j.cat) continua livre pra descrever o assunto, não o bloco. */
 var BLOCOS = [
-  { id:'simulacoes', titulo:'Simulações', sub:'Fichas, investigações e análises para treinar o dia a dia da vigilância.', cats:['fichas','campo','analise','clinica','breve'] },
-  { id:'cruzadinhas', titulo:'Cruzadinhas', sub:'Palavras cruzadas em desafios progressivos.', cats:['cruzadinhas'], compacto:true }
+  { id:'simulacoes', titulo:'Simulações', sub:'Fichas, investigações e análises para treinar o dia a dia da vigilância.', cats:['fichas','campo','analise','breve'] },
+  { id:'fluxograma', titulo:'Fluxograma vivo', sub:'Decisões em cadeia: siga o fluxograma nó por nó até fechar o caminho certo.', cats:['clinica','trabalhador'], compacto:true, painel:'fluxo' },
+  { id:'cruzadinhas', titulo:'Cruzadinhas', sub:'Palavras cruzadas em desafios progressivos.', cats:['cruzadinhas'], compacto:true, painel:'cruz' }
 ];
 var JOGOS = [
   { cat:'cruzadinhas', href:'cruzadinha-saude-publica.html', titulo:'Cruzadinha da saúde pública',
@@ -199,7 +207,10 @@ var JOGOS = [
     chips:['8 casos','Protótipo'], arte:'fluxo', tom:'blue', key:'fluxograma-dengue', tipo:'fluxo' },
   { cat:'clinica', href:'fluxograma-escorpiao.html', titulo:'Fluxograma vivo: acidente escorpiônico',
     desc:'Classifique a gravidade (leve, moderado, grave) e acerte a conduta imediata, nó por nó.',
-    chips:['6 casos','Protótipo'], arte:'fluxo', tom:'rose', key:'fluxograma-escorpiao', tipo:'fluxo' }
+    chips:['6 casos','Protótipo'], arte:'fluxo', tom:'rose', key:'fluxograma-escorpiao', tipo:'fluxo' },
+  { cat:'trabalhador', href:'nexo-ou-nao.html', titulo:'Nexo ou não?',
+    desc:'Ocupação, exposição e diagnóstico: decida se há nexo com o trabalho e qual o encaminhamento correto.',
+    chips:['6 casos','Protótipo'], arte:'fluxo', tom:'orange', key:'nexo-ou-nao', tipo:'fluxo' }
 ];
 
 /* ---------- ilustrações (SVG que herda as cores do tema) ---------- */
@@ -301,7 +312,7 @@ function cartao(j, compacto){
 BLOCOS.forEach(function(bl){
   var jogos=JOGOS.filter(function(j){ return bl.cats.indexOf(j.cat)!==-1; });
   if(!jogos.length) return;
-  var sec=el('section','bloco'+(bl.id==='cruzadinhas'?' cruz':'')); sec.setAttribute('aria-labelledby','h-'+bl.id);
+  var sec=el('section','bloco'+(bl.painel?' '+bl.painel:'')); sec.setAttribute('aria-labelledby','h-'+bl.id);
   var h=el('h2',null,bl.titulo); h.id='h-'+bl.id; sec.appendChild(h);
   sec.appendChild(el('p','sub',bl.sub));
   var grade=el('div','cards'+(bl.compacto?' duo':''));
