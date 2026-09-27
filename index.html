@@ -171,6 +171,7 @@ var CATEGORIAS = [
   { id:'fichas', rotulo:'Ficha e sistema' },
   { id:'campo', rotulo:'Investigação de campo' },
   { id:'analise', rotulo:'Análise de situação' },
+  { id:'gestao', rotulo:'Gestão em saúde' },
   { id:'clinica', rotulo:'Manejo clínico' },
   { id:'trabalhador', rotulo:'Saúde do trabalhador' },
   { id:'breve', rotulo:'Em breve' }
@@ -179,7 +180,7 @@ var CATEGORIAS = [
    "cats" decide o que entra no bloco (mecânica/formato de apresentação);
    a categoria de cada jogo (j.cat) continua livre pra descrever o assunto, não o bloco. */
 var BLOCOS = [
-  { id:'simulacoes', titulo:'Simulações', sub:'Fichas, investigações e análises para treinar o dia a dia da vigilância.', cats:['fichas','campo','analise','breve'] },
+  { id:'simulacoes', titulo:'Simulações', sub:'Fichas, investigações e análises para treinar o dia a dia da vigilância.', cats:['fichas','campo','analise','gestao','breve'] },
   { id:'fluxograma', titulo:'Fluxograma vivo', sub:'Decisões em cadeia: siga o fluxograma nó por nó até fechar o caminho certo.', cats:['clinica','trabalhador'], compacto:true, painel:'fluxo' },
   { id:'cruzadinhas', titulo:'Cruzadinhas', sub:'Palavras cruzadas em desafios progressivos.', cats:['cruzadinhas'], compacto:true, painel:'cruz' }
 ];
@@ -210,7 +211,10 @@ var JOGOS = [
     chips:['6 casos','Protótipo'], arte:'fluxo', tom:'rose', key:'fluxograma-escorpiao', tipo:'fluxo' },
   { cat:'trabalhador', href:'nexo-ou-nao.html', titulo:'Nexo ou não?',
     desc:'Ocupação, exposição e diagnóstico: decida se há nexo com o trabalho e qual o encaminhamento correto.',
-    chips:['6 casos','Protótipo'], arte:'fluxo', tom:'orange', key:'nexo-ou-nao', tipo:'fluxo' }
+    chips:['6 casos','Protótipo'], arte:'fluxo', tom:'orange', key:'nexo-ou-nao', tipo:'fluxo' },
+  { cat:'gestao', href:'mandato-da-saude.html', titulo:'Mandato da Saúde',
+    desc:'Quatro anos como secretário(a) de Saúde: distribua o orçamento entre os blocos de financiamento e decida os eventos que chegam.',
+    chips:['4 anos','Protótipo'], arte:'gestor', tom:'green', key:'mandato-da-saude', tipo:'mandato' }
 ];
 
 /* ---------- ilustrações (SVG que herda as cores do tema) ---------- */
@@ -271,7 +275,15 @@ function arteFluxo(){
   o+='<rect x="146" y="98" width="48" height="10" rx="5" fill="var(--tone)" fill-opacity=".3" stroke="var(--tone)" stroke-width="2"/>';
   return svg(o);
 }
-var ARTE={cruz:arteCruz, ficha:arteFicha, surto:arteSurto, mapa:arteMapa, fluxo:arteFluxo};
+function arteGestor(){
+  var o='<line x1="26" y1="94" x2="196" y2="94" stroke="var(--tone)" stroke-width="2.5"/>';
+  o+='<rect x="42" y="56" width="26" height="38" rx="3" fill="var(--cell)" stroke="var(--tone)" stroke-width="2.5"/>';
+  o+='<rect x="97" y="34" width="26" height="60" rx="3" fill="var(--sel)" stroke="var(--tone)" stroke-width="2.5"/>';
+  o+='<rect x="152" y="66" width="26" height="28" rx="3" fill="var(--cell)" stroke="var(--tone)" stroke-width="2.5"/>';
+  o+='<path d="M110 14 v20 M110 14 h20 v10 h-20" fill="none" stroke="var(--tone)" stroke-width="2.5" stroke-linejoin="round"/>';
+  return svg(o);
+}
+var ARTE={cruz:arteCruz, ficha:arteFicha, surto:arteSurto, mapa:arteMapa, fluxo:arteFluxo, gestor:arteGestor};
 
 /* ---------- progresso salvo pelos próprios jogos (mesmo navegador) ---------- */
 function progresso(j){
@@ -284,6 +296,7 @@ function progresso(j){
     }
     if(j.tipo==='ficha') return raw.best ? ('Melhor pontuação: '+raw.best+'%') : null;
     if(j.tipo==='fluxo') return raw.melhorSequencia ? ('Sequência recorde: '+raw.melhorSequencia) : null;
+    if(j.tipo==='mandato') return raw.melhorNota!=null ? ('Melhor nota final: '+raw.melhorNota) : null;
   }catch(e){}
   return null;
 }

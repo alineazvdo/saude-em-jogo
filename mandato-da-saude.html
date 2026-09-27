@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="light dark">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mandato da Saúde | Saúde em jogo</title>
+<meta name="description" content="Assuma a Secretaria Municipal de Saúde por um mandato de 4 anos: distribua o orçamento entre os blocos de financiamento e decida os eventos que chegam.">
+<meta name="theme-color" content="#F6F1E7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1A14" media="(prefers-color-scheme: dark)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#F6F1E7; --surface:#FFFFFF; --ink:#22392E; --muted:#647062; --line:#D5CBB4; --edge:#22392E; --emph:#22392E;
+  --cell:#FFFFFF; --sel:#FFD23F; --sel-ink:#22392E; --focus:#0B5FA5;
+  --t-green:#0E7C66; --t-orange:#B4470A; --t-blue:#1F5FA8; --t-violet:#5B3FB4; --t-rose:#B0356B; --t-soon:#75806F;
+  --ok:#0E7C66; --bad:#B0356B; --warn:#B4470A;
+  --display:'Bricolage Grotesque','Trebuchet MS','Segoe UI',system-ui,sans-serif;
+  --body:'Atkinson Hyperlegible','Segoe UI',Verdana,system-ui,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0F1A14; --surface:#182A20; --ink:#F1EBDD; --muted:#B3BCA9; --line:#33483B; --edge:#6F8B78; --emph:#FFD23F;
+    --cell:#1D3327; --sel:#FFD23F; --sel-ink:#16241B; --focus:#7CC0FF;
+    --t-green:#3FCFAA; --t-orange:#FF9A5C; --t-blue:#7CB7FF; --t-violet:#B79CFF; --t-rose:#FF8FBB; --t-soon:#8D9885;
+    --ok:#3FCFAA; --bad:#FF8FBB; --warn:#FF9A5C;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0F1A14; --surface:#182A20; --ink:#F1EBDD; --muted:#B3BCA9; --line:#33483B; --edge:#6F8B78; --emph:#FFD23F;
+  --cell:#1D3327; --sel:#FFD23F; --sel-ink:#16241B; --focus:#7CC0FF;
+  --t-green:#3FCFAA; --t-orange:#FF9A5C; --t-blue:#7CB7FF; --t-violet:#B79CFF; --t-rose:#FF8FBB; --t-soon:#8D9885;
+  --ok:#3FCFAA; --bad:#FF8FBB; --warn:#FF9A5C;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+button{font-family:inherit}
+
+.app{max-width:980px;margin:0 auto;padding:22px 16px 64px}
+.back{margin:0 0 14px;font-size:.95rem}
+.back a{font-weight:700}
+
+.brand{display:flex;flex-wrap:wrap;align-items:center;gap:18px 22px;margin-bottom:6px}
+.tiles{display:flex;gap:5px}
+.tile{width:clamp(36px,9vw,52px);aspect-ratio:1;display:grid;place-items:center;background:var(--cell);border:2px solid var(--edge);border-radius:5px;font-family:var(--display);font-weight:800;font-size:clamp(1.15rem,4.6vw,1.7rem);line-height:1}
+.tile.hl{background:var(--sel);color:var(--sel-ink);border-color:var(--emph)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(1.8rem,6vw,2.7rem);line-height:1.05;letter-spacing:-0.02em;margin:14px 0 0}
+.lede{margin:12px 0 0;color:var(--muted);max-width:62ch;font-size:1.05rem}
+
+.card{background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:20px 22px;margin-top:22px}
+.card h2{font-family:var(--display);font-weight:800;font-size:1.2rem;margin:0 0 10px}
+.card p{margin:0 0 10px;max-width:62ch}
+.cta{border:none;background:var(--emph);color:var(--bg);border-radius:10px;padding:13px 22px;font-family:var(--display);font-weight:800;font-size:1.02rem;cursor:pointer;margin-top:6px}
+.cta.sec{background:transparent;color:var(--ink);border:2px solid var(--line)}
+
+.hud{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;margin:18px 0 4px;font-family:var(--display);font-weight:700;font-size:.92rem}
+.hud b{font-weight:800}
+
+.painel{display:none;background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:20px 22px;margin-top:16px}
+.painel.show{display:block}
+
+.indicadores{display:grid;gap:10px;margin:16px 0 4px}
+.ind{display:grid;grid-template-columns:150px 1fr auto;gap:10px;align-items:center;font-size:.88rem}
+.ind .barbg{background:var(--line);border-radius:8px;height:12px;overflow:hidden}
+.ind .barbg > span{display:block;height:100%;border-radius:8px}
+.ind .val{font-family:var(--display);font-weight:800;min-width:2.6em;text-align:right}
+
+.alocacao{display:grid;gap:12px;margin:16px 0}
+.linha{display:grid;grid-template-columns:150px 1fr auto;gap:12px;align-items:center}
+.linha label{font-size:.92rem}
+.linha input[type=number]{width:64px;border:2px solid var(--line);border-radius:8px;padding:6px 8px;font-family:var(--display);font-weight:700;font-size:.95rem;background:var(--cell);color:var(--ink)}
+.linha input[type=range]{width:100%;accent-color:var(--emph)}
+.total{font-family:var(--display);font-weight:800;margin:8px 0 4px}
+.total.ok{color:var(--ok)} .total.bad{color:var(--bad)}
+
+.evento{border-radius:12px;padding:16px 18px;background:color-mix(in srgb, var(--warn) 12%, transparent);border:2px solid var(--warn);margin-top:16px}
+.evento h3{font-family:var(--display);font-weight:800;margin:0 0 8px;font-size:1.05rem}
+.opts{display:grid;gap:10px;margin-top:12px}
+.opt{border:2px solid var(--edge);background:var(--cell);color:var(--ink);border-radius:12px;padding:12px 15px;font-size:.98rem;text-align:left;cursor:pointer;line-height:1.35}
+.opt:hover{background:var(--sel);color:var(--sel-ink);border-color:var(--emph)}
+.opt:disabled{opacity:.55;cursor:default}
+
+.feedback{margin-top:14px;border-radius:12px;padding:12px 14px;font-size:.95rem;display:none;border:2px solid var(--line)}
+.feedback.show{display:block}
+
+.tier{font-family:var(--display);font-weight:800;font-size:1.4rem;margin:4px 0 14px}
+
+footer{margin-top:44px;color:var(--muted);font-size:.9rem;max-width:70ch}
+</style>
+</head>
+<body>
+<div class="app">
+  <p class="back"><a href="index.html">‹ Saúde em jogo</a></p>
+  <div class="brand">
+    <div class="tiles" aria-hidden="true">
+      <span class="tile">G</span><span class="tile">E</span><span class="tile">S</span><span class="tile hl">T</span><span class="tile">O</span><span class="tile">R</span>
+    </div>
+  </div>
+  <h1>Mandato da Saúde</h1>
+  <p class="lede">Quatro anos, um orçamento, uma secretaria. Distribua os blocos de financiamento e decida os eventos que chegam — os indicadores respondem ao que você escolhe.</p>
+
+  <div class="card" id="intro">
+    <h2 id="introTitulo">Antes de começar</h2>
+    <p>Você assume a Secretaria Municipal de Saúde de <b id="municipioNome">—</b>. Tem 100 pontos de orçamento por ano pra distribuir entre cinco blocos, e um evento por ano que exige decisão. No fim do mandato, sai o relatório de gestão.</p>
+    <button class="cta" id="btnComecar">Assumir a secretaria</button>
+  </div>
+
+  <div class="hud" id="hud" style="display:none">
+    <span>Ano <b id="hudAno">1</b> de 4 — <b id="hudMunicipio">—</b></span>
+    <span>Aprovação popular: <b id="hudAprovacao">50</b>%</span>
+  </div>
+
+  <div class="painel" id="painelIndicadores">
+    <h2>Indicadores</h2>
+    <div class="indicadores" id="listaIndicadores"></div>
+  </div>
+
+  <div class="painel" id="painelOrcamento">
+    <h2>Orçamento do ano</h2>
+    <p>Distribua 100 pontos entre os cinco blocos. Mais pontos que o padrão (20) melhora o indicador daquele bloco; menos, piora.</p>
+    <div class="alocacao" id="listaAlocacao"></div>
+    <div class="total" id="totalAlocacao">Total: 100 / 100</div>
+    <button class="cta sec" id="btnPadrao" type="button">Redistribuir igual (20 cada)</button>
+    <button class="cta" id="btnConfirmarOrcamento" type="button">Confirmar orçamento</button>
+  </div>
+
+  <div class="painel" id="painelResultadoOrcamento">
+    <h2>Efeito do orçamento</h2>
+    <p id="resumoOrcamento"></p>
+    <button class="cta" id="btnVerEvento" type="button">Ver o que aconteceu este ano</button>
+  </div>
+
+  <div class="painel" id="painelEvento">
+    <div class="evento">
+      <h3 id="eventoTitulo"></h3>
+      <p id="eventoTexto"></p>
+      <div class="opts" id="eventoOpts"></div>
+    </div>
+    <div class="feedback" id="eventoFeedback">
+      <p id="eventoFeedbackTexto"></p>
+      <button class="cta" id="btnProximoAno" type="button">Continuar</button>
+    </div>
+  </div>
+
+  <div class="painel" id="painelRelatorio">
+    <h2>Relatório de gestão — fim de mandato</h2>
+    <p class="tier" id="tierTexto"></p>
+    <p id="relatorioResumo" style="color:var(--muted)"></p>
+    <div class="indicadores" id="listaIndicadoresFinal"></div>
+    <button class="cta" id="btnNovoMandato" type="button">Novo mandato</button>
+  </div>
+
+  <footer>
+    <p>Blocos de financiamento, pactuação e participação social simplificados a partir da lógica do SUS (Lei 8.080/1990, Lei 8.142/1990 e normas de financiamento vigentes) para fins didáticos. Município, eventos e números são fictícios. Progresso salvo só neste navegador.</p>
+  </footer>
+</div>
+
+<script>
+const municipios = ['Serra Alta','Riacho Verde','Boa Vista do Sertão','Campo Formoso do Norte','Vale das Águas'];
+
+const categorias = [
+  {id:'atencao', label:'Atenção Básica'},
+  {id:'vigilancia', label:'Vigilância em Saúde'},
+  {id:'farmacia', label:'Assistência Farmacêutica'},
+  {id:'mac', label:'Média/Alta Complexidade'},
+  {id:'gestao', label:'Gestão do SUS'}
+];
+
+const eventosPool = [
+  {titulo:'Emenda parlamentar carimbada', texto:'Chega uma emenda de um deputado, mas só pode ser usada na Média/Alta Complexidade — mesmo a prioridade do ano sendo outra.',
+    opcoes:[
+      {t:'Aceitar a emenda carimbada', efeitos:{mac:10}, msg:'A emenda entra, MAC melhora, mas o recurso não pôde ir pra onde você mais precisava.'},
+      {t:'Recusar e buscar recurso livre depois', efeitos:{aprovacao:-3}, msg:'Sem a emenda, o ano fica mais apertado e a imprensa local questiona a recusa.'}
+    ]},
+  {titulo:'Auditoria aponta glosa', texto:'O TCU encontra prestação de contas incompleta na Assistência Farmacêutica.',
+    opcoes:[
+      {t:'Corrigir e devolver o recurso glosado', efeitos:{farmacia:-5, gestao:5}, msg:'O processo se organiza, mas o orçamento de farmácia sente o corte.'},
+      {t:'Recorrer administrativamente', efeitos:{aprovacao:-5, gestao:-3}, msg:'O recurso corre, mas o caso vaza e pesa na aprovação popular.'}
+    ]},
+  {titulo:'Conselho de Saúde rejeita o Plano Municipal', texto:'O Conselho pede mais participação social nas decisões de Vigilância em Saúde antes de aprovar o plano.',
+    opcoes:[
+      {t:'Reabrir o plano para consulta pública', efeitos:{aprovacao:8, vigilancia:-3}, msg:'A aprovação sobe, mas o atraso na aprovação do plano atrasa ações de vigilância.'},
+      {t:'Manter o plano como está', efeitos:{aprovacao:-8}, msg:'O plano segue, mas o Conselho registra a insatisfação — e isso circula.'}
+    ]},
+  {titulo:'Surto local inesperado', texto:'Um aumento repentino de casos exige remanejar recursos ainda este ano.',
+    opcoes:[
+      {t:'Remanejar de MAC para Vigilância', efeitos:{vigilancia:8, mac:-5}, msg:'A resposta ao surto melhora, à custa da complexidade nesse ano.'},
+      {t:'Não remanejar, aguardar repasse estadual', efeitos:{vigilancia:-5, aprovacao:-3}, msg:'O repasse não chega a tempo, e a resposta fica visivelmente lenta.'}
+    ]},
+  {titulo:'Falta de medicamento básico relatada pela imprensa', texto:'Faltou insulina em duas UBS e virou notícia local.',
+    opcoes:[
+      {t:'Compra emergencial, usando reserva de Gestão do SUS', efeitos:{farmacia:6, gestao:-4}, msg:'O estoque volta, mas consome parte da reserva administrativa do ano.'},
+      {t:'Aguardar o processo licitatório normal', efeitos:{farmacia:-4, aprovacao:-4}, msg:'O problema se arrasta e a confiança da população cai.'}
+    ]},
+  {titulo:'Mutirão cirúrgico oferecido pelo estado', texto:'O estado oferece um mutirão, mas pede que a atenção básica libere parte da equipe.',
+    opcoes:[
+      {t:'Aceitar e mobilizar equipe da atenção básica', efeitos:{mac:8, atencao:-3}, msg:'A fila de espera encolhe, com um custo temporário na atenção básica.'},
+      {t:'Recusar por falta de equipe disponível', efeitos:{mac:-2}, msg:'A fila continua como estava — sem ganho, sem perda extra.'}
+    ]},
+  {titulo:'Mudança na regra estadual de repasse da Vigilância', texto:'O estado muda o formato de repasse e pede adaptação rápida do plano de trabalho.',
+    opcoes:[
+      {t:'Adaptar o plano de trabalho rapidamente', efeitos:{vigilancia:4, gestao:2}, msg:'A adaptação funciona e evita perda de repasse.'},
+      {t:'Manter o plano antigo e recorrer da mudança', efeitos:{vigilancia:-6}, msg:'O recurso fica retido até a resposta do recurso administrativo.'}
+    ]},
+  {titulo:'Greve dos agentes comunitários de saúde', texto:'A categoria para por reajuste. A atenção básica praticamente não funciona enquanto durar.',
+    opcoes:[
+      {t:'Negociar reajuste com parte do orçamento de Gestão', efeitos:{atencao:6, gestao:-6}, msg:'A greve termina rápido, com impacto direto no orçamento administrativo.'},
+      {t:'Não negociar agora', efeitos:{atencao:-8, aprovacao:-6}, msg:'A greve se estende e a atenção básica opera no mínimo por semanas.'}
+    ]}
+];
+
+let indicadores = {};
+let aprovacao = 50;
+let ano = 0;
+let municipio = '';
+let eventosDoMandato = [];
+let alocacaoAtual = {};
+
+const el = id => document.getElementById(id);
+function embaralha(a){ const b=[...a]; for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [b[i],b[j]]=[b[j],b[i]];} return b; }
+function clamp(v){ return Math.max(0, Math.min(100, v)); }
+
+function iniciaMandato(){
+  municipio = municipios[Math.floor(Math.random()*municipios.length)];
+  el('municipioNome').textContent = municipio;
+  el('hudMunicipio').textContent = municipio;
+  indicadores = {atencao:50, vigilancia:50, farmacia:50, mac:50, gestao:50};
+  aprovacao = 50;
+  ano = 0;
+  eventosDoMandato = embaralha(eventosPool).slice(0,4);
+  ['painelOrcamento','painelResultadoOrcamento','painelEvento','painelRelatorio'].forEach(id=>el(id).classList.remove('show'));
+  el('intro').style.display='none';
+  el('hud').style.display='flex';
+  el('painelIndicadores').classList.add('show');
+  renderIndicadores();
+  proximoAno();
+}
+
+function corIndicador(v){ return v>=65 ? 'var(--ok)' : v>=40 ? 'var(--warn)' : 'var(--bad)'; }
+
+function renderIndicadores(){
+  el('hudAno').textContent = Math.min(ano+1,4);
+  el('hudAprovacao').textContent = aprovacao;
+  const lista = el('listaIndicadores'); lista.innerHTML='';
+  categorias.forEach(c=>{
+    const v = indicadores[c.id];
+    lista.innerHTML += `<div class="ind"><span>${c.label}</span><div class="barbg"><span style="width:${v}%;background:${corIndicador(v)}"></span></div><span class="val">${v}</span></div>`;
+  });
+}
+
+function proximoAno(){
+  if(ano>=4){ return renderRelatorio(); }
+  renderIndicadores();
+  ['painelResultadoOrcamento','painelEvento'].forEach(id=>el(id).classList.remove('show'));
+  el('eventoFeedback').classList.remove('show');
+  renderOrcamento();
+  el('painelOrcamento').classList.add('show');
+}
+
+function renderOrcamento(){
+  alocacaoAtual = {atencao:20, vigilancia:20, farmacia:20, mac:20, gestao:20};
+  const lista = el('listaAlocacao'); lista.innerHTML='';
+  categorias.forEach(c=>{
+    lista.innerHTML += `<div class="linha">
+      <label for="al-${c.id}">${c.label}</label>
+      <input type="range" min="0" max="60" step="5" value="20" id="rg-${c.id}" data-cat="${c.id}">
+      <input type="number" min="0" max="60" step="5" value="20" id="al-${c.id}" data-cat="${c.id}">
+    </div>`;
+  });
+  categorias.forEach(c=>{
+    const rg = el('rg-'+c.id), nu = el('al-'+c.id);
+    rg.oninput = ()=>{ nu.value = rg.value; alocacaoAtual[c.id]=+rg.value; atualizaTotal(); };
+    nu.oninput = ()=>{ rg.value = nu.value; alocacaoAtual[c.id]=+nu.value||0; atualizaTotal(); };
+  });
+  atualizaTotal();
+}
+
+function atualizaTotal(){
+  const total = Object.values(alocacaoAtual).reduce((a,b)=>a+b,0);
+  const t = el('totalAlocacao');
+  t.textContent = `Total: ${total} / 100`;
+  t.className = 'total ' + (total===100 ? 'ok' : 'bad');
+  el('btnConfirmarOrcamento').disabled = total!==100;
+}
+
+el('btnPadrao').onclick = ()=>{
+  categorias.forEach(c=>{ el('rg-'+c.id).value=20; el('al-'+c.id).value=20; alocacaoAtual[c.id]=20; });
+  atualizaTotal();
+};
+
+el('btnConfirmarOrcamento').onclick = ()=>{
+  const partes = [];
+  categorias.forEach(c=>{
+    const delta = Math.round((alocacaoAtual[c.id]-20)/3);
+    if(delta!==0){
+      indicadores[c.id] = clamp(indicadores[c.id]+delta);
+      partes.push(`${c.label} ${delta>0?'subiu':'caiu'} ${Math.abs(delta)} ponto${Math.abs(delta)>1?'s':''}`);
+    }
+  });
+  el('resumoOrcamento').textContent = partes.length ? partes.join('. ') + '.' : 'Orçamento igual ao padrão — nenhum indicador se moveu por causa dele.';
+  renderIndicadores();
+  el('painelOrcamento').classList.remove('show');
+  el('painelResultadoOrcamento').classList.add('show');
+};
+
+el('btnVerEvento').onclick = ()=>{
+  el('painelResultadoOrcamento').classList.remove('show');
+  const ev = eventosDoMandato[ano];
+  el('eventoTitulo').textContent = ev.titulo;
+  el('eventoTexto').textContent = ev.texto;
+  const opts = el('eventoOpts'); opts.innerHTML='';
+  ev.opcoes.forEach(o=>{
+    const b = document.createElement('button');
+    b.className='opt'; b.textContent=o.t;
+    b.onclick = ()=>{
+      document.querySelectorAll('#eventoOpts .opt').forEach(x=>x.disabled=true);
+      Object.entries(o.efeitos).forEach(([k,v])=>{
+        if(k==='aprovacao'){ aprovacao = clamp(aprovacao+v); }
+        else { indicadores[k] = clamp(indicadores[k]+v); }
+      });
+      renderIndicadores();
+      el('eventoFeedbackTexto').textContent = o.msg;
+      el('eventoFeedback').classList.add('show');
+    };
+    opts.appendChild(b);
+  });
+  el('painelEvento').classList.add('show');
+};
+
+el('btnProximoAno').onclick = ()=>{ ano++; proximoAno(); };
+
+function renderRelatorio(){
+  el('painelIndicadores').classList.remove('show');
+  el('hud').style.display='none';
+  const media = Math.round((categorias.reduce((s,c)=>s+indicadores[c.id],0)/5 + aprovacao)/2);
+  let tier = 'Gestão em alerta';
+  if(media>=80) tier='Gestão exemplar';
+  else if(media>=60) tier='Gestão consistente';
+  else if(media>=40) tier='Gestão em desenvolvimento';
+  el('tierTexto').textContent = `${tier} — nota final ${media}`;
+  el('relatorioResumo').textContent = `Mandato de ${municipio} encerrado. Aprovação popular final: ${aprovacao}%.`;
+  const lista = el('listaIndicadoresFinal'); lista.innerHTML='';
+  categorias.forEach(c=>{
+    const v = indicadores[c.id];
+    lista.innerHTML += `<div class="ind"><span>${c.label}</span><div class="barbg"><span style="width:${v}%;background:${corIndicador(v)}"></span></div><span class="val">${v}</span></div>`;
+  });
+  el('painelRelatorio').classList.add('show');
+  salvaRecorde(media);
+}
+
+function salvaRecorde(media){
+  try{
+    const atual = JSON.parse(localStorage.getItem('mandato-da-saude')||'{}');
+    const melhor = Math.max(atual.melhorNota||0, media);
+    localStorage.setItem('mandato-da-saude', JSON.stringify({melhorNota:melhor}));
+  }catch(e){}
+}
+
+el('btnComecar').onclick = iniciaMandato;
+el('btnNovoMandato').onclick = ()=>{
+  el('painelRelatorio').classList.remove('show');
+  el('intro').style.display='block';
+};
+</script>
+</body>
+</html>
