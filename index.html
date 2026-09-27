@@ -104,6 +104,9 @@ a.card:hover{border-color:var(--tone);transform:translateY(-3px)}
 /* bloco do fluxograma vivo: mesmo formato de painel, tonalidade diferente */
 .bloco.fluxo{background:color-mix(in srgb,var(--t-blue) 7%,var(--bg));border:2px solid var(--line);border-radius:20px;padding:20px 20px 22px}
 .bloco.fluxo .sub{margin-bottom:16px}
+/* bloco arboviroses: mesmo formato, tonalidade própria */
+.bloco.arbo{background:color-mix(in srgb,var(--t-orange) 7%,var(--bg));border:2px solid var(--line);border-radius:20px;padding:20px 20px 22px}
+.bloco.arbo .sub{margin-bottom:16px}
 .cards.duo{grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr))}
 .duo .card{flex-direction:row;align-items:stretch}
 .duo .art{flex:0 0 120px;height:auto;min-height:112px;border-bottom:0;border-right:2px solid var(--line);padding:8px}
@@ -121,6 +124,7 @@ a.card:hover{border-color:var(--tone);transform:translateY(-3px)}
   .card.soon .art{border-bottom:0;border-right-style:dashed}
   .bloco.cruz{padding:14px 12px 16px;border-radius:16px}
   .bloco.fluxo{padding:14px 12px 16px;border-radius:16px}
+  .bloco.arbo{padding:14px 12px 16px;border-radius:16px}
   .art svg{max-width:none}
   .body{padding:12px 14px;gap:4px}
   .card h3{font-size:1.02rem}
@@ -171,6 +175,7 @@ var CATEGORIAS = [
   { id:'fichas', rotulo:'Ficha e sistema' },
   { id:'campo', rotulo:'Investigação de campo' },
   { id:'analise', rotulo:'Análise de situação' },
+  { id:'arbovirose', rotulo:'Arboviroses' },
   { id:'clinica', rotulo:'Manejo clínico' },
   { id:'trabalhador', rotulo:'Saúde do trabalhador' },
   { id:'breve', rotulo:'Em breve' }
@@ -181,6 +186,7 @@ var CATEGORIAS = [
 var BLOCOS = [
   { id:'simulacoes', titulo:'Simulações', sub:'Fichas, investigações e análises para treinar o dia a dia da vigilância.', cats:['fichas','campo','analise','breve'] },
   { id:'fluxograma', titulo:'Fluxograma vivo', sub:'Decisões em cadeia: siga o fluxograma nó por nó até fechar o caminho certo.', cats:['clinica','trabalhador'], compacto:true, painel:'fluxo' },
+  { id:'arboviroses', titulo:'Arboviroses', sub:'Tudo sobre dengue, chikungunya e zika reunido: ficha, classificação de risco, fases, exames e diferencial.', cats:['arbovirose'], compacto:true, painel:'arbo' },
   { id:'cruzadinhas', titulo:'Cruzadinhas', sub:'Palavras cruzadas em desafios progressivos.', cats:['cruzadinhas'], compacto:true, painel:'cruz' }
 ];
 var JOGOS = [
@@ -190,7 +196,7 @@ var JOGOS = [
   { cat:'cruzadinhas', href:'cruzadinha-saude-do-trabalhador.html', titulo:'Cruzadinha da saúde do trabalhador',
     desc:'Política e rede do SUS, notificação e informação, adoecimento e ação em saúde do trabalhador.',
     chips:['3 desafios'], arte:'cruz', tom:'orange', key:'cruzadinha-saude-trabalhador:v2', tipo:'cruz', total:3 },
-  { cat:'fichas', href:'ficha-sinan-dengue.html', titulo:'Ficha do SINAN em jogo: dengue',
+  { cat:'arbovirose', href:'ficha-sinan-dengue.html', titulo:'Ficha do SINAN em jogo: dengue',
     desc:'Preencha fichas de casos fictícios a partir do relato e compare a sua base com a base correta.',
     chips:['5 casos','Protótipo'], arte:'ficha', tom:'blue', key:'ficha-sinan-dengue:v1', tipo:'ficha' },
   { cat:'fichas', href:'ficha-sinan-acidente-trabalho.html', titulo:'Ficha do SINAN em jogo: acidente de trabalho grave',
@@ -202,9 +208,21 @@ var JOGOS = [
   { cat:'analise', href:'territorio-em-alerta.html', titulo:'Território em Alerta',
     desc:'Leia mapas de uma região de saúde: taxas, semáforo do LIRAa, tendência, vizinhança e cobertura vacinal.',
     chips:['5 missões','Protótipo'], arte:'mapa', tom:'rose', key:'territorio-alerta:v1', tipo:'ficha' },
-  { cat:'clinica', href:'fluxograma-dengue.html', titulo:'Fluxograma vivo: dengue',
+  { cat:'arbovirose', href:'fluxograma-dengue.html', titulo:'Fluxograma vivo: dengue',
     desc:'Classifique casos fictícios em A, B, C ou D e acerte a conduta imediata, nó por nó do fluxograma.',
     chips:['8 casos','Protótipo'], arte:'fluxo', tom:'blue', key:'fluxograma-dengue', tipo:'fluxo' },
+  { cat:'arbovirose', href:'linha-do-tempo-dengue.html', titulo:'Linha do tempo da dengue',
+    desc:'Reconheça a fase febril, crítica ou de recuperação de um quadro e o que isso muda na conduta.',
+    chips:['6 casos','Protótipo'], arte:'fluxo', tom:'orange', key:'linha-do-tempo-dengue', tipo:'fluxo' },
+  { cat:'arbovirose', href:'qual-exame-pedir.html', titulo:'Qual exame pedir?',
+    desc:'NS1 ou IgM: escolha o exame certo considerando o dia de sintomas e interprete o resultado.',
+    chips:['8 casos','Protótipo'], arte:'fluxo', tom:'violet', key:'qual-exame-pedir', tipo:'fluxo' },
+  { cat:'arbovirose', href:'suspeito-confirmado-descartado.html', titulo:'Suspeito, confirmado ou descartado?',
+    desc:'Decida o encerramento correto de um caso de dengue no Sinan, sem confundir com classificação de gravidade.',
+    chips:['6 casos','Protótipo'], arte:'fluxo', tom:'green', key:'suspeito-confirmado-descartado', tipo:'fluxo' },
+  { cat:'arbovirose', href:'dengue-chikungunya-zika.html', titulo:'Dengue, chikungunya ou zika?',
+    desc:'Diferencie as três arboviroses pelos sinais que realmente distinguem uma da outra.',
+    chips:['6 casos','Protótipo'], arte:'fluxo', tom:'rose', key:'dengue-chikungunya-zika', tipo:'fluxo' },
   { cat:'clinica', href:'fluxograma-escorpiao.html', titulo:'Fluxograma vivo: acidente escorpiônico',
     desc:'Classifique a gravidade (leve, moderado, grave) e acerte a conduta imediata, nó por nó.',
     chips:['6 casos','Protótipo'], arte:'fluxo', tom:'rose', key:'fluxograma-escorpiao', tipo:'fluxo' },
