@@ -5,7 +5,7 @@
 <meta name="color-scheme" content="light dark">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Saúde em jogo</title>
-<meta name="description" content="Jogos para estudar e treinar o dia a dia da vigilância em saúde: fichas do SINAN, investigação de surtos, análise de território e cruzadinhas.">
+<meta name="description" content="Jogos para treinar a rotina da vigilância em saúde, organizados em linhas: arboviroses, zoonoses, sífilis, tuberculose, hanseníase e saúde do trabalhador.">
 <meta name="theme-color" content="#F6F1E7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0F1A14" media="(prefers-color-scheme: dark)">
 <meta property="og:type" content="website">
@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="Saúde em jogo">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:title" content="Saúde em jogo">
-<meta property="og:description" content="Jogos para estudar e treinar o dia a dia da vigilância em saúde: fichas do SINAN, investigação de surtos, análise de território e cruzadinhas.">
+<meta property="og:description" content="Jogos para treinar a rotina da vigilância em saúde, organizados em linhas: arboviroses, zoonoses, sífilis, tuberculose, hanseníase e saúde do trabalhador.">
 <meta property="og:image" content="https://alineazvdo.github.io/saude-em-jogo/social.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -57,7 +57,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font
 a{color:inherit}
 :focus-visible{outline:3px solid var(--focus);outline-offset:3px}
 
-.app{max-width:1080px;margin:0 auto;padding:22px 16px 56px}
+.app{max-width:1180px;margin:0 auto;padding:22px 16px 56px}
 
 /* marca */
 .brand{display:flex;flex-wrap:wrap;align-items:center;gap:18px 22px;margin-bottom:6px}
@@ -65,84 +65,95 @@ a{color:inherit}
 .tile{width:clamp(36px,9vw,52px);aspect-ratio:1;display:grid;place-items:center;background:var(--cell);border:2px solid var(--edge);border-radius:5px;font-family:var(--display);font-weight:800;font-size:clamp(1.15rem,4.6vw,1.7rem);line-height:1}
 .tile.hl{background:var(--sel);color:var(--sel-ink);border-color:var(--emph)}
 h1{font-family:var(--display);font-weight:800;font-size:clamp(2rem,7vw,3.3rem);line-height:1;letter-spacing:-0.02em;margin:0}
-.lede{margin:12px 0 0;color:var(--muted);max-width:60ch;font-size:1.05rem}
+.lede{margin:12px 0 0;color:var(--muted);max-width:62ch;font-size:1.05rem}
 
-h2{font-family:var(--display);font-weight:800;font-size:1.3rem;margin:36px 0 4px}
-.sub{margin:0 0 14px;color:var(--muted);font-size:.95rem}
+/* painel de progresso */
+.painel{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 0}
+.pill{border:2px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;font-family:var(--display);font-weight:700;font-size:.92rem;text-decoration:none;color:var(--ink)}
+.pill b{font-weight:800}
+a.pill{border-color:var(--emph)}
+a.pill:hover{background:var(--sel);color:var(--sel-ink)}
 
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px}
+h2{font-family:var(--display);font-weight:800;font-size:1.4rem;margin:38px 0 4px}
+.sub{margin:0 0 14px;color:var(--muted);font-size:.95rem;max-width:66ch}
+.legenda{margin:0 0 18px;font-size:.9rem;color:var(--muted)}
+
+/* ---------- linhas (mapa de metrô) ---------- */
+.linhas{display:grid;grid-template-columns:minmax(0,1fr);gap:22px}
+@media (min-width:900px){ .linhas{display:block;columns:2;column-gap:22px} .linha{break-inside:avoid;margin-bottom:22px} }
+.linha{border:2px solid var(--line);border-radius:20px;padding:18px 18px 20px;background:color-mix(in srgb,var(--tone) 6%,var(--bg))}
+.linha-cab{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:2px 12px}
+.linha h3{font-family:var(--display);font-weight:800;font-size:1.25rem;line-height:1.15;margin:0;display:flex;align-items:center;gap:10px}
+.linha h3::before{content:'';flex:0 0 auto;width:14px;height:14px;border-radius:50%;background:var(--tone)}
+.prog-linha{font-size:.88rem;font-weight:700;color:var(--tone)}
+.linha .sub{margin:4px 0 18px}
+
+ol.estacoes{list-style:none;margin:0;padding:0}
+.est{position:relative;padding:0 0 14px 58px}
+.est:last-child{padding-bottom:0}
+.est::before{content:'';position:absolute;left:19px;top:46px;bottom:-2px;width:4px;border-radius:2px;background:var(--tone);opacity:.3}
+.est.done::before{opacity:1}
+.est:last-child::before{display:none}
+.marker{position:absolute;left:0;top:2px;width:42px;height:42px;border-radius:50%;border:4px solid var(--tone);background:var(--surface);display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:1rem;color:var(--ink)}
+.est.done .marker{background:var(--tone);color:var(--surface)}
+.est.next .marker{background:var(--sel);color:var(--sel-ink);animation:pulso 2.2s ease-out infinite}
+@keyframes pulso{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--tone) 50%,transparent)}70%{box-shadow:0 0 0 10px transparent}100%{box-shadow:0 0 0 0 transparent}}
+
+a.est-card{display:block;text-decoration:none;color:inherit;background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:11px 14px 12px;transition:border-color .15s ease,transform .15s ease}
+a.est-card:hover{border-color:var(--tone);transform:translateY(-2px)}
+.est.next a.est-card{border-color:var(--tone)}
+.passo{display:flex;align-items:center;gap:8px;font-size:.8rem;font-weight:700;color:var(--tone)}
+.tag-prox{background:var(--sel);color:var(--sel-ink);border-radius:999px;padding:0 9px;font-size:.75rem}
+.est-card h4{font-family:var(--display);font-weight:800;font-size:1.05rem;line-height:1.2;margin:2px 0 4px}
+.est-card p{margin:0 0 8px;color:var(--muted);font-size:.92rem}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font-size:.82rem}
+.estrelas{letter-spacing:2px;font-size:1rem;color:var(--tone);white-space:nowrap}
+.estrelas .off{color:var(--muted)}
+.chip{font-size:.78rem;font-weight:700;border:2px solid var(--line);border-radius:999px;padding:0 9px}
+.chip.conf{border-color:var(--t-green);color:var(--t-green)}
+.chip.rev{border-style:dashed;color:var(--muted)}
+.prog{font-size:.82rem;font-weight:700;color:var(--tone)}
+
+/* ---------- estações especiais ---------- */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
 .card{display:flex;flex-direction:column;background:var(--surface);border:2px solid var(--line);border-radius:16px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .15s ease,border-color .15s ease}
 a.card:hover{border-color:var(--tone);transform:translateY(-3px)}
-.art{background:color-mix(in srgb,var(--tone) 14%,var(--surface));border-bottom:2px solid var(--line);padding:14px;display:grid;place-items:center;height:132px}
+.art{background:color-mix(in srgb,var(--tone) 14%,var(--surface));border-bottom:2px solid var(--line);padding:14px;display:grid;place-items:center;height:118px}
 .art svg{width:100%;height:100%;max-width:220px}
 .body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
-.card h3{font-family:var(--display);font-weight:800;font-size:1.12rem;line-height:1.2;margin:0}
-.card p{margin:0;color:var(--muted);font-size:.95rem}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
-.chip{font-size:.8rem;font-weight:700;border:2px solid var(--line);border-radius:999px;padding:1px 10px}
-.prog{font-size:.88rem;font-weight:700;color:var(--tone)}
+.card h3{font-family:var(--display);font-weight:800;font-size:1.08rem;line-height:1.2;margin:0}
+.card p{margin:0;color:var(--muted);font-size:.93rem}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
 .cta{margin-top:auto;padding-top:6px;font-family:var(--display);font-weight:800;color:var(--tone)}
 .art .bar{fill:color-mix(in srgb,var(--tone) 22%,transparent)}
-.card.soon .art .bar{fill:none;stroke-dasharray:4 3}
-.card.soon{border-style:dashed;background:transparent}
-.card.soon .art{background:transparent;border-bottom-style:dashed}
-.card.soon h3{color:var(--muted)}
-.card.soon .cta{color:var(--muted);font-weight:700}
+.tone-green{--tone:var(--t-green)} .tone-orange{--tone:var(--t-orange)} .tone-blue{--tone:var(--t-blue)} .tone-violet{--tone:var(--t-violet)} .tone-rose{--tone:var(--t-rose)}
 
-/* cores por jogo */
-.tone-green{--tone:var(--t-green)} .tone-orange{--tone:var(--t-orange)} .tone-blue{--tone:var(--t-blue)} .tone-violet{--tone:var(--t-violet)} .tone-rose{--tone:var(--t-rose)} .tone-soon{--tone:var(--t-soon)}
-
-
-/* ---------- blocos (seções) ---------- */
-.cat{font-size:.82rem;font-weight:700;color:var(--tone)}
-.bloco{margin-top:40px}
-.bloco>h2{margin-top:0}
-
-/* bloco das cruzadinhas: painel próprio, cartões compactos na horizontal */
-.bloco.cruz{background:color-mix(in srgb,var(--t-green) 7%,var(--bg));border:2px solid var(--line);border-radius:20px;padding:20px 20px 22px}
-.bloco.cruz .sub{margin-bottom:16px}
-/* bloco do fluxograma vivo: mesmo formato de painel, tonalidade diferente */
-.bloco.fluxo{background:color-mix(in srgb,var(--t-blue) 7%,var(--bg));border:2px solid var(--line);border-radius:20px;padding:20px 20px 22px}
-.bloco.fluxo .sub{margin-bottom:16px}
-/* bloco arboviroses: mesmo formato, tonalidade própria */
-.bloco.arbo{background:color-mix(in srgb,var(--t-orange) 7%,var(--bg));border:2px solid var(--line);border-radius:20px;padding:20px 20px 22px}
-.bloco.arbo .sub{margin-bottom:16px}
-.cards.duo{grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr))}
-.duo .card{flex-direction:row;align-items:stretch}
-.duo .art{flex:0 0 120px;height:auto;min-height:112px;border-bottom:0;border-right:2px solid var(--line);padding:8px}
-.duo .art svg{max-width:none}
-.duo .body{padding:12px 14px;gap:4px}
-.duo .card h3{font-size:1.05rem}
-
-/* ---------- layouts responsivos: um único arquivo, três jeitos de ocupar a tela ---------- */
-
-/* celular: cartões compactos na horizontal */
+/* celular */
 @media (max-width:639px){
+  .linha{padding:14px 12px 16px;border-radius:16px}
+  .est{padding-left:50px}
+  .est::before{left:15px}
+  .marker{width:36px;height:36px;border-width:3px;font-size:.92rem}
+  .est::before{top:40px}
   .cards{grid-template-columns:minmax(0,1fr);gap:12px}
   .card{flex-direction:row;align-items:stretch}
   .art{flex:0 0 112px;height:auto;min-height:112px;border-bottom:0;border-right:2px solid var(--line);padding:8px}
-  .card.soon .art{border-bottom:0;border-right-style:dashed}
-  .bloco.cruz{padding:14px 12px 16px;border-radius:16px}
-  .bloco.fluxo{padding:14px 12px 16px;border-radius:16px}
-  .bloco.arbo{padding:14px 12px 16px;border-radius:16px}
   .art svg{max-width:none}
   .body{padding:12px 14px;gap:4px}
-  .card h3{font-size:1.02rem}
-  .card p{font-size:.9rem}
 }
-
-/* computador: cabeçalho em duas colunas e cartões lado a lado */
+/* computador */
 @media (min-width:1000px){
   .app{max-width:1280px;padding-top:34px}
   header{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:8px 48px}
   .lede{margin:0;max-width:58ch}
-  .cards{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
-  .art{height:118px}
 }
-
 footer{margin-top:44px;color:var(--muted);font-size:.9rem;max-width:70ch}
 footer .autoria{margin:12px 0 0;font-weight:700;color:var(--ink)}
-@media (prefers-reduced-motion:reduce){.card{transition:none}a.card:hover{transform:none}}
+@media (prefers-reduced-motion:reduce){
+  .est.next .marker{animation:none}
+  a.est-card,a.card{transition:none}
+  a.est-card:hover,a.card:hover{transform:none}
+}
 </style>
 </head>
 <body>
@@ -154,13 +165,24 @@ footer .autoria{margin:12px 0 0;font-weight:700;color:var(--ink)}
       </div>
       <h1>Saúde em jogo</h1>
     </div>
-    <p class="lede">Jogos para estudar e treinar o dia a dia da saúde pública, do SINAN às cruzadinhas. Cada jogo roda direto no navegador, sem cadastro.</p>
+    <p class="lede">Jogos para treinar a rotina da vigilância em saúde. Cada linha segue um caso do primeiro atendimento ao encerramento. Comece por onde quiser.</p>
   </header>
 
-  <main id="lista"></main>
+  <div class="painel" id="painel" aria-label="Seu progresso neste navegador"></div>
+
+  <main>
+    <h2 id="h-linhas">Linhas</h2>
+    <p class="sub">A ordem de cada linha é uma sugestão. Todas as estações estão liberadas.</p>
+    <p class="legenda">Cada estação vale até 3 estrelas: concluir o jogo, concluir sem errar e passar no Blitz.</p>
+    <div class="linhas" id="linhas" aria-labelledby="h-linhas"></div>
+
+    <h2 id="h-esp">Estações especiais</h2>
+    <p class="sub">Fora das linhas: cruzadinhas, investigação de surto e leitura de mapa.</p>
+    <div class="cards" id="especiais" aria-labelledby="h-esp"></div>
+  </main>
 
   <footer>
-    Os jogos usam casos fictícios e simplificam fichas e normas. Na rotina de trabalho, siga sempre os manuais, o dicionário de dados e as normas vigentes na sua UF.
+    Os jogos usam casos fictícios e simplificam fichas e normas. Na rotina de trabalho, siga sempre os manuais, o dicionário de dados e as normas vigentes na sua UF. "Conteúdo conferido" indica que o jogo foi comparado com a fonte oficial citada. "Em revisão" indica que ainda não foi.
     <p class="autoria">Desenvolvido por Aline Azevedo. <a href="sobre.html">Sobre e referências</a></p>
   </footer>
 </div>
@@ -169,81 +191,45 @@ footer .autoria{margin:12px 0 0;font-weight:700;color:var(--ink)}
 (function(){
 'use strict';
 
-/* ---------- catálogo: para incluir um jogo, basta acrescentar um item aqui ---------- */
-var CATEGORIAS = [
-  { id:'cruzadinhas', rotulo:'Cruzadinha' },
-  { id:'fichas', rotulo:'Ficha e sistema' },
-  { id:'campo', rotulo:'Investigação de campo' },
-  { id:'analise', rotulo:'Análise de situação' },
-  { id:'arbovirose', rotulo:'Arboviroses' },
-  { id:'clinica', rotulo:'Manejo clínico' },
-  { id:'trabalhador', rotulo:'Saúde do trabalhador' },
-  { id:'breve', rotulo:'Em breve' }
-];
-/* blocos da página, na ordem em que aparecem; cada um reúne uma ou mais categorias.
-   "cats" decide o que entra no bloco (mecânica/formato de apresentação);
-   a categoria de cada jogo (j.cat) continua livre pra descrever o assunto, não o bloco. */
-var BLOCOS = [
-  { id:'simulacoes', titulo:'Simulações', sub:'Fichas, investigações e análises para treinar o dia a dia da vigilância.', cats:['fichas','campo','analise','breve'] },
-  { id:'fluxograma', titulo:'Fluxograma vivo', sub:'Decisões em cadeia: siga o fluxograma nó por nó até fechar o caminho certo.', cats:['clinica','trabalhador'], compacto:true, painel:'fluxo' },
-  { id:'arboviroses', titulo:'Arboviroses', sub:'Tudo sobre dengue, chikungunya e zika reunido: ficha, classificação de risco, fases, exames e diferencial.', cats:['arbovirose'], compacto:true, painel:'arbo' },
-  { id:'cruzadinhas', titulo:'Cruzadinhas', sub:'Palavras cruzadas em desafios progressivos.', cats:['cruzadinhas'], compacto:true, painel:'cruz' }
-];
-var JOGOS = [
-  { cat:'cruzadinhas', href:'cruzadinha-saude-publica.html', titulo:'Cruzadinha da saúde pública',
-    desc:'Vigilância epidemiológica na prática, Bahia e mundo, gestão do SUS e história da saúde pública.',
-    chips:['3 desafios'], arte:'cruz', tom:'green', key:'cruzadinha-saude-publica:v5', tipo:'cruz', total:3 },
-  { cat:'cruzadinhas', href:'cruzadinha-saude-do-trabalhador.html', titulo:'Cruzadinha da saúde do trabalhador',
-    desc:'Política e rede do SUS, notificação e informação, adoecimento e ação em saúde do trabalhador.',
-    chips:['3 desafios'], arte:'cruz', tom:'orange', key:'cruzadinha-saude-trabalhador:v2', tipo:'cruz', total:3 },
-  { cat:'arbovirose', href:'ficha-sinan-dengue.html', titulo:'Ficha do SINAN em jogo: dengue',
-    desc:'Preencha fichas de casos fictícios a partir do relato e compare a sua base com a base correta.',
-    chips:['5 casos','Protótipo'], arte:'ficha', tom:'blue', key:'ficha-sinan-dengue:v1', tipo:'ficha' },
-  { cat:'fichas', href:'ficha-sinan-acidente-trabalho.html', titulo:'Ficha do SINAN em jogo: acidente de trabalho grave',
-    desc:'Ocupação, CNAE, CAT e o que a ficha incompleta faz com a vigilância em saúde do trabalhador.',
-    chips:['5 casos','Protótipo'], arte:'ficha', tom:'orange', key:'ficha-sinan-acidente-trabalho:v1', tipo:'ficha' },
-  { cat:'campo', href:'detetive-de-surtos.html', titulo:'Detetive de surtos',
-    desc:'Do alerta ao encerramento: investigue um surto de DTA, analise a curva e a taxa de ataque e decida as medidas.',
-    chips:['8 etapas','Protótipo'], arte:'surto', tom:'violet', key:'detetive-surtos:v1', tipo:'ficha' },
-  { cat:'analise', href:'territorio-em-alerta.html', titulo:'Território em Alerta',
-    desc:'Leia mapas de uma região de saúde: taxas, semáforo do LIRAa, tendência, vizinhança e cobertura vacinal.',
-    chips:['5 missões','Protótipo'], arte:'mapa', tom:'rose', key:'territorio-alerta:v1', tipo:'ficha' },
-  { cat:'arbovirose', href:'fluxograma-dengue.html', titulo:'Fluxograma vivo: dengue',
-    desc:'Classifique casos fictícios em A, B, C ou D e acerte a conduta imediata, nó por nó do fluxograma.',
-    chips:['8 casos','Protótipo'], arte:'fluxo', tom:'blue', key:'fluxograma-dengue', tipo:'fluxo' },
-  { cat:'arbovirose', href:'linha-do-tempo-dengue.html', titulo:'Linha do tempo da dengue',
-    desc:'Reconheça a fase febril, crítica ou de recuperação de um quadro e o que isso muda na conduta.',
-    chips:['6 casos','Protótipo'], arte:'fluxo', tom:'orange', key:'linha-do-tempo-dengue', tipo:'fluxo' },
-  { cat:'arbovirose', href:'qual-exame-pedir.html', titulo:'Qual exame pedir?',
-    desc:'NS1 ou IgM: escolha o exame certo considerando o dia de sintomas e interprete o resultado.',
-    chips:['8 casos','Protótipo'], arte:'fluxo', tom:'violet', key:'qual-exame-pedir', tipo:'fluxo' },
-  { cat:'arbovirose', href:'suspeito-confirmado-descartado.html', titulo:'Suspeito, confirmado ou descartado?',
-    desc:'Decida o encerramento correto de um caso de dengue no Sinan, sem confundir com classificação de gravidade.',
-    chips:['6 casos','Protótipo'], arte:'fluxo', tom:'green', key:'suspeito-confirmado-descartado', tipo:'fluxo' },
-  { cat:'arbovirose', href:'dengue-chikungunya-zika.html', titulo:'Dengue, chikungunya ou zika?',
-    desc:'Diferencie as três arboviroses pelos sinais que realmente distinguem uma da outra.',
-    chips:['6 casos','Protótipo'], arte:'fluxo', tom:'rose', key:'dengue-chikungunya-zika', tipo:'fluxo' },
-  { cat:'clinica', href:'fluxograma-escorpiao.html', titulo:'Fluxograma vivo: acidente escorpiônico',
-    desc:'Classifique a gravidade (leve, moderado, grave) e acerte a conduta imediata, nó por nó.',
-    chips:['6 casos','Protótipo'], arte:'fluxo', tom:'rose', key:'fluxograma-escorpiao', tipo:'fluxo' },
-  { cat:'trabalhador', href:'nexo-ou-nao.html', titulo:'Nexo ou não?',
-    desc:'Ocupação, exposição e diagnóstico: decida se há nexo com o trabalho e qual o encaminhamento correto.',
-    chips:['6 casos','Protótipo'], arte:'fluxo', tom:'orange', key:'nexo-ou-nao', tipo:'fluxo' },
-  { cat:'clinica', href:'atendimento-antirrabico.html', titulo:'Atendimento antirrábico',
-    desc:'Observar o animal, vacina, ou soro e vacina: decida conforme o ferimento e a possibilidade de observação.',
-    chips:['8 casos','Protótipo'], arte:'fluxo', tom:'violet', key:'atendimento-antirrabico', tipo:'fluxo' },
-  { cat:'clinica', href:'hanseniase-classificar-tratar.html', titulo:'Hanseníase: classificar e tratar',
-    desc:'Paucibacilar ou multibacilar, com ou sem incapacidade: escolha o esquema e o encaminhamento.',
-    chips:['8 casos','Protótipo'], arte:'fluxo', tom:'green', key:'hanseniase-classificar-tratar', tipo:'fluxo' },
-  { cat:'clinica', href:'sifilis-gestante.html', titulo:'Sífilis na gestante: tratamento adequado?',
-    desc:'Penicilina, esquema completo e 30 dias antes do parto: decida o que o tratamento da mãe muda para o bebê.',
-    chips:['8 casos','Protótipo'], arte:'fluxo', tom:'rose', key:'sifilis-gestante', tipo:'fluxo' },
-  { cat:'clinica', href:'tuberculose-tipo-entrada.html', titulo:'Tuberculose: tipo de entrada',
-    desc:'Caso novo, recidiva, reingresso após abandono ou transferência: registre e conduza cada caso do jeito certo.',
-    chips:['8 casos','Protótipo'], arte:'fluxo', tom:'blue', key:'tuberculose-tipo-entrada', tipo:'fluxo' }
+/* ---------- catálogo ----------
+   Linhas: a ordem das estações é a ordem sugerida.
+   conf: 'texto da fonte' quando o jogo foi conferido com a fonte oficial; false quando ainda está em revisão. */
+var FONTE_DENGUE = 'Dengue: diagnóstico e manejo clínico, adulto e criança (Ministério da Saúde, 6ª ed., 2024)';
+var FONTE_SIFILIS = 'Nota Técnica nº 14/2023-DATHI/SVSA/MS; ficha de investigação de sífilis congênita (Sinan); página Sífilis em gestantes (Ministério da Saúde)';
+var FONTE_NEXO = 'Doenças relacionadas ao trabalho: manual de procedimentos para os serviços de saúde (Ministério da Saúde e OPAS, 2001)';
+
+var LINHAS = [
+  { id:'arbo', nome:'Arboviroses', tom:'orange', sub:'Do primeiro atendimento ao encerramento do caso de dengue.', estacoes:[
+    { href:'dengue-chikungunya-zika.html', passo:'Suspeitar', titulo:'Dengue, chikungunya ou zika?', desc:'Diferencie as três arboviroses pelos sinais que separam uma da outra.', chips:['6 casos'], key:'dengue-chikungunya-zika', tipo:'fluxo', conf:FONTE_DENGUE },
+    { href:'linha-do-tempo-dengue.html', passo:'Situar', titulo:'Linha do tempo da dengue', desc:'Fase febril, crítica ou de recuperação: o que muda na conduta em cada uma.', chips:['6 casos'], key:'linha-do-tempo-dengue', tipo:'fluxo', conf:FONTE_DENGUE },
+    { href:'fluxograma-dengue.html', passo:'Classificar', titulo:'Fluxograma vivo: dengue', desc:'Grupos A, B, C ou D e a conduta imediata, nó por nó do fluxograma.', chips:['8 casos'], key:'fluxograma-dengue', tipo:'fluxo', conf:FONTE_DENGUE },
+    { href:'ficha-sinan-dengue.html', passo:'Notificar', titulo:'Ficha do SINAN em jogo: dengue', desc:'Preencha a ficha a partir do relato e compare com a base correta.', chips:['5 casos'], key:'ficha-sinan-dengue:v1', tipo:'ficha', conf:false },
+    { href:'qual-exame-pedir.html', passo:'Confirmar', titulo:'Qual exame pedir?', desc:'NS1 ou IgM, conforme o dia de sintomas, e o que o resultado significa.', chips:['8 casos'], key:'qual-exame-pedir', tipo:'fluxo', conf:FONTE_DENGUE },
+    { href:'suspeito-confirmado-descartado.html', passo:'Encerrar', titulo:'Suspeito, confirmado ou descartado?', desc:'O encerramento certo do caso no Sinan, sem confundir com gravidade.', chips:['6 casos'], key:'suspeito-confirmado-descartado', tipo:'fluxo', conf:FONTE_DENGUE }
+  ]},
+  { id:'zoo', nome:'Zoonoses e peçonhentos', tom:'violet', sub:'Acidentes com animais: o que fazer no atendimento.', estacoes:[
+    { href:'atendimento-antirrabico.html', passo:'Atender', titulo:'Atendimento antirrábico', desc:'Observar o animal, vacina, ou soro e vacina, conforme o ferimento.', chips:['8 casos'], key:'atendimento-antirrabico', tipo:'fluxo', conf:false },
+    { href:'fluxograma-escorpiao.html', passo:'Classificar', titulo:'Fluxograma vivo: acidente escorpiônico', desc:'Gravidade leve, moderada ou grave e a conduta imediata.', chips:['6 casos'], key:'fluxograma-escorpiao', tipo:'fluxo', conf:false }
+  ]},
+  { id:'longa', nome:'Sífilis, tuberculose e hanseníase', tom:'blue', sub:'Agravos de alto volume no SINAN, onde o erro de classificação é comum.', estacoes:[
+    { href:'sifilis-gestante.html', passo:'Avaliar', titulo:'Sífilis na gestante: tratamento adequado?', desc:'Penicilina, esquema completo no intervalo e 30 dias antes do parto: o que muda para o bebê.', chips:['8 casos'], key:'sifilis-gestante', tipo:'fluxo', conf:FONTE_SIFILIS },
+    { href:'tuberculose-tipo-entrada.html', passo:'Registrar', titulo:'Tuberculose: tipo de entrada', desc:'Caso novo, recidiva, reingresso após abandono ou transferência.', chips:['8 casos'], key:'tuberculose-tipo-entrada', tipo:'fluxo', conf:false },
+    { href:'hanseniase-classificar-tratar.html', passo:'Classificar', titulo:'Hanseníase: classificar e tratar', desc:'Paucibacilar ou multibacilar, com ou sem incapacidade, e o esquema.', chips:['8 casos'], key:'hanseniase-classificar-tratar', tipo:'fluxo', conf:false }
+  ]},
+  { id:'trab', nome:'Saúde do trabalhador', tom:'green', sub:'Da notificação do acidente ao nexo com o trabalho.', estacoes:[
+    { href:'ficha-sinan-acidente-trabalho.html', passo:'Notificar', titulo:'Ficha do SINAN em jogo: acidente de trabalho grave', desc:'Ocupação, CNAE, CAT e o que a ficha incompleta faz com a vigilância.', chips:['5 casos'], key:'ficha-sinan-acidente-trabalho:v1', tipo:'ficha', conf:false },
+    { href:'nexo-ou-nao.html', passo:'Relacionar', titulo:'Nexo ou não?', desc:'Ocupação, exposição e diagnóstico: classifique a relação com o trabalho pelo critério de Schilling.', chips:['8 casos'], key:'nexo-ou-nao', tipo:'fluxo', conf:FONTE_NEXO }
+  ]}
 ];
 
-/* ---------- ilustrações (SVG que herda as cores do tema) ---------- */
+var ESPECIAIS = [
+  { href:'cruzadinha-saude-publica.html', titulo:'Cruzadinha da saúde pública', desc:'Vigilância epidemiológica na prática, Bahia e mundo, gestão do SUS e história da saúde pública.', chips:['3 desafios'], arte:'cruz', tom:'green', key:'cruzadinha-saude-publica:v5', tipo:'cruz', total:3 },
+  { href:'cruzadinha-saude-do-trabalhador.html', titulo:'Cruzadinha da saúde do trabalhador', desc:'Política e rede do SUS, notificação e informação, adoecimento e ação em saúde do trabalhador.', chips:['3 desafios'], arte:'cruz', tom:'orange', key:'cruzadinha-saude-trabalhador:v2', tipo:'cruz', total:3 },
+  { href:'detetive-de-surtos.html', titulo:'Detetive de surtos', desc:'Do alerta ao encerramento: investigue um surto de DTA, analise a curva e a taxa de ataque e decida as medidas.', chips:['8 etapas'], arte:'surto', tom:'violet', key:'detetive-surtos:v1', tipo:'ficha' },
+  { href:'territorio-em-alerta.html', titulo:'Território em Alerta', desc:'Leia mapas de uma região de saúde: taxas, semáforo do LIRAa, tendência, vizinhança e cobertura vacinal.', chips:['5 missões'], arte:'mapa', tom:'rose', key:'territorio-alerta:v1', tipo:'ficha' }
+];
+
+/* ---------- ilustrações das estações especiais ---------- */
 function svg(inner){ return '<svg viewBox="0 0 220 110" role="img" aria-hidden="true" focusable="false">'+inner+'</svg>'; }
 function arteCruz(){
   // grade de palavras cruzadas estilizada (9 colunas x 5 linhas), com "SAÚDE" na linha do meio
@@ -267,16 +253,6 @@ function arteCruz(){
   }
   return svg(out);
 }
-function arteFicha(){
-  var o='<rect x="52" y="8" width="116" height="94" rx="8" fill="var(--cell)" stroke="var(--tone)" stroke-width="2.5"/>';
-  o+='<rect x="64" y="20" width="60" height="7" rx="3.5" fill="var(--tone)"/>';
-  [38,54,70].forEach(function(y,i){
-    o+='<rect x="64" y="'+y+'" width="12" height="12" rx="3" fill="'+(i===1?'var(--tone)':'none')+'" stroke="var(--tone)" stroke-width="2"/>';
-    o+='<rect x="84" y="'+(y+3)+'" width="'+(58-i*10)+'" height="6" rx="3" fill="var(--line)"/>';
-  });
-  o+='<rect x="64" y="86" width="40" height="10" rx="5" fill="var(--sel)"/>';
-  return svg(o);
-}
 function arteSurto(){
   var bars=[10,16,26,44,70,52,30,18], o='', i, w=16;
   for(i=0;i<bars.length;i++) o+='<rect x="'+(34+i*20)+'" y="'+(96-bars[i])+'" width="'+w+'" height="'+bars[i]+'" rx="3" class="bar" stroke="var(--tone)" stroke-width="2.5"/>';
@@ -291,65 +267,123 @@ function arteMapa(){
   o+='<circle cx="98" cy="68" r="5" fill="var(--sel)" stroke="var(--ink)" stroke-width="2"/>';
   return svg(o);
 }
-function arteFluxo(){
-  var o='<path d="M110 8 L142 30 L110 52 L78 30 Z" fill="var(--cell)" stroke="var(--tone)" stroke-width="2.5" stroke-linejoin="round"/>';
-  o+='<line x1="90" y1="42" x2="50" y2="70" stroke="var(--tone)" stroke-width="2.5"/>';
-  o+='<line x1="130" y1="42" x2="170" y2="70" stroke="var(--tone)" stroke-width="2.5"/>';
-  o+='<rect x="26" y="78" width="48" height="22" rx="5" fill="var(--sel)" stroke="var(--tone)" stroke-width="2"/>';
-  o+='<path d="M170 62 L186 76 L170 90 L154 76 Z" fill="var(--cell)" stroke="var(--tone)" stroke-width="2.5" stroke-linejoin="round"/>';
-  o+='<line x1="170" y1="90" x2="170" y2="98" stroke="var(--tone)" stroke-width="2.5"/>';
-  o+='<rect x="146" y="98" width="48" height="10" rx="5" fill="var(--tone)" fill-opacity=".3" stroke="var(--tone)" stroke-width="2"/>';
-  return svg(o);
-}
-var ARTE={cruz:arteCruz, ficha:arteFicha, surto:arteSurto, mapa:arteMapa, fluxo:arteFluxo};
 
-/* ---------- progresso salvo pelos próprios jogos (mesmo navegador) ---------- */
+var ARTE={cruz:arteCruz, surto:arteSurto, mapa:arteMapa};
+
+/* ---------- leitura do progresso salvo pelos jogos (neste navegador) ---------- */
+function lerJSON(k){ try{ return JSON.parse(localStorage.getItem(k)||'null'); }catch(e){ return null; } }
+
 function progresso(j){
-  if(!j.key) return null;
-  try{
-    var raw=JSON.parse(localStorage.getItem(j.key)||'null'); if(!raw) return null;
-    if(j.tipo==='cruz'){
-      var n=0; Object.keys(raw).forEach(function(k){ if(raw[k] && raw[k].solved) n++; });
-      return n ? (n+' de '+j.total+' desafios concluídos') : null;
-    }
-    if(j.tipo==='ficha') return raw.best ? ('Melhor pontuação: '+raw.best+'%') : null;
-    if(j.tipo==='fluxo') return raw.melhorSequencia ? ('Sequência recorde: '+raw.melhorSequencia) : null;
-  }catch(e){}
-  return null;
+  var raw = j.key ? lerJSON(j.key) : null;
+  var r = {estrelas:0, feito:false, texto:null};
+  if(!raw) return r;
+  if(j.tipo==='fluxo'){
+    r.estrelas = (raw.s1?1:0)+(raw.s2?1:0)+(raw.s3?1:0);
+    r.feito = !!raw.s1;
+    if(raw.melhorSequencia) r.texto = 'Sequência recorde: '+raw.melhorSequencia;
+  } else if(j.tipo==='ficha'){
+    if(raw.best){ r.feito = true; r.texto = 'Melhor pontuação: '+raw.best+'%'; }
+  } else if(j.tipo==='cruz'){
+    var n=0; Object.keys(raw).forEach(function(k){ if(raw[k] && raw[k].solved) n++; });
+    if(n){ r.feito = (n>=j.total); r.texto = n+' de '+j.total+' desafios concluídos'; }
+  }
+  return r;
+}
+
+function dataLocal(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function sequenciaDias(){
+  var dias = lerJSON('sj:dias') || [], set = {};
+  dias.forEach(function(d){ set[d]=1; });
+  var d = new Date(); d.setHours(12,0,0,0);
+  var hoje = !!set[dataLocal(d)];
+  if(!hoje) d.setDate(d.getDate()-1);
+  var n = 0;
+  while(set[dataLocal(d)]){ n++; d.setDate(d.getDate()-1); }
+  return {n:n, hoje:hoje};
 }
 
 /* ---------- montagem ---------- */
 function el(tag, cls, html){ var e=document.createElement(tag); if(cls) e.className=cls; if(html!=null) e.innerHTML=html; return e; }
-var catMap={}; CATEGORIAS.forEach(function(c){ catMap[c.id]=c; });
-var main=document.getElementById('lista');
+function estrelasHtml(n){ var s='',i; for(i=0;i<3;i++) s+= i<n ? '<span>★</span>' : '<span class="off">☆</span>'; return s; }
 
-function cartao(j, compacto){
-  var soon=!j.href;
-  var card=el(soon?'div':'a','card tone-'+j.tom+(soon?' soon':''));
-  if(!soon) card.href=j.href;
+var todas = [], totalEstrelas = 0, maxEstrelas = 0;
+var boxLinhas = document.getElementById('linhas');
+
+LINHAS.forEach(function(L){
+  var sec = el('section','linha tone-'+L.tom); sec.setAttribute('aria-labelledby','h-'+L.id);
+  var feitas = 0, proxima = -1, lista = el('ol','estacoes');
+  var progs = L.estacoes.map(function(j){ return progresso(j); });
+  progs.forEach(function(p,i){ if(p.feito) feitas++; else if(proxima<0) proxima = i; });
+
+  var cab = el('div','linha-cab');
+  var h = el('h3',null,L.nome); h.id='h-'+L.id; cab.appendChild(h);
+  cab.appendChild(el('span','prog-linha', feitas===L.estacoes.length ? 'Linha completa' : feitas+' de '+L.estacoes.length+' estações'));
+  sec.appendChild(cab);
+  sec.appendChild(el('p','sub',L.sub));
+
+  L.estacoes.forEach(function(j,i){
+    var p = progs[i];
+    todas.push({j:j, p:p});
+    if(j.tipo==='fluxo'){ totalEstrelas += p.estrelas; maxEstrelas += 3; }
+    var li = el('li','est'+(p.feito?' done':'')+(i===proxima?' next':''));
+    li.appendChild(el('span','marker', p.feito ? '✓' : String(i+1)));
+    var a = el('a','est-card'); a.href = j.href;
+    var passo = el('div','passo','<span>Passo '+(i+1)+' · '+j.passo+'</span>');
+    if(i===proxima) passo.appendChild(el('span','tag-prox','Próxima'));
+    a.appendChild(passo);
+    a.appendChild(el('h4',null,j.titulo));
+    a.appendChild(el('p',null,j.desc));
+    var meta = el('div','meta');
+    if(j.tipo==='fluxo'){
+      var st = el('span','estrelas',estrelasHtml(p.estrelas));
+      st.setAttribute('role','img'); st.setAttribute('aria-label',p.estrelas+' de 3 estrelas');
+      st.title = 'Concluir, concluir sem errar, passar no Blitz';
+      meta.appendChild(st);
+    }
+    j.chips.forEach(function(c){ meta.appendChild(el('span','chip',c)); });
+    var cf = el('span','chip '+(j.conf?'conf':'rev'), j.conf ? 'Conteúdo conferido' : 'Em revisão');
+    if(j.conf) cf.title = 'Conferido com: '+j.conf;
+    meta.appendChild(cf);
+    if(p.texto) meta.appendChild(el('span','prog',p.texto));
+    a.appendChild(meta);
+    li.appendChild(a);
+    lista.appendChild(li);
+  });
+  sec.appendChild(lista);
+  boxLinhas.appendChild(sec);
+});
+
+/* estações especiais */
+var boxEsp = document.getElementById('especiais');
+ESPECIAIS.forEach(function(j){
+  var p = progresso(j);
+  var card = el('a','card tone-'+j.tom); card.href = j.href;
   card.appendChild(el('div','art',ARTE[j.arte]()));
-  var b=el('div','body');
-  if(!compacto) b.appendChild(el('div','cat',j.rotulo || (catMap[j.cat]||{}).rotulo || ''));
+  var b = el('div','body');
   b.appendChild(el('h3',null,j.titulo));
   b.appendChild(el('p',null,j.desc));
-  var chips=el('div','chips'); j.chips.forEach(function(c){ chips.appendChild(el('span','chip',c)); }); b.appendChild(chips);
-  var p=progresso(j); if(p) b.appendChild(el('div','prog',p));
-  b.appendChild(el('div','cta', soon?'Em breve':'Jogar →'));
+  var chips = el('div','chips'); j.chips.forEach(function(c){ chips.appendChild(el('span','chip',c)); });
+  chips.appendChild(el('span','chip rev','Em revisão'));
+  b.appendChild(chips);
+  if(p.texto) b.appendChild(el('div','prog',p.texto));
+  b.appendChild(el('div','cta','Jogar →'));
   card.appendChild(b);
-  return card;
-}
-
-BLOCOS.forEach(function(bl){
-  var jogos=JOGOS.filter(function(j){ return bl.cats.indexOf(j.cat)!==-1; });
-  if(!jogos.length) return;
-  var sec=el('section','bloco'+(bl.painel?' '+bl.painel:'')); sec.setAttribute('aria-labelledby','h-'+bl.id);
-  var h=el('h2',null,bl.titulo); h.id='h-'+bl.id; sec.appendChild(h);
-  sec.appendChild(el('p','sub',bl.sub));
-  var grade=el('div','cards'+(bl.compacto?' duo':''));
-  jogos.forEach(function(j){ grade.appendChild(cartao(j, bl.compacto)); });
-  sec.appendChild(grade);
-  main.appendChild(sec);
+  boxEsp.appendChild(card);
 });
+
+/* painel: estrelas, dias seguidos e estação do dia */
+var painel = document.getElementById('painel');
+painel.appendChild(el('span','pill','Estrelas: <b>'+totalEstrelas+'</b> de '+maxEstrelas));
+var sq = sequenciaDias();
+painel.appendChild(el('span','pill', sq.n>0
+  ? 'Dias seguidos: <b>'+sq.n+'</b>'+(sq.hoje?'':' (jogue hoje pra manter)')
+  : 'Jogue hoje pra começar uma sequência'));
+var pend = todas.filter(function(x){ return !x.p.feito; });
+var pool = pend.length ? pend : todas;
+var dia = Math.floor(new Date().setHours(12,0,0,0)/86400000);
+var hoje = pool[dia % pool.length];
+var link = el('a','pill','Hoje: <b>'+hoje.j.titulo+'</b>'); link.href = hoje.j.href;
+painel.appendChild(link);
 })();
 </script>
 </body>

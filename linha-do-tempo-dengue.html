@@ -171,7 +171,7 @@ footer{margin-top:44px;color:var(--muted);font-size:.9rem;max-width:70ch}
   </div>
 
   <footer>
-    <p>Base: Guia de Vigilância em Saúde (MS, 6ª ed. revisada, 2024) sobre a história natural da dengue — fase febril, fase crítica e fase de recuperação. Casos e dados são fictícios. Progresso salvo só neste navegador.</p>
+    <p>Base: Dengue: diagnóstico e manejo clínico, adulto e criança (Ministério da Saúde, 6ª ed., 2024), espectro clínico: fase febril, fase crítica e fase de recuperação. Casos e dados são fictícios. Progresso salvo só neste navegador.</p>
   </footer>
 </div>
 
@@ -192,9 +192,9 @@ const casos = [
 ];
 
 const condutas = {
-  Febril:'Hidratação oral e sintomáticos. Orientar a vigiar sinais de alarme a partir da queda da febre, não antes.',
-  Critica:'Reavaliação clínica frequente: é a janela de maior risco de extravasamento plasmático, sangramento e choque.',
-  Recuperacao:'Sinais como exantema tardio e bradicardia leve costumam ser benignos nessa fase; manter atenção a sinais de sobrecarga hídrica.'
+  Febril:'Hidratação oral e sintomáticos. Agendar o retorno no dia da melhora da febre, porque os sinais de alarme costumam surgir na queda da febre.',
+  Critica:'Reavaliação clínica frequente: é a fase de maior risco de extravasamento plasmático, sangramento e choque, que pode se instalar em 24 a 48 horas.',
+  Recuperacao:'Exantema, com ou sem prurido, e bradicardia podem ocorrer nessa fase. Atenção à hiper-hidratação e a infecções bacterianas.'
 };
 
 const groupLabel = {Febril:'Fase febril', Critica:'Fase crítica', Recuperacao:'Fase de recuperação'};
@@ -267,8 +267,8 @@ function renderNode(){
     pergunta = 'A febre já caiu (defervescência) ou o paciente está afebril?';
     opts = [{t:'Sim, já caiu ou está afebril', v:true},{t:'Não, febre alta ainda presente', v:false}];
   } else if(node==='n2'){
-    pergunta = 'Ainda está dentro da janela de risco de extravasamento/choque (poucos dias após a queda da febre), ou essa janela já passou e o quadro está melhorando?';
-    opts = [{t:'Ainda no período de risco', v:true},{t:'Já passou, melhorando', v:false}];
+    pergunta = 'Ainda está na fase crítica (queda recente da febre, com risco de extravasamento e choque) ou já entrou na recuperação, com melhora clínica e diurese normal?';
+    opts = [{t:'Ainda na fase crítica', v:true},{t:'Já na recuperação, melhorando', v:false}];
   } else if(node==='cond'){
     const grupo = caso.grupo;
     el('outcomeBanner').innerHTML = `<div class="outcome ${grupo}"><b>${groupLabel[grupo]}</b></div>`;
@@ -308,8 +308,8 @@ function responde(valor, botao, node){
 }
 
 function explicaErro(node, caso){
-  if(node==='n1') return caso.defervescencia ? 'A febre já caiu ou o paciente está afebril — tratar como fase febril aqui ignora a janela de maior risco.' : 'A febre alta ainda está presente — isso é fase febril, não crítica.';
-  if(node==='n2') return caso.aindaRisco ? 'Poucos dias após a queda da febre ainda é o período de maior risco: fase crítica.' : 'Essa janela de risco já passou e o quadro melhora: fase de recuperação.';
+  if(node==='n1') return caso.defervescencia ? 'A febre já caiu ou o paciente está afebril. Tratar como fase febril aqui ignora a fase de maior risco.' : 'A febre alta ainda está presente — isso é fase febril, não crítica.';
+  if(node==='n2') return caso.aindaRisco ? 'A fase crítica começa na queda da febre, geralmente entre o 3º e o 7º dia, e o paciente ainda está nela.' : 'O quadro melhora, com reabsorção do líquido extravasado: fase de recuperação.';
   return 'Essa conduta é de outra fase. Revise antes de continuar.';
 }
 
@@ -362,14 +362,27 @@ function fimDePartida(zerouVidas){
     const pct = Math.round((v/total)*100);
     heat.innerHTML += `<div class="heatrow"><span>${nomes[k]} — ${v} erro(s)</span><div class="bar"><span style="width:${v?Math.max(pct,8):0}%"></span></div></div>`;
   });
-  salvaRecorde();
+  salvaRecorde(zerouVidas);
 }
 
-function salvaRecorde(){
+function salvaRecorde(zerouVidas){
   try{
-    const atual = JSON.parse(localStorage.getItem('linha-do-tempo-dengue')||'{}');
+    const KEY = 'linha-do-tempo-dengue';
+    const atual = JSON.parse(localStorage.getItem(KEY)||'{}');
     const melhor = Math.max(atual.melhorSequencia||0, streak);
-    localStorage.setItem('linha-do-tempo-dengue', JSON.stringify({melhorSequencia:melhor}));
+    const completo = !zerouVidas && grupoFiltro==='todos';
+    const erros = Object.values(mistakes).reduce((a,b)=>a+b,0);
+    const novo = {melhorSequencia:melhor, s1:!!atual.s1, s2:!!atual.s2, s3:!!atual.s3};
+    if(completo){
+      novo.s1 = true;
+      if(erros===0) novo.s2 = true;
+      if(mode==='blitz') novo.s3 = true;
+    }
+    localStorage.setItem(KEY, JSON.stringify(novo));
+    const d = new Date();
+    const hoje = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    const dias = JSON.parse(localStorage.getItem('sj:dias')||'[]');
+    if(dias.indexOf(hoje)===-1){ dias.push(hoje); localStorage.setItem('sj:dias', JSON.stringify(dias.slice(-90))); }
   }catch(e){}
 }
 

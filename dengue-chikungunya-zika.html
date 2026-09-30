@@ -121,7 +121,7 @@ footer{margin-top:44px;color:var(--muted);font-size:.9rem;max-width:70ch}
     </div>
   </div>
   <h1>Dengue, chikungunya ou zika?</h1>
-  <p class="lede">As três chegam com febre e picada de Aedes. O que separa uma da outra são detalhes específicos — é isso que este jogo treina.</p>
+  <p class="lede">As três chegam com febre e picada de Aedes. O que separa uma da outra são detalhes do quadro. Nos primeiros dias a diferença é tênue, e o manual recomenda conduzir como dengue até esclarecer.</p>
 
   <div class="modebar" role="group" aria-label="Modo de jogo">
     <button class="chip" data-mode="treino" aria-pressed="true">Treino livre</button>
@@ -171,7 +171,7 @@ footer{margin-top:44px;color:var(--muted);font-size:.9rem;max-width:70ch}
   </div>
 
   <footer>
-    <p>Base: quadro clínico diferencial de dengue, chikungunya e zika segundo o Guia de Vigilância em Saúde (MS). Casos e dados são fictícios. Progresso salvo só neste navegador.</p>
+    <p>Base: Dengue: diagnóstico e manejo clínico, adulto e criança (Ministério da Saúde, 6ª ed., 2024), tabela de diagnóstico diferencial entre dengue, zika e chikungunya. Casos e dados são fictícios. Progresso salvo só neste navegador.</p>
   </footer>
 </div>
 
@@ -179,17 +179,17 @@ footer{margin-top:44px;color:var(--muted);font-size:.9rem;max-width:70ch}
 const casos = [
   {grupo:'Dengue', dados:{'Sinais/sintomas':'Febre alta, dor retro-orbitária intensa, mialgia importante', Articulações:'Sem artrite evidente', Pele:'Sem exantema pruriginoso marcante'}},
   {grupo:'Dengue', dados:{'Sinais/sintomas':'Febre alta, prova do laço positiva, dor no corpo', Articulações:'Sem artrite', Pele:'Sem exantema relevante'}},
-  {grupo:'Chikungunya', dados:{'Sinais/sintomas':'Febre e artralgia intensa e simétrica em mãos e pés', Articulações:'Edema articular visível, dificulta caminhar', Pele:'Sem exantema importante'}},
-  {grupo:'Chikungunya', dados:{'Sinais/sintomas':'Febre passada, dor articular há mais de 2 semanas', Articulações:'Poliarticular, persistente, incapacitante', Pele:'Sem exantema relevante'}},
-  {grupo:'Zika', dados:{'Sinais/sintomas':'Febre baixa ou ausente, sintomas leves', Articulações:'Sem artralgia importante', Pele:'Exantema pruriginoso desde o 1º dia, conjuntivite não purulenta'}},
-  {grupo:'Zika', dados:{'Sinais/sintomas':'Gestante, sintomas leves, procura orientação sobre risco fetal', Articulações:'Sem artralgia', Pele:'Exantema leve com prurido, conjuntivite'}},
+  {grupo:'Chikungunya', dados:{'Sinais/sintomas':'Febre alta há 2 dias e dor intensa em várias articulações', Articulações:'Edema articular moderado a intenso, dificulta caminhar', Pele:'Sem exantema importante'}},
+  {grupo:'Chikungunya', dados:{'Sinais/sintomas':'Febre alta há 3 dias, artralgia moderada a intensa', Articulações:'Edema articular frequente, articulações de mãos e pés', Pele:'Sem exantema relevante'}},
+  {grupo:'Zika', dados:{'Sinais/sintomas':'Febre baixa ou ausente, sintomas leves', Articulações:'Sem artralgia importante', Pele:'Exantema desde o 1º dia, conjuntivite e linfonodos aumentados'}},
+  {grupo:'Zika', dados:{'Sinais/sintomas':'Gestante, sintomas leves, procura orientação sobre risco fetal', Articulações:'Sem artralgia', Pele:'Exantema leve desde o 1º dia, conjuntivite'}},
 ];
 
 const groupLabel = {Dengue:'Dengue', Chikungunya:'Chikungunya', Zika:'Zika'};
 const condutas = {
   Dengue:'Notificar como dengue, seguir a classificação de risco e vigiar sinais de alarme.',
   Chikungunya:'Notificar como chikungunya, orientar sobre possível cronificação articular e manejo da dor.',
-  Zika:'Notificar como zika; se gestante, encaminhar para vigilância de microcefalia/SCZ e pré-natal diferenciado.'
+  Zika:'Notificar como zika. Se for gestante, seguir o protocolo do Ministério da Saúde para o acompanhamento pré-natal e do recém-nascido.'
 };
 
 let mode = 'treino';
@@ -293,9 +293,9 @@ function responde(valor, botao, node){
 
 function explicaErro(node, caso){
   if(node==='n1'){
-    if(caso.grupo==='Dengue') return 'Dor retro-orbitária e mialgia importante, sem artrite marcante nem exantema pruriginoso: é dengue.';
-    if(caso.grupo==='Chikungunya') return 'Artralgia intensa, simétrica, com edema articular: essa é a marca registrada de chikungunya.';
-    return 'Exantema pruriginoso desde o início e conjuntivite não purulenta, com febre baixa: esse padrão é de zika.';
+    if(caso.grupo==='Dengue') return 'Febre alta, mialgia e cefaleia intensas, artralgia leve e edema articular raro: é o padrão da dengue.';
+    if(caso.grupo==='Chikungunya') return 'Artralgia moderada a intensa, com edema articular frequente e de intensidade moderada a intensa: é o padrão da chikungunya.';
+    return 'Sem febre ou febre baixa, exantema já no 1º ou 2º dia, conjuntivite e linfonodos aumentados: é o padrão do zika.';
   }
   return 'Esse encaminhamento é de outra arbovirose. Revise antes de continuar.';
 }
@@ -344,14 +344,27 @@ function fimDePartida(zerouVidas){
     const pct = Math.round((v/total)*100);
     heat.innerHTML += `<div class="heatrow"><span>${nomes[k]} — ${v} erro(s)</span><div class="bar"><span style="width:${v?Math.max(pct,8):0}%"></span></div></div>`;
   });
-  salvaRecorde();
+  salvaRecorde(zerouVidas);
 }
 
-function salvaRecorde(){
+function salvaRecorde(zerouVidas){
   try{
-    const atual = JSON.parse(localStorage.getItem('dengue-chikungunya-zika')||'{}');
+    const KEY = 'dengue-chikungunya-zika';
+    const atual = JSON.parse(localStorage.getItem(KEY)||'{}');
     const melhor = Math.max(atual.melhorSequencia||0, streak);
-    localStorage.setItem('dengue-chikungunya-zika', JSON.stringify({melhorSequencia:melhor}));
+    const completo = !zerouVidas && grupoFiltro==='todos';
+    const erros = Object.values(mistakes).reduce((a,b)=>a+b,0);
+    const novo = {melhorSequencia:melhor, s1:!!atual.s1, s2:!!atual.s2, s3:!!atual.s3};
+    if(completo){
+      novo.s1 = true;
+      if(erros===0) novo.s2 = true;
+      if(mode==='blitz') novo.s3 = true;
+    }
+    localStorage.setItem(KEY, JSON.stringify(novo));
+    const d = new Date();
+    const hoje = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    const dias = JSON.parse(localStorage.getItem('sj:dias')||'[]');
+    if(dias.indexOf(hoje)===-1){ dias.push(hoje); localStorage.setItem('sj:dias', JSON.stringify(dias.slice(-90))); }
   }catch(e){}
 }
 

@@ -5,7 +5,7 @@
 <meta name="color-scheme" content="light dark">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Nexo ou não? | Saúde em jogo</title>
-<meta name="description" content="Decida se há nexo causal entre a doença e o trabalho, caso por caso, seguindo a lógica do nexo técnico individual e do NTEP.">
+<meta name="description" content="Classifique a relação entre a doença e o trabalho pelo critério de Schilling, usado pelo Ministério da Saúde.">
 <meta name="theme-color" content="#F6F1E7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0F1A14" media="(prefers-color-scheme: dark)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,7 +17,7 @@
   --bg:#F6F1E7; --surface:#FFFFFF; --ink:#22392E; --muted:#647062; --line:#D5CBB4; --edge:#22392E; --emph:#22392E;
   --cell:#FFFFFF; --sel:#FFD23F; --sel-ink:#22392E; --focus:#0B5FA5;
   --t-green:#0E7C66; --t-orange:#B4470A; --t-blue:#1F5FA8; --t-violet:#5B3FB4; --t-rose:#B0356B; --t-soon:#75806F;
-  --a-bg:#75806F; --b-bg:#1F5FA8; --c-bg:#B4470A;
+  --a-bg:#0E7C66; --b-bg:#1F5FA8; --c-bg:#B4470A; --d-bg:#B0356B;
   --ok:#0E7C66; --bad:#B0356B;
   --display:'Bricolage Grotesque','Trebuchet MS','Segoe UI',system-ui,sans-serif;
   --body:'Atkinson Hyperlegible','Segoe UI',Verdana,system-ui,sans-serif;
@@ -31,7 +31,7 @@
     --bg:#0F1A14; --surface:#182A20; --ink:#F1EBDD; --muted:#B3BCA9; --line:#33483B; --edge:#6F8B78; --emph:#FFD23F;
     --cell:#1D3327; --sel:#FFD23F; --sel-ink:#16241B; --focus:#7CC0FF;
     --t-green:#3FCFAA; --t-orange:#FF9A5C; --t-blue:#7CB7FF; --t-violet:#B79CFF; --t-rose:#FF8FBB; --t-soon:#8D9885;
-    --a-bg:#8D9885; --b-bg:#7CB7FF; --c-bg:#FF9A5C;
+    --a-bg:#3FCFAA; --b-bg:#7CB7FF; --c-bg:#FF9A5C; --d-bg:#FF8FBB;
     --ok:#3FCFAA; --bad:#FF8FBB;
   }
 }
@@ -40,7 +40,7 @@
   --bg:#0F1A14; --surface:#182A20; --ink:#F1EBDD; --muted:#B3BCA9; --line:#33483B; --edge:#6F8B78; --emph:#FFD23F;
   --cell:#1D3327; --sel:#FFD23F; --sel-ink:#16241B; --focus:#7CC0FF;
   --t-green:#3FCFAA; --t-orange:#FF9A5C; --t-blue:#7CB7FF; --t-violet:#B79CFF; --t-rose:#FF8FBB; --t-soon:#8D9885;
-  --a-bg:#8D9885; --b-bg:#7CB7FF; --c-bg:#FF9A5C;
+  --a-bg:#3FCFAA; --b-bg:#7CB7FF; --c-bg:#FF9A5C; --d-bg:#FF8FBB;
   --ok:#3FCFAA; --bad:#FF8FBB;
 }
 html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
@@ -58,7 +58,7 @@ button{font-family:inherit}
 .tiles{display:flex;gap:5px}
 .tile{width:clamp(36px,9vw,52px);aspect-ratio:1;display:grid;place-items:center;background:var(--cell);border:2px solid var(--edge);border-radius:5px;font-family:var(--display);font-weight:800;font-size:clamp(1.15rem,4.6vw,1.7rem);line-height:1}
 .tile.hl{background:var(--sel);color:var(--sel-ink);border-color:var(--emph)}
-h1{font-family:var(--display);font-weight:800;font-size:clamp(1.8rem,6vw,2.7rem);line-height:1.05;letter-spacing:-0.02em;margin:14px 0 0}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(1.7rem,5.8vw,2.6rem);line-height:1.05;letter-spacing:-0.02em;margin:14px 0 0}
 .lede{margin:12px 0 0;color:var(--muted);max-width:62ch;font-size:1.05rem}
 
 .modebar{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 4px}
@@ -98,7 +98,7 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(1.8rem,6vw,2.7rem)
 .feedback button{margin-top:10px;border:none;background:var(--edge);color:var(--bg);border-radius:8px;padding:8px 14px;font-weight:700;cursor:pointer}
 
 .outcome{border-radius:12px;padding:14px 16px;margin-bottom:14px;color:#fff;font-family:var(--display)}
-.outcome.SemNexo{background:var(--a-bg)} .outcome.Individual{background:var(--b-bg)} .outcome.NTEP{background:var(--c-bg)}
+.outcome.a{background:var(--a-bg)} .outcome.b{background:var(--b-bg)} .outcome.c{background:var(--c-bg)} .outcome.d{background:var(--d-bg)}
 .outcome b{display:block;font-size:1.1rem;font-weight:800}
 
 .endscreen{display:none}
@@ -116,12 +116,10 @@ footer{margin-top:44px;color:var(--muted);font-size:.9rem;max-width:70ch}
 <div class="app">
   <p class="back"><a href="index.html">‹ Saúde em jogo</a></p>
   <div class="brand">
-    <div class="tiles" aria-hidden="true">
-      <span class="tile">N</span><span class="tile hl">E</span><span class="tile">X</span><span class="tile">O</span>
-    </div>
+    <div class="tiles" aria-hidden="true"><span class="tile">N</span><span class="tile hl">E</span><span class="tile">X</span><span class="tile">O</span></div>
   </div>
   <h1>Nexo ou não?</h1>
-  <p class="lede">Um trabalhador fictício por caso: ocupação, exposição e diagnóstico. Decida se há nexo com o trabalho e qual caminho ele segue.</p>
+  <p class="lede">Nem toda doença de quem trabalha é doença do trabalho. Siga a história ocupacional e classifique a relação: sem nexo, ou Schilling I, II ou III.</p>
 
   <div class="modebar" role="group" aria-label="Modo de jogo">
     <button class="chip" data-mode="treino" aria-pressed="true">Treino livre</button>
@@ -129,15 +127,10 @@ footer{margin-top:44px;color:var(--muted);font-size:.9rem;max-width:70ch}
   </div>
   <p class="hint" id="modeHint">Sem tempo, tentativas ilimitadas em cada nó.</p>
 
-  <div class="modebar" id="groupBar" role="group" aria-label="Filtrar por desfecho">
-    <button class="chip" data-grupo="todos" aria-pressed="true">Todos</button>
-    <button class="chip" data-grupo="SemNexo" aria-pressed="false">Sem nexo</button>
-    <button class="chip" data-grupo="Individual" aria-pressed="false">Nexo individual</button>
-    <button class="chip" data-grupo="NTEP" aria-pressed="false">Nexo por NTEP</button>
-  </div>
+  <div class="modebar" id="groupBar" role="group" aria-label="Filtrar por desfecho"></div>
 
   <div class="hud">
-    <span><b id="hudCaso">Caso 1</b> de <span id="hudTotal">6</span></span>
+    <span><b id="hudCaso">Caso 1</b> de <span id="hudTotal">8</span></span>
     <span>Sequência perfeita: <b id="hudStreak">0</b></span>
     <span id="hudTimerWrap" style="display:none">Tempo: <b class="timer" id="hudTimer">40</b>s</span>
     <span id="hudLivesWrap" style="display:none">Vidas: <b class="lives" id="hudLives">♥♥♥</b></span>
@@ -171,33 +164,15 @@ footer{margin-top:44px;color:var(--muted);font-size:.9rem;max-width:70ch}
   </div>
 
   <footer>
-    <p>Base: Lista de Doenças Relacionadas ao Trabalho (Portaria GM/MS nº 2.309/2020, que atualizou a 1.339/1999), Nexo Técnico Epidemiológico Previdenciário — NTEP (Lei nº 11.430/2006) e Lei nº 8.213/1991 (CAT). Casos, empresas e dados são fictícios — na prática, a caracterização do nexo é feita por perícia e pela vigilância em saúde do trabalhador da sua UF. Progresso salvo só neste navegador.</p>
+    <p>Base: Ministério da Saúde e OPAS. Doenças relacionadas ao trabalho: manual de procedimentos para os serviços de saúde (2001), capítulo 2, com a classificação de Schilling e as diretrizes para o nexo causal. A Lista de Doenças Relacionadas ao Trabalho (Portaria/MS nº 1.339/1999) não é exaustiva. NTEP e CAT são instrumentos previdenciários e não entram neste jogo. Casos e dados são fictícios. Progresso salvo só neste navegador.</p>
   </footer>
 </div>
 
 <script>
-const casos = [
-  {grupo:'SemNexo', compativel:false,
-    dados:{Ocupação:'Analista de TI, 55 anos', Exposição:'Trabalho de escritório, sem exposição a radiação ionizante ou UV intensa', Diagnóstico:'Catarata senil', CAT:'Não emitida'}},
-  {grupo:'SemNexo', compativel:false,
-    dados:{Ocupação:'Vendedor, loja de varejo', Exposição:'Rotina comercial, sem agente de risco físico/químico identificado', Diagnóstico:'Enxaqueca crônica', CAT:'Não emitida'}},
-  {grupo:'Individual', compativel:true, ntep:false,
-    dados:{Ocupação:'Trabalhadora rural, aplicação manual de defensivos', Exposição:'Agrotóxico organofosforado, há 2 anos, sem uso regular de EPI', Diagnóstico:'Polineuropatia periférica', CAT:'Não emitida; CNAE não consta na lista do CID no NTEP'}},
-  {grupo:'Individual', compativel:true, ntep:false,
-    dados:{Ocupação:'Motorista de aplicativo', Exposição:'Direção prolongada e vibração, há 3 meses na função', Diagnóstico:'Hérnia de disco lombar', CAT:'Não emitida; pouco tempo de exposição na atividade atual'}},
-  {grupo:'NTEP', compativel:true, ntep:true,
-    dados:{Ocupação:'Operário da construção civil', Exposição:'Ruído intenso constante, há 15 anos, uso irregular de protetor auricular', Diagnóstico:'Perda auditiva induzida por ruído (PAIR)', CAT:'CNAE e CID constam na lista do NTEP para essa combinação'}},
-  {grupo:'NTEP', compativel:true, ntep:true,
-    dados:{Ocupação:'Trabalhador de mineração subterrânea', Exposição:'Poeira de sílica, há 20 anos', Diagnóstico:'Silicose', CAT:'CNAE e CID constam na lista do NTEP para essa combinação'}},
-];
-
-const condutas = {
-  SemNexo:'Sem elementos de nexo com o trabalho. Conduzir como doença comum, sem notificação de agravo relacionado ao trabalho.',
-  Individual:'Notificar no SINAN (agravo à saúde do trabalhador), documentar histórico ocupacional e agente de risco. O nexo é avaliado caso a caso, por perícia.',
-  NTEP:'Nexo presumido pela combinação CID-CNAE (NTEP). Notificar, emitir CAT quando cabível e orientar sobre os direitos previdenciários.'
-};
-
-const groupLabel = {SemNexo:'Sem nexo — exposição não compatível', Individual:'Nexo técnico individual — avaliação por perícia', NTEP:'Nexo por NTEP — presunção pela lista CID-CNAE'};
+const C = {"storageKey": "nexo-ou-nao", "start": "n1", "condQ": "Qual a descrição correta dessa classificação?", "condHeat": "Escolha da descrição", "groups": [{"id": "Sem", "chip": "Sem nexo", "label": "Sem nexo estabelecido", "color": "a", "conduta": "Sem exposição ocupacional identificada e caracterizada, o nexo não se estabelece. Se a história ocupacional trouxer uma nova exposição, a investigação é reaberta."}, {"id": "G1", "chip": "Schilling I", "label": "Schilling I: trabalho como causa necessária", "color": "c", "conduta": "O trabalho é causa necessária: doenças profissionais em sentido estrito e intoxicações agudas de origem ocupacional. O nexo é direto e imediato."}, {"id": "G2", "chip": "Schilling II", "label": "Schilling II: trabalho como fator contributivo", "color": "b", "conduta": "O trabalho é fator de risco contributivo, mas não necessário. Doença comum, mais frequente ou mais precoce em certos grupos ocupacionais, com nexo de natureza epidemiológica."}, {"id": "G3", "chip": "Schilling III", "label": "Schilling III: trabalho provoca ou agrava", "color": "d", "conduta": "O trabalho provoca um distúrbio latente ou agrava uma doença já estabelecida, atuando como concausa."}], "nodes": {"n1": {"q": "A história ocupacional identifica uma exposição ou situação de risco compatível com o quadro?", "yes": "Sim, há exposição identificada", "no": "Não, nenhuma", "field": "exposicao", "yesNext": "n2", "noNext": "cond", "errYes": "Há exposição ocupacional compatível identificada. Descartar o nexo aqui encerra a investigação cedo demais.", "errNo": "Sem exposição ocupacional compatível identificada, o nexo não se estabelece.", "trailYes": "Exposição identificada", "trailNo": "Sem exposição identificada", "heat": "Nó \"há exposição compatível?\""}, "n2": {"q": "O trabalho é causa necessária da doença? (doença profissional em sentido estrito ou intoxicação aguda de origem ocupacional)", "yes": "Sim, causa necessária", "no": "Não, a doença também ocorre sem esse trabalho", "field": "necessaria", "yesNext": "cond", "noNext": "n3", "errYes": "Esse é um agravo específico do trabalho: o agente ocupacional é a causa e o nexo é direto. É Schilling I.", "errNo": "A doença tem outras causas além do trabalho, então ele não é causa necessária.", "trailYes": "Causa necessária", "trailNo": "Não é causa necessária", "heat": "Nó \"causa necessária?\""}, "n3": {"q": "O trabalho desencadeia um distúrbio latente ou agrava uma doença que o trabalhador já tinha? Ou é um fator a mais numa doença comum de causas múltiplas?", "yes": "Desencadeia ou agrava doença já existente", "no": "Fator a mais numa doença comum de causas múltiplas", "field": "agrava", "yesNext": "cond", "noNext": "cond", "errYes": "O trabalho desencadeia ou agrava uma condição que já existia: é concausa, Schilling III.", "errNo": "Doença comum de causas múltiplas, mais frequente ou precoce nessa ocupação, com nexo epidemiológico: é Schilling II.", "trailYes": "Desencadeia ou agrava", "trailNo": "Fator contributivo", "heat": "Nó \"agrava ou contribui?\""}}, "casos": [{"grupo": "Sem", "exposicao": false, "necessaria": false, "agrava": false, "dados": {"Ocupação": "Analista de TI, 55 anos", "Exposição": "Trabalho de escritório, sem radiação ionizante ou ultravioleta intensa", "Diagnóstico": "Catarata senil"}}, {"grupo": "Sem", "exposicao": false, "necessaria": false, "agrava": false, "dados": {"Ocupação": "Bancário, 30 anos", "Exposição": "Nenhuma no trabalho: o acidente foi em partida de futebol no fim de semana", "Diagnóstico": "Fratura de tornozelo"}}, {"grupo": "G1", "exposicao": true, "necessaria": true, "agrava": false, "dados": {"Ocupação": "Trabalhador de fábrica de baterias, 38 anos", "Exposição": "Chumbo em altas concentrações, sem proteção respiratória adequada", "Diagnóstico": "Intoxicação por chumbo"}}, {"grupo": "G1", "exposicao": true, "necessaria": true, "agrava": false, "dados": {"Ocupação": "Trabalhador de mineração subterrânea, 52 anos", "Exposição": "Poeira de sílica por 20 anos", "Diagnóstico": "Silicose"}}, {"grupo": "G2", "exposicao": true, "necessaria": false, "agrava": false, "dados": {"Ocupação": "Motorista de ônibus urbano, 45 anos", "Exposição": "Trânsito intenso, jornadas longas e pressão de horário. Colegas da mesma função também têm pressão alta precoce", "Diagnóstico": "Hipertensão arterial"}}, {"grupo": "G2", "exposicao": true, "necessaria": false, "agrava": false, "dados": {"Ocupação": "Caixa de supermercado, 40 anos", "Exposição": "Jornada inteira em pé há 12 anos", "Diagnóstico": "Varizes dos membros inferiores"}}, {"grupo": "G3", "exposicao": true, "necessaria": false, "agrava": true, "dados": {"Ocupação": "Padeiro, 33 anos", "Exposição": "Farinha em suspensão no ar. Já tinha asma desde a infância, que piora nos dias de trabalho e melhora nas férias", "Diagnóstico": "Asma"}}, {"grupo": "G3", "exposicao": true, "necessaria": false, "agrava": true, "dados": {"Ocupação": "Profissional de limpeza, 29 anos", "Exposição": "Produtos de limpeza em contato direto com a pele, sem luvas. Já tinha pele sensível, e as lesões pioram nos dias de trabalho", "Diagnóstico": "Dermatite de contato alérgica"}}]};
+const casos = C.casos;
+const groups = {}; C.groups.forEach(g=>{ groups[g.id]=g; });
+const condTextos = [...new Set(C.groups.map(g=>g.conduta))];
 
 let mode = 'treino';
 let grupoFiltro = 'todos';
@@ -206,21 +181,36 @@ let idx = 0;
 let streak = 0;
 let lives = 3;
 let timer = null, timeLeft = 40;
-let mistakes = {n1:0, n2:0, cond:0};
+let mistakes = {};
 let stepState = null;
 
 const el = id => document.getElementById(id);
-
 function embaralha(a){ const b=[...a]; for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [b[i],b[j]]=[b[j],b[i]];} return b; }
 
+function zeraErros(){ mistakes = {}; Object.keys(C.nodes).forEach(k=>{ mistakes[k]=0; }); mistakes.cond = 0; }
+
+function montaChips(){
+  const bar = el('groupBar');
+  bar.innerHTML = '<button class="chip" data-grupo="todos" aria-pressed="true">Todos</button>';
+  C.groups.forEach(g=>{ bar.innerHTML += `<button class="chip" data-grupo="${g.id}" aria-pressed="false">${g.chip}</button>`; });
+  document.querySelectorAll('[data-grupo]').forEach(b=>{
+    b.onclick = ()=>{
+      document.querySelectorAll('[data-grupo]').forEach(x=>x.setAttribute('aria-pressed','false'));
+      b.setAttribute('aria-pressed','true');
+      grupoFiltro = b.dataset.grupo;
+      iniciaPartida();
+    };
+  });
+}
+
 function montaFila(){
-  let base = grupoFiltro==='todos' ? casos : casos.filter(c=>c.grupo===grupoFiltro);
+  const base = grupoFiltro==='todos' ? casos : casos.filter(c=>c.grupo===grupoFiltro);
   fila = embaralha(base);
   idx = 0;
 }
 
 function iniciaPartida(){
-  streak = 0; lives = 3; mistakes = {n1:0,n2:0,cond:0};
+  streak = 0; lives = 3; zeraErros();
   montaFila();
   el('endscreen').classList.remove('show');
   el('board').style.display='grid';
@@ -242,18 +232,16 @@ function carregaCaso(){
   el('hudTotal').textContent = fila.length;
   el('hudStreak').textContent = streak;
   const dl = el('pacienteInfo'); dl.innerHTML='';
-  for(const [k,v] of Object.entries(caso.dados)){
-    dl.innerHTML += `<dt>${k}</dt><dd>${v}</dd>`;
-  }
+  for(const [k,v] of Object.entries(caso.dados)){ dl.innerHTML += `<dt>${k}</dt><dd>${v}</dd>`; }
   el('trail').innerHTML='';
   el('outcomeBanner').innerHTML='';
-  stepState = {caso, node:'n1'};
+  stepState = {caso, node:(C.start||'n1')};
   if(mode==='blitz'){
     timeLeft = 40;
     el('hudTimer').textContent = timeLeft;
     timer = setInterval(()=>{
       timeLeft--; el('hudTimer').textContent = timeLeft;
-      if(timeLeft<=0){ clearInterval(timer); perdeVida('O tempo acabou antes de fechar o desfecho.'); }
+      if(timeLeft<=0){ clearInterval(timer); perdeVida('O tempo acabou antes de fechar a conduta.'); }
     },1000);
   }
   renderNode();
@@ -263,18 +251,15 @@ function renderNode(){
   el('feedback').classList.remove('show');
   const {caso, node} = stepState;
   let pergunta, opts;
-  if(node==='n1'){
-    pergunta = 'A exposição relatada é compatível com o diagnóstico — existe agente de risco ocupacional reconhecido para esse quadro?';
-    opts = [{t:'Sim, é compatível', v:true},{t:'Não é compatível', v:false}];
-  } else if(node==='n2'){
-    pergunta = 'Há CAT emitida, ou a combinação CID-CNAE consta na lista do Nexo Técnico Epidemiológico (NTEP)?';
-    opts = [{t:'Sim', v:true},{t:'Não', v:false}];
-  } else if(node==='cond'){
-    const grupo = caso.grupo;
-    el('outcomeBanner').innerHTML = `<div class="outcome ${grupo}"><b>${groupLabel[grupo]}</b></div>`;
-    pergunta = 'Qual o encaminhamento correto?';
-    const todas = Object.entries(condutas).map(([g,t])=>({t}));
-    opts = embaralha(todas).map(o=>({t:o.t, v:o.t===condutas[grupo]}));
+  if(node==='cond'){
+    const g = groups[caso.grupo];
+    el('outcomeBanner').innerHTML = `<div class="outcome ${g.color}"><b>${g.label}</b></div>`;
+    pergunta = C.condQ;
+    opts = embaralha(condTextos).map(t=>({t, v:t===g.conduta}));
+  } else {
+    const n = C.nodes[node];
+    pergunta = n.q;
+    opts = [{t:n.yes, v:true},{t:n.no, v:false}];
   }
   el('questionText').textContent = pergunta;
   const optsEl = el('opts'); optsEl.innerHTML='';
@@ -286,15 +271,9 @@ function renderNode(){
   });
 }
 
-function correta(node, caso){
-  if(node==='n1') return caso.compativel;
-  if(node==='n2') return !!caso.ntep;
-  return true;
-}
-
 function responde(valor, botao, node){
   const {caso} = stepState;
-  const certo = node==='cond' ? valor===true : valor===correta(node, caso);
+  const certo = node==='cond' ? valor===true : valor===!!caso[C.nodes[node].field];
   document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
   if(certo){
     botao.classList.add('correct');
@@ -308,20 +287,20 @@ function responde(valor, botao, node){
 }
 
 function explicaErro(node, caso){
-  if(node==='n1') return caso.compativel ? 'A exposição relatada é compatível com esse diagnóstico — descartar o nexo aqui fecha a porta antes da hora.' : 'Não há agente de risco reconhecido pra esse diagnóstico — seguir como se houvesse nexo não se sustenta.';
-  if(node==='n2') return caso.ntep ? 'CAT emitida ou combinação CID-CNAE na lista do NTEP: o nexo é presumido, não fica pra perícia individual.' : 'Sem CAT e fora da lista do NTEP: o nexo não é presumido — precisa de avaliação individual do histórico ocupacional.';
-  return 'Encaminhamento errado pra esse desfecho. Revise antes de continuar.';
+  if(node==='cond') return 'Essa conduta é de outro desfecho. Revise antes de continuar.';
+  const n = C.nodes[node];
+  return caso[n.field] ? n.errYes : n.errNo;
 }
 
 function avancaTrilha(node, valor){
-  const rotulo = node==='n1' ? (valor?'Exposição compatível':'Não compatível')
-    : node==='n2' ? (valor?'CAT/NTEP presente':'Sem CAT/NTEP')
-    : 'Encaminhamento correto';
+  let rotulo, prox;
+  if(node==='cond'){ rotulo = 'Conduta correta'; prox = 'fim'; }
+  else {
+    const n = C.nodes[node];
+    rotulo = valor ? n.trailYes : n.trailNo;
+    prox = valor ? n.yesNext : n.noNext;
+  }
   el('trail').innerHTML += `<span class="crumb"><b>${rotulo}</b></span>`;
-  let prox;
-  if(node==='n1') prox = valor ? 'n2' : 'cond';
-  else if(node==='n2') prox = 'cond';
-  else prox = 'fim';
   if(prox==='fim'){
     clearInterval(timer);
     streak++;
@@ -356,20 +335,33 @@ function fimDePartida(zerouVidas){
     ? `Vidas esgotadas no Blitz. Sequência perfeita: ${streak}.`
     : `Casos deste filtro encerrados. Sequência perfeita: ${streak}.`;
   const total = Object.values(mistakes).reduce((a,b)=>a+b,0) || 1;
-  const nomes = {n1:'Nó: "exposição compatível?"', n2:'Nó: "CAT/NTEP presente?"', cond:'Escolha do encaminhamento'};
+  const nomes = {}; Object.keys(C.nodes).forEach(k=>{ nomes[k]=C.nodes[k].heat; }); nomes.cond = C.condHeat;
   const heat = el('heat'); heat.innerHTML='';
   Object.entries(mistakes).forEach(([k,v])=>{
     const pct = Math.round((v/total)*100);
-    heat.innerHTML += `<div class="heatrow"><span>${nomes[k]} — ${v} erro(s)</span><div class="bar"><span style="width:${v?Math.max(pct,8):0}%"></span></div></div>`;
+    heat.innerHTML += `<div class="heatrow"><span>${nomes[k]}: ${v} erro(s)</span><div class="bar"><span style="width:${v?Math.max(pct,8):0}%"></span></div></div>`;
   });
-  salvaRecorde();
+  salvaRecorde(zerouVidas);
 }
 
-function salvaRecorde(){
+function salvaRecorde(zerouVidas){
   try{
-    const atual = JSON.parse(localStorage.getItem('nexo-ou-nao')||'{}');
+    const KEY = C.storageKey;
+    const atual = JSON.parse(localStorage.getItem(KEY)||'{}');
     const melhor = Math.max(atual.melhorSequencia||0, streak);
-    localStorage.setItem('nexo-ou-nao', JSON.stringify({melhorSequencia:melhor}));
+    const completo = !zerouVidas && grupoFiltro==='todos';
+    const erros = Object.values(mistakes).reduce((a,b)=>a+b,0);
+    const novo = {melhorSequencia:melhor, s1:!!atual.s1, s2:!!atual.s2, s3:!!atual.s3};
+    if(completo){
+      novo.s1 = true;
+      if(erros===0) novo.s2 = true;
+      if(mode==='blitz') novo.s3 = true;
+    }
+    localStorage.setItem(KEY, JSON.stringify(novo));
+    const d = new Date();
+    const hoje = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    const dias = JSON.parse(localStorage.getItem('sj:dias')||'[]');
+    if(dias.indexOf(hoje)===-1){ dias.push(hoje); localStorage.setItem('sj:dias', JSON.stringify(dias.slice(-90))); }
   }catch(e){}
 }
 
@@ -379,23 +371,16 @@ document.querySelectorAll('[data-mode]').forEach(b=>{
     b.setAttribute('aria-pressed','true');
     mode = b.dataset.mode;
     el('modeHint').textContent = mode==='blitz'
-      ? 'Casos misturados de todos os desfechos. 40s por caso, 3 vidas, qualquer erro custa uma vida.'
+      ? 'Casos de todos os desfechos, misturados. 40s por caso, 3 vidas, qualquer erro custa uma vida.'
       : 'Sem tempo, tentativas ilimitadas em cada nó.';
     el('groupBar').style.display = mode==='blitz' ? 'none' : 'flex';
     if(mode==='blitz') grupoFiltro='todos';
     iniciaPartida();
   };
 });
-document.querySelectorAll('[data-grupo]').forEach(b=>{
-  b.onclick = ()=>{
-    document.querySelectorAll('[data-grupo]').forEach(x=>x.setAttribute('aria-pressed','false'));
-    b.setAttribute('aria-pressed','true');
-    grupoFiltro = b.dataset.grupo;
-    iniciaPartida();
-  };
-});
 el('playAgain').onclick = iniciaPartida;
 
+montaChips();
 iniciaPartida();
 </script>
 </body>

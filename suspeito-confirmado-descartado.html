@@ -171,7 +171,7 @@ footer{margin-top:44px;color:var(--muted);font-size:.9rem;max-width:70ch}
   </div>
 
   <footer>
-    <p>Base: critérios de confirmação laboratorial e clínico-epidemiológica de dengue e fluxo de encerramento de caso do Sinan (Guia de Vigilância em Saúde, MS). Casos e dados são fictícios. Progresso salvo só neste navegador.</p>
+    <p>Base: Dengue: diagnóstico e manejo clínico, adulto e criança (Ministério da Saúde, 6ª ed., 2024) (confirmação laboratorial e por vínculo epidemiológico) e Guia de Vigilância Epidemiológica do Ministério da Saúde (critérios de caso descartado). Os critérios de descarte variam entre notas técnicas estaduais. Confirme o da sua UF. Casos e dados são fictícios. Progresso salvo só neste navegador.</p>
   </footer>
 </div>
 
@@ -180,15 +180,15 @@ const casos = [
   {grupo:'Confirmado', laboratorio:true,
     dados:{Situação:'NS1 positivo', Clínica:'Quadro compatível com dengue', Vínculo:'Não se aplica'}},
   {grupo:'Confirmado', laboratorio:false, vinculoEpid:true,
-    dados:{Situação:'Sem exame etiológico', Clínica:'Quadro típico, em vigência de epidemia declarada', Vínculo:'Vinculado a caso confirmado no mesmo bairro e período'}},
+    dados:{Situação:'Coleta de exame não foi possível', Clínica:'Quadro típico de dengue', Vínculo:'Vinculado a caso confirmado por laboratório no mesmo bairro e período'}},
   {grupo:'Descartado', laboratorio:false, examePendenteOuForaJanela:false, negativo:true,
-    dados:{Situação:'IgM negativo, colhido no 8º dia (dentro da janela)', Clínica:'Sem outro critério', Vínculo:'Sem vínculo epidemiológico'}},
+    dados:{Situação:'NS1 negativo no 3º dia e IgM negativo no 8º dia', Clínica:'Amostras bem coletadas e transportadas', Vínculo:'Sem vínculo epidemiológico'}},
   {grupo:'Descartado', laboratorio:false, examePendenteOuForaJanela:false, negativo:true,
-    dados:{Situação:'PCR negativo, colhido no 3º dia (dentro da janela)', Clínica:'Quadro leve', Vínculo:'Sem vínculo com surto local'}},
+    dados:{Situação:'Exame confirmou outra doença febril (leptospirose)', Clínica:'Quadro compatível com a outra doença', Vínculo:'Sem vínculo com casos de dengue'}},
   {grupo:'Investigacao', pendente:true,
     dados:{Situação:'Exame ainda não retornou do laboratório', Clínica:'Dentro do prazo de investigação', Vínculo:'Não avaliado'}},
   {grupo:'Investigacao', pendente:true,
-    dados:{Situação:'Amostra colhida fora da janela recomendada (15º dia)', Clínica:'Resultado inconclusivo', Vínculo:'Nova estratégia de investigação solicitada'}},
+    dados:{Situação:'NS1 negativo no 3º dia, IgM ainda não colhido', Clínica:'Quadro compatível com dengue', Vínculo:'Não avaliado'}},
 ];
 
 const groupLabel = {Confirmado:'Confirmado', Descartado:'Descartado', Investigacao:'Segue em investigação'};
@@ -263,11 +263,11 @@ function renderNode(){
   const {caso, node} = stepState;
   let pergunta, opts;
   if(node==='n1'){
-    pergunta = 'Há confirmação por exame laboratorial positivo, ou critério clínico-epidemiológico em vigência de epidemia com vínculo a caso confirmado na mesma área e período?';
+    pergunta = 'Há exame reagente (NS1 ou RT-PCR até o 5º dia, IgM a partir do 6º) ou, sem exame possível ou com resultado inconclusivo, vínculo epidemiológico com caso confirmado por laboratório?';
     opts = [{t:'Sim', v:true},{t:'Não', v:false}];
   } else if(node==='n2'){
-    pergunta = 'Há exame negativo colhido dentro da janela adequada, sem vínculo epidemiológico que sustente critério clínico?';
-    opts = [{t:'Sim, negativo e dentro da janela', v:true},{t:'Não — pendente, fora da janela, ou inconclusivo', v:false}];
+    pergunta = 'O caso tem diagnóstico laboratorial de outra doença, ou resultado negativo em amostras bem coletadas e transportadas, com a sequência completa (antígeno no início e IgM a partir do 6º dia)?';
+    opts = [{t:'Sim, pode descartar', v:true},{t:'Não: exame pendente ou só o antígeno inicial negativo', v:false}];
   } else if(node==='cond'){
     const grupo = caso.grupo;
     el('outcomeBanner').innerHTML = `<div class="outcome ${grupo}"><b>${groupLabel[grupo]}</b></div>`;
@@ -308,7 +308,7 @@ function responde(valor, botao, node){
 
 function explicaErro(node, caso){
   if(node==='n1') return caso.grupo==='Confirmado' ? 'Há laboratório positivo ou critério clínico-epidemiológico válido: o caso já fecha como confirmado.' : 'Sem confirmação laboratorial nem critério clínico-epidemiológico válido aqui: ainda não é confirmado.';
-  if(node==='n2') return caso.grupo==='Descartado' ? 'Exame negativo, dentro da janela, sem vínculo: isso descarta o caso.' : 'Exame pendente, fora da janela ou inconclusivo não descarta — o caso segue em investigação.';
+  if(node==='n2') return caso.grupo==='Descartado' ? 'Sequência laboratorial completa e negativa, ou outra doença confirmada: isso descarta o caso.' : 'Exame pendente ou só o antígeno inicial negativo não descarta. Falta a sorologia IgM a partir do 6º dia, e o caso segue em investigação.';
   return 'Esse encerramento é de outro desfecho. Revise antes de continuar.';
 }
 
@@ -361,14 +361,27 @@ function fimDePartida(zerouVidas){
     const pct = Math.round((v/total)*100);
     heat.innerHTML += `<div class="heatrow"><span>${nomes[k]} — ${v} erro(s)</span><div class="bar"><span style="width:${v?Math.max(pct,8):0}%"></span></div></div>`;
   });
-  salvaRecorde();
+  salvaRecorde(zerouVidas);
 }
 
-function salvaRecorde(){
+function salvaRecorde(zerouVidas){
   try{
-    const atual = JSON.parse(localStorage.getItem('suspeito-confirmado-descartado')||'{}');
+    const KEY = 'suspeito-confirmado-descartado';
+    const atual = JSON.parse(localStorage.getItem(KEY)||'{}');
     const melhor = Math.max(atual.melhorSequencia||0, streak);
-    localStorage.setItem('suspeito-confirmado-descartado', JSON.stringify({melhorSequencia:melhor}));
+    const completo = !zerouVidas && grupoFiltro==='todos';
+    const erros = Object.values(mistakes).reduce((a,b)=>a+b,0);
+    const novo = {melhorSequencia:melhor, s1:!!atual.s1, s2:!!atual.s2, s3:!!atual.s3};
+    if(completo){
+      novo.s1 = true;
+      if(erros===0) novo.s2 = true;
+      if(mode==='blitz') novo.s3 = true;
+    }
+    localStorage.setItem(KEY, JSON.stringify(novo));
+    const d = new Date();
+    const hoje = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    const dias = JSON.parse(localStorage.getItem('sj:dias')||'[]');
+    if(dias.indexOf(hoje)===-1){ dias.push(hoje); localStorage.setItem('sj:dias', JSON.stringify(dias.slice(-90))); }
   }catch(e){}
 }
 

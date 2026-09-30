@@ -173,7 +173,7 @@ footer{margin-top:44px;color:var(--muted);font-size:.9rem;max-width:70ch}
   </div>
 
   <footer>
-    <p>Base: Guia de Vigilância em Saúde (MS, 6ª ed. revisada, 2024) e notas técnicas vigentes sobre classificação de risco e manejo da dengue. Casos e dados são fictícios — na prática, siga o protocolo da sua UF. Progresso salvo só neste navegador.</p>
+    <p>Base: Dengue: diagnóstico e manejo clínico, adulto e criança (Ministério da Saúde, 6ª ed., 2024), fluxograma de manejo clínico e estadiamento nos grupos A, B, C e D. Casos e dados são fictícios. Na prática, siga o protocolo da sua UF. Progresso salvo só neste navegador.</p>
   </footer>
 </div>
 
@@ -198,10 +198,10 @@ const casos = [
 ];
 
 const condutas = {
-  A:'Hidratação oral vigorosa, sintomáticos (sem AAS/AINE), acompanhamento ambulatorial, retorno imediato se surgir sinal de alarme.',
-  B:'Hemograma, observação com hidratação oral supervisionada até o resultado, reavaliação clínica e laboratorial.',
-  C:'Internação em leito de observação, hidratação venosa imediata, reavaliação clínica e hematócrito em 1–2h.',
-  D:'Internação em emergência/UTI, expansão volêmica rápida, reavaliação hemodinâmica contínua.'
+  A:'Hidratação oral, paracetamol ou dipirona (sem AAS, AINE ou corticoide), cartão de acompanhamento e retorno no dia da melhora da febre ou na hora, se surgir sinal de alarme.',
+  B:'Hemograma obrigatório e observação com hidratação oral até o resultado. Hemoconcentração ou sinal de alarme: conduzir como grupo C. Hematócrito normal: tratamento ambulatorial com reavaliação diária.',
+  C:'Reposição volêmica imediata (10 mL/kg de soro fisiológico 0,9% na 1ª hora), internação em leito até estabilização (mínimo 48h), reavaliação clínica após 1h e hematócrito em 2h.',
+  D:'Expansão rápida imediata (20 mL/kg de soro fisiológico 0,9% em até 20 min), leito de UTI até estabilização (mínimo 48h), reavaliação clínica a cada 15 a 30 min.'
 };
 
 const groupLabel = {A:'Grupo A — sem alarme, sem risco', B:'Grupo B — sem alarme, com sangramento ou risco', C:'Grupo C — com sinal de alarme', D:'Grupo D — choque, sangramento grave ou disfunção de órgão'};
@@ -271,7 +271,7 @@ function renderNode(){
   const {caso, node} = stepState;
   let pergunta, opts;
   if(node==='n1'){
-    pergunta = 'Há sinal de alarme? (dor abdominal intensa, vômito persistente, sangramento de mucosa, letargia, hepatomegalia, acúmulo de líquidos, hematócrito em ascensão)';
+    pergunta = 'Há sinal de alarme? (dor abdominal intensa e contínua, vômitos persistentes, acúmulo de líquidos, hipotensão postural ou lipotimia, hepatomegalia >2 cm, sangramento de mucosa, letargia ou irritabilidade, hematócrito em ascensão)';
     opts = [{t:'Sim', v:true},{t:'Não', v:false}];
   } else if(node==='n2'){
     pergunta = 'Além do alarme: choque, sangramento grave ou disfunção de órgão?';
@@ -322,7 +322,7 @@ function responde(valor, botao, todasOpts, node){
 
 function explicaErro(node, caso){
   if(node==='n1') return caso.sinaisAlarme ? 'Ele tem sinal de alarme. Sem esse reconhecimento, a hidratação venosa e o monitoramento atrasam.' : 'Sem sinal de alarme. Classificar como se tivesse gera internação desnecessária.';
-  if(node==='n2') return caso.grave ? 'Há choque ou gravidade: dengue grave, Grupo D — não C.' : 'Sem choque nem gravidade: Grupo C. Expansão rápida de Grupo D aqui é excesso.';
+  if(node==='n2') return caso.grave ? 'Há choque ou gravidade: dengue grave, Grupo D, não C.' : 'Sem choque nem gravidade: Grupo C. Expansão rápida de Grupo D aqui é excesso.';
   if(node==='n3') return caso.risco ? 'Sangramento, prova do laço positiva ou grupo de risco: Grupo B. Hemograma e observação.' : 'Sem sangramento e sem risco: Grupo A. Hemograma e observação aqui é conduta de B.';
   return 'Conduta errada pra esse grupo. Revise antes de continuar.';
 }
@@ -378,14 +378,27 @@ function fimDePartida(zerouVidas){
     const pct = Math.round((v/total)*100);
     heat.innerHTML += `<div class="heatrow"><span>${nomes[k]} — ${v} erro(s)</span><div class="bar"><span style="width:${v?Math.max(pct,8):0}%"></span></div></div>`;
   });
-  salvaRecorde();
+  salvaRecorde(zerouVidas);
 }
 
-function salvaRecorde(){
+function salvaRecorde(zerouVidas){
   try{
-    const atual = JSON.parse(localStorage.getItem('fluxograma-dengue')||'{}');
+    const KEY = 'fluxograma-dengue';
+    const atual = JSON.parse(localStorage.getItem(KEY)||'{}');
     const melhor = Math.max(atual.melhorSequencia||0, streak);
-    localStorage.setItem('fluxograma-dengue', JSON.stringify({melhorSequencia:melhor}));
+    const completo = !zerouVidas && grupoFiltro==='todos';
+    const erros = Object.values(mistakes).reduce((a,b)=>a+b,0);
+    const novo = {melhorSequencia:melhor, s1:!!atual.s1, s2:!!atual.s2, s3:!!atual.s3};
+    if(completo){
+      novo.s1 = true;
+      if(erros===0) novo.s2 = true;
+      if(mode==='blitz') novo.s3 = true;
+    }
+    localStorage.setItem(KEY, JSON.stringify(novo));
+    const d = new Date();
+    const hoje = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    const dias = JSON.parse(localStorage.getItem('sj:dias')||'[]');
+    if(dias.indexOf(hoje)===-1){ dias.push(hoje); localStorage.setItem('sj:dias', JSON.stringify(dias.slice(-90))); }
   }catch(e){}
 }
 
