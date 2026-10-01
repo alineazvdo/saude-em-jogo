@@ -171,7 +171,7 @@ footer{margin-top:44px;color:var(--muted);font-size:.9rem;max-width:70ch}
   </div>
 
   <footer>
-    <p>Base: Manual de Diagnóstico e Tratamento de Acidentes por Animais Peçonhentos e notas técnicas vigentes do Ministério da Saúde sobre acidente escorpiônico. Casos e dados são fictícios — na prática, siga o protocolo da sua UF. Progresso salvo só neste navegador.</p>
+    <p>Base: Protocolo Clínico e Diretrizes Terapêuticas dos Acidentes Escorpiônicos (Ministério da Saúde, 2026), Guia de Vigilância em Saúde e Manual de Diagnóstico e Tratamento de Acidentes por Animais Peçonhentos. Casos e dados são fictícios — na prática, siga o protocolo da sua UF. Progresso salvo só neste navegador.</p>
   </footer>
 </div>
 
@@ -192,9 +192,9 @@ const casos = [
 ];
 
 const condutas = {
-  Leve:'Observação por 6 a 12h, analgesia, orientação de retorno se piora. Sem soro antiescorpiônico.',
-  Moderado:'Internação para observação, soroterapia antiescorpiônica (2 a 3 ampolas IV), hidratação e sintomáticos.',
-  Grave:'Internação em UTI, soroterapia imediata (4 a 6 ampolas), suporte hemodinâmico e ventilatório.'
+  Leve:'Observação clínica por 6 a 12h, analgesia, orientação de retorno se piora. Sem soro antiescorpiônico.',
+  Moderado:'Soroterapia antiescorpiônica o mais cedo possível (3 frascos-ampolas IV), hidratação e sintomáticos, com observação por no mínimo 24h.',
+  Grave:'Soroterapia imediata (6 frascos-ampolas IV, sem passar disso), UTI quando disponível, suporte hemodinâmico e ventilatório. Falta de vaga na UTI não atrasa o soro.'
 };
 
 const groupLabel = {Leve:'Leve — dor/edema local, sem sistêmico', Moderado:'Moderado — sistêmico leve a moderado', Grave:'Grave — sistêmico intenso'};
@@ -309,7 +309,7 @@ function responde(valor, botao, node){
 
 function explicaErro(node, caso){
   if(node==='n1') return caso.sistemico ? 'Ele tem manifestação sistêmica. Tratar como caso leve deixa passar o momento certo de internar e soroterapia.' : 'Sem manifestação sistêmica. Internar e aplicar soro aqui é conduta desproporcional.';
-  if(node==='n2') return caso.grave ? 'As manifestações são intensas: caso grave. Soroterapia de moderado e sem UTI não é suficiente aqui.' : 'Manifestações leves a moderadas: não é grave. UTI e dose alta de soro aqui é excesso.';
+  if(node==='n2') return caso.grave ? 'As manifestações são intensas: caso grave. A conduta de moderado, com 3 frascos-ampolas e sem suporte intensivo, não é suficiente aqui.' : 'Manifestações leves a moderadas: não é grave. UTI e dose alta de soro aqui é excesso.';
   return 'Conduta errada pra essa gravidade. Revise antes de continuar.';
 }
 

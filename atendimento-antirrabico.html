@@ -133,7 +133,6 @@ footer{margin-top:44px;color:var(--muted);font-size:.9rem;max-width:70ch}
     <button class="chip" data-grupo="todos" aria-pressed="true">Todos</button>
     <button class="chip" data-grupo="Observar" aria-pressed="false">Observar</button>
     <button class="chip" data-grupo="Vacina" aria-pressed="false">Vacina</button>
-    <button class="chip" data-grupo="VacObs" aria-pressed="false">Vacina + observação</button>
     <button class="chip" data-grupo="SoroCompleto" aria-pressed="false">Soro completo</button>
   </div>
 
@@ -172,7 +171,7 @@ footer{margin-top:44px;color:var(--muted);font-size:.9rem;max-width:70ch}
   </div>
 
   <footer>
-    <p>Base: Nota Informativa nº 26-SEI/2017 (Ministério da Saúde), Normas Técnicas de Profilaxia da Raiva Humana e Guia de Vigilância em Saúde. Casos e dados são fictícios. Na prática, siga o protocolo e os instrutivos da sua UF. Progresso salvo só neste navegador.</p>
+    <p>Base: Nota Técnica nº 8/2022-CGZV/DEIDT/SVS/MS, Nota Informativa nº 26-SEI/2017 (Ministério da Saúde), Normas Técnicas de Profilaxia da Raiva Humana e Guia de Vigilância em Saúde. Casos e dados são fictícios. Na prática, siga o protocolo e os instrutivos da sua UF. Progresso salvo só neste navegador.</p>
   </footer>
 </div>
 
@@ -186,9 +185,9 @@ const casos = [
     dados:{Animal:'Cão errante, fugiu logo após o episódio', Ferimento:'Mordedura superficial no tronco', Observação:'Animal não pôde ser localizado'}},
   {grupo:'Vacina', grave:false, observavel:false,
     dados:{Animal:'Gato de rua, desaparecido após o episódio', Ferimento:'Arranhadura leve no braço', Observação:'Sem possibilidade de observação'}},
-  {grupo:'VacObs', grave:true, observavel:true,
+  {grupo:'Observar', grave:true, observavel:true,
     dados:{Animal:'Cão do vizinho, saudável, disponível', Ferimento:'Mordedura profunda na mão', Observação:'Pode ser observado por 10 dias'}},
-  {grupo:'VacObs', grave:true, observavel:true,
+  {grupo:'Observar', grave:true, observavel:true,
     dados:{Animal:'Cão de guarda, vacinado, saudável', Ferimento:'Mordedura múltipla e extensa na perna', Observação:'Pode ser observado por 10 dias'}},
   {grupo:'SoroCompleto', grave:true, observavel:false,
     dados:{Animal:'Cão errante, desapareceu após o episódio', Ferimento:'Mordedura no rosto', Observação:'Sem possibilidade de observação'}},
@@ -197,13 +196,12 @@ const casos = [
 ];
 
 const condutas = {
-  Observar:'Observar o animal por 10 dias e encerrar o caso se ele permanecer sadio. Se morrer, desaparecer ou se tornar raivoso, iniciar as 4 doses de vacina.',
+  Observar:'Lavar o ferimento e observar o animal por 10 dias, sem iniciar vacina nem soro. Se permanecer sadio, encerrar o caso. Se desaparecer, morrer ou apresentar sinais de raiva e a raiva não puder ser descartada, iniciar a profilaxia conforme o ferimento: vacina (leve) ou soro e vacina (grave).',
   Vacina:'Iniciar de imediato as 4 doses de vacina (dias 0, 3, 7 e 14). Sem indicação de soro nesse caso.',
-  VacObs:'Iniciar 2 doses de vacina (dias 0 e 3), sem soro, e observar o animal por 10 dias. Se permanecer sadio, suspender. Se morrer, desaparecer ou adoecer, completar até 4 doses e avaliar o soro.',
   SoroCompleto:'Iniciar soro e 4 doses de vacina (dias 0, 3, 7 e 14), sem suspensão. O animal não pode ser observado.'
 };
 
-const groupLabel = {Observar:'Observar o animal', Vacina:'Iniciar vacina', VacObs:'Vacina em 2 doses e observação', SoroCompleto:'Soro e vacina completos'};
+const groupLabel = {Observar:'Observar o animal', Vacina:'Iniciar vacina', SoroCompleto:'Soro e vacina completos'};
 
 let mode = 'treino';
 let grupoFiltro = 'todos';
@@ -273,7 +271,7 @@ function renderNode(){
     pergunta = 'O ferimento é grave? (cabeça, face, pescoço, mão, polpa digital, planta do pé, múltiplo/profundo/extenso, lambedura de mucosa, ou mordedura por morcego)';
     opts = [{t:'Sim, é grave', v:true},{t:'Não, é leve', v:false}];
   } else if(node==='n2'){
-    pergunta = 'O animal agressor pode ser observado por 10 dias? (cão ou gato saudável e identificável, não é morcego nem animal silvestre)';
+    pergunta = 'O animal agressor pode ser observado por 10 dias? (cão ou gato sem sinais sugestivos de raiva, domiciliado ou não, que dê para acompanhar nesse período. Morcego e animal silvestre não são observáveis)';
     opts = [{t:'Sim, pode ser observado', v:true},{t:'Não, não é possível observar', v:false}];
   } else if(node==='cond'){
     const grupo = caso.grupo;

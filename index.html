@@ -196,6 +196,11 @@ footer .autoria{margin:12px 0 0;font-weight:700;color:var(--ink)}
    conf: 'texto da fonte' quando o jogo foi conferido com a fonte oficial; false quando ainda está em revisão. */
 var FONTE_DENGUE = 'Dengue: diagnóstico e manejo clínico, adulto e criança (Ministério da Saúde, 6ª ed., 2024)';
 var FONTE_SIFILIS = 'Nota Técnica nº 14/2023-DATHI/SVSA/MS; ficha de investigação de sífilis congênita (Sinan); página Sífilis em gestantes (Ministério da Saúde)';
+var FONTE_RAIVA = 'Nota Técnica nº 8/2022-CGZV/DEIDT/SVS/MS (Ministério da Saúde): atualização do protocolo de profilaxia da raiva humana';
+var FONTE_HANS = 'Protocolo Clínico e Diretrizes Terapêuticas da Hanseníase (Conitec/Ministério da Saúde)';
+var FONTE_TB = 'Manual de Recomendações para o Controle da Tuberculose no Brasil e Registro de pessoas com tuberculose e acompanhamento do tratamento (Ministério da Saúde, 2023)';
+var FONTE_FICHA_DENGUE = 'Ficha de Investigação de Dengue e Febre de Chikungunya (SVS/Sinan); Dengue: diagnóstico e manejo clínico (Ministério da Saúde, 6ª ed., 2024); prazo de encerramento de 60 dias';
+var FONTE_ESC = 'Protocolo Clínico e Diretrizes Terapêuticas dos Acidentes Escorpiônicos (Ministério da Saúde, 2026)';
 var FONTE_NEXO = 'Doenças relacionadas ao trabalho: manual de procedimentos para os serviços de saúde (Ministério da Saúde e OPAS, 2001)';
 
 var LINHAS = [
@@ -203,18 +208,18 @@ var LINHAS = [
     { href:'dengue-chikungunya-zika.html', passo:'Suspeitar', titulo:'Dengue, chikungunya ou zika?', desc:'Diferencie as três arboviroses pelos sinais que separam uma da outra.', chips:['6 casos'], key:'dengue-chikungunya-zika', tipo:'fluxo', conf:FONTE_DENGUE },
     { href:'linha-do-tempo-dengue.html', passo:'Situar', titulo:'Linha do tempo da dengue', desc:'Fase febril, crítica ou de recuperação: o que muda na conduta em cada uma.', chips:['6 casos'], key:'linha-do-tempo-dengue', tipo:'fluxo', conf:FONTE_DENGUE },
     { href:'fluxograma-dengue.html', passo:'Classificar', titulo:'Fluxograma vivo: dengue', desc:'Grupos A, B, C ou D e a conduta imediata, nó por nó do fluxograma.', chips:['8 casos'], key:'fluxograma-dengue', tipo:'fluxo', conf:FONTE_DENGUE },
-    { href:'ficha-sinan-dengue.html', passo:'Notificar', titulo:'Ficha do SINAN em jogo: dengue', desc:'Preencha a ficha a partir do relato e compare com a base correta.', chips:['5 casos'], key:'ficha-sinan-dengue:v1', tipo:'ficha', conf:false },
+    { href:'ficha-sinan-dengue.html', passo:'Notificar', titulo:'Ficha do SINAN em jogo: dengue', desc:'Preencha a ficha a partir do relato e compare com a base correta.', chips:['5 casos'], key:'ficha-sinan-dengue:v1', tipo:'ficha', conf:FONTE_FICHA_DENGUE },
     { href:'qual-exame-pedir.html', passo:'Confirmar', titulo:'Qual exame pedir?', desc:'NS1 ou IgM, conforme o dia de sintomas, e o que o resultado significa.', chips:['8 casos'], key:'qual-exame-pedir', tipo:'fluxo', conf:FONTE_DENGUE },
     { href:'suspeito-confirmado-descartado.html', passo:'Encerrar', titulo:'Suspeito, confirmado ou descartado?', desc:'O encerramento certo do caso no Sinan, sem confundir com gravidade.', chips:['6 casos'], key:'suspeito-confirmado-descartado', tipo:'fluxo', conf:FONTE_DENGUE }
   ]},
   { id:'zoo', nome:'Zoonoses e peçonhentos', tom:'violet', sub:'Acidentes com animais: o que fazer no atendimento.', estacoes:[
-    { href:'atendimento-antirrabico.html', passo:'Atender', titulo:'Atendimento antirrábico', desc:'Observar o animal, vacina, ou soro e vacina, conforme o ferimento.', chips:['8 casos'], key:'atendimento-antirrabico', tipo:'fluxo', conf:false },
-    { href:'fluxograma-escorpiao.html', passo:'Classificar', titulo:'Fluxograma vivo: acidente escorpiônico', desc:'Gravidade leve, moderada ou grave e a conduta imediata.', chips:['6 casos'], key:'fluxograma-escorpiao', tipo:'fluxo', conf:false }
+    { href:'atendimento-antirrabico.html', passo:'Atender', titulo:'Atendimento antirrábico', desc:'Observar o animal, vacina, ou soro e vacina, conforme o ferimento.', chips:['8 casos'], key:'atendimento-antirrabico', tipo:'fluxo', conf:FONTE_RAIVA },
+    { href:'fluxograma-escorpiao.html', passo:'Classificar', titulo:'Fluxograma vivo: acidente escorpiônico', desc:'Gravidade leve, moderada ou grave e a conduta imediata.', chips:['6 casos'], key:'fluxograma-escorpiao', tipo:'fluxo', conf:FONTE_ESC }
   ]},
   { id:'longa', nome:'Sífilis, tuberculose e hanseníase', tom:'blue', sub:'Agravos de alto volume no SINAN, onde o erro de classificação é comum.', estacoes:[
     { href:'sifilis-gestante.html', passo:'Avaliar', titulo:'Sífilis na gestante: tratamento adequado?', desc:'Penicilina, esquema completo no intervalo e 30 dias antes do parto: o que muda para o bebê.', chips:['8 casos'], key:'sifilis-gestante', tipo:'fluxo', conf:FONTE_SIFILIS },
-    { href:'tuberculose-tipo-entrada.html', passo:'Registrar', titulo:'Tuberculose: tipo de entrada', desc:'Caso novo, recidiva, reingresso após abandono ou transferência.', chips:['8 casos'], key:'tuberculose-tipo-entrada', tipo:'fluxo', conf:false },
-    { href:'hanseniase-classificar-tratar.html', passo:'Classificar', titulo:'Hanseníase: classificar e tratar', desc:'Paucibacilar ou multibacilar, com ou sem incapacidade, e o esquema.', chips:['8 casos'], key:'hanseniase-classificar-tratar', tipo:'fluxo', conf:false }
+    { href:'tuberculose-tipo-entrada.html', passo:'Registrar', titulo:'Tuberculose: tipo de entrada', desc:'Caso novo, recidiva, reingresso após abandono ou transferência.', chips:['8 casos'], key:'tuberculose-tipo-entrada', tipo:'fluxo', conf:FONTE_TB },
+    { href:'hanseniase-classificar-tratar.html', passo:'Classificar', titulo:'Hanseníase: classificar e tratar', desc:'Paucibacilar ou multibacilar, com ou sem incapacidade, e o esquema.', chips:['8 casos'], key:'hanseniase-classificar-tratar', tipo:'fluxo', conf:FONTE_HANS }
   ]},
   { id:'trab', nome:'Saúde do trabalhador', tom:'green', sub:'Da notificação do acidente ao nexo com o trabalho.', estacoes:[
     { href:'ficha-sinan-acidente-trabalho.html', passo:'Notificar', titulo:'Ficha do SINAN em jogo: acidente de trabalho grave', desc:'Ocupação, CNAE, CAT e o que a ficha incompleta faz com a vigilância.', chips:['5 casos'], key:'ficha-sinan-acidente-trabalho:v1', tipo:'ficha', conf:false },
