@@ -14,6 +14,7 @@
 <style>
 :root{
   color-scheme:light;
+  --on-fill:#FFFFFF;
   --bg:#F6F1E7; --surface:#FFFFFF; --ink:#22392E; --muted:#647062; --line:#D5CBB4; --edge:#22392E; --emph:#22392E;
   --cell:#FFFFFF; --sel:#FFD23F; --sel-ink:#22392E; --focus:#0B5FA5;
   --t-green:#0E7C66; --t-orange:#B4470A; --t-blue:#1F5FA8; --t-violet:#5B3FB4; --t-rose:#B0356B; --t-soon:#75806F;
@@ -28,6 +29,7 @@
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     color-scheme:dark;
+    --on-fill:#16241B;
     --bg:#0F1A14; --surface:#182A20; --ink:#F1EBDD; --muted:#B3BCA9; --line:#33483B; --edge:#6F8B78; --emph:#FFD23F;
     --cell:#1D3327; --sel:#FFD23F; --sel-ink:#16241B; --focus:#7CC0FF;
     --t-green:#3FCFAA; --t-orange:#FF9A5C; --t-blue:#7CB7FF; --t-violet:#B79CFF; --t-rose:#FF8FBB; --t-soon:#8D9885;
@@ -37,6 +39,7 @@
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
+  --on-fill:#16241B;
   --bg:#0F1A14; --surface:#182A20; --ink:#F1EBDD; --muted:#B3BCA9; --line:#33483B; --edge:#6F8B78; --emph:#FFD23F;
   --cell:#1D3327; --sel:#FFD23F; --sel-ink:#16241B; --focus:#7CC0FF;
   --t-green:#3FCFAA; --t-orange:#FF9A5C; --t-blue:#7CB7FF; --t-violet:#B79CFF; --t-rose:#FF8FBB; --t-soon:#8D9885;
@@ -88,8 +91,8 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(1.8rem,6vw,2.7rem)
 .opts{display:grid;gap:10px}
 .opt{border:2px solid var(--edge);background:var(--cell);color:var(--ink);border-radius:12px;padding:13px 16px;font-size:1rem;text-align:left;cursor:pointer;line-height:1.35}
 .opt:hover{background:var(--sel);color:var(--sel-ink);border-color:var(--emph)}
-.opt.correct{background:var(--ok);border-color:var(--ok);color:#fff}
-.opt.wrong{background:var(--bad);border-color:var(--bad);color:#fff}
+.opt.correct{background:var(--ok);border-color:var(--ok);color:var(--on-fill)}
+.opt.wrong{background:var(--bad);border-color:var(--bad);color:var(--on-fill)}
 
 .feedback{margin-top:14px;border-radius:12px;padding:12px 14px;font-size:.95rem;display:none}
 .feedback.show{display:block}
@@ -97,7 +100,7 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(1.8rem,6vw,2.7rem)
 .feedback.bad{background:color-mix(in srgb, var(--bad) 16%, transparent);border:2px solid var(--bad)}
 .feedback button{margin-top:10px;border:none;background:var(--edge);color:var(--bg);border-radius:8px;padding:8px 14px;font-weight:700;cursor:pointer}
 
-.outcome{border-radius:12px;padding:14px 16px;margin-bottom:14px;color:#fff;font-family:var(--display)}
+.outcome{border-radius:12px;padding:14px 16px;margin-bottom:14px;color:var(--on-fill);font-family:var(--display)}
 .outcome.Precoce{background:var(--a-bg)} .outcome.Tardio{background:var(--b-bg)}
 .outcome b{display:block;font-size:1.1rem;font-weight:800}
 
@@ -331,6 +334,7 @@ function explicaAcerto(node, caso, valor){
 }
 
 function perdeVida(msg){
+  clearInterval(timer);
   lives--; atualizaLives(); streak = 0;
   mostraFeedback(false, msg, ()=>{
     if(lives<=0){ fimDePartida(true); }
