@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="light dark">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Corrida contra o sarampo</title>
+<meta name="description" content="Notifique, colha, rastreie os contatos e faça o bloqueio vacinal antes que as 72 horas acabem.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f1e7;--card:#fffdf8;--ink:#1d2a2a;--mut:#5d6b6a;--line:#ddd3bf;--acc:#0f6b63;--red:#c8372d;--ok:#1d7a46;--okbg:#e3f2e8;--no:#b3261e;--nobg:#fbe6e3}
+@media(prefers-color-scheme:dark){:root{--bg:#161d1d;--card:#1f2828;--ink:#eee8da;--mut:#a9b5b3;--line:#364140;--acc:#4fc3b6;--red:#ff6b5e;--ok:#6fd49a;--okbg:#17352a;--no:#ff9a90;--nobg:#3b1f1c}}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:'Bricolage Grotesque',system-ui,sans-serif;line-height:1.5;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+main{max-width:640px;margin:0 auto;padding:16px}
+a{color:var(--acc)}
+h1{font-size:2rem;line-height:1.05;margin:.2em 0;font-weight:800;letter-spacing:-.02em}
+h2{font-size:1.25rem;margin:.2em 0 .5em;font-weight:800}
+.clock{position:sticky;top:0;background:var(--bg);padding:10px 0;z-index:2}
+.clock b{font-variant-numeric:tabular-nums}
+.track{height:14px;border-radius:9px;background:var(--line);overflow:hidden;margin-top:6px}
+.fill{height:100%;width:0;background:var(--acc);transition:width .6s,background .3s}
+.fill.hot{background:var(--red)}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:16px;margin:12px 0}
+.tag{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);font-weight:600}
+button,.btn{font:inherit;cursor:pointer}
+.opt{display:block;width:100%;text-align:left;margin:8px 0;padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);color:var(--ink)}
+.opt:hover:not(:disabled){border-color:var(--acc)}
+.opt.ok{background:var(--okbg);border-color:var(--ok)}
+.opt.no{background:var(--nobg);border-color:var(--no)}
+.go{padding:12px 20px;border:0;border-radius:12px;background:var(--acc);color:#fff;font-weight:600;margin-top:8px}
+.go:disabled{opacity:.4}
+.fb{margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--okbg)}
+.fb.bad{background:var(--nobg)}
+label.ev{display:flex;gap:10px;align-items:center;padding:10px 12px;margin:6px 0;border:1.5px solid var(--line);border-radius:12px}
+label.ev input{width:20px;height:20px}
+.mut{color:var(--mut)}
+.big{font-size:2.6rem;font-weight:800;line-height:1}
+</style>
+</head>
+<body>
+<main>
+<div id="app"></div>
+<p class="mut" style="font-size:.85rem">Caso fictício. Base: Guia de Vigilância em Saúde (Ministério da Saúde) e notas técnicas sobre sarampo. Na rotina, siga as normas vigentes da sua UF. <a href="index.html">Voltar ao início</a></p>
+</main>
+<script>
+(function(){'use strict';
+var app=document.getElementById('app'),KEY='corrida-sarampo:v1',TOTAL=72;
+var ETAPAS=[
+{n:'Notificar',q:'Quarta, 23/09, 9h. Davi, 6 anos, chega à UBS com febre desde 19/09, exantema desde 21/09, tosse e conjuntivite. O cartão não tem nenhuma dose de tríplice viral. O que a UBS faz primeiro?',c:[2,12],o:[
+['Notificar por telefone à vigilância ainda hoje, em até 24 horas, e isolar o menino na unidade.',1,'Sarampo é de notificação compulsória imediata. Notifica-se na suspeita, sem esperar exame.'],
+['Colher o exame e notificar quando o resultado sair.',0,'Esperar o resultado atrasa tudo. A suspeita clínica já obriga a notificar.'],
+['Digitar no Sinan no fim da semana, junto com as outras fichas.',0,'Notificação semanal não serve para sarampo: é imediata.'],
+['Orientar repouso e retorno se piorar.',0,'Sem notificação ninguém rastreia contatos nem faz o bloqueio.']]},
+{n:'Coletar',q:'O exantema começou há 2 dias. Que material colher, e quando?',c:[4,12],o:[
+['Sangue para sorologia e, para RT-PCR, swab de orofaringe e nasofaringe e urina, já neste atendimento.',1,'Colher na primeira oportunidade evita perder o paciente. O ideal para identificar o vírus é até o 7º dia do exantema.'],
+['Só sangue, a partir do 5º dia do exantema.',0,'A sorologia sozinha não identifica o vírus, e o swab e a urina rendem mais até o 7º dia.'],
+['Só swab, depois de 15 dias.',0,'Passado o 7º dia, a identificação do vírus fica menos oportuna.'],
+['Não colher: o diagnóstico é clínico.',0,'Todo caso suspeito precisa de coleta para confirmar ou descartar.']]}];
+var EV=[['Aula na escola','qua 16/09',1],['Culto de domingo','dom 13/09',0],['Aniversário do primo','sáb 19/09',1],['Excursão ao sítio','sáb 12/09',0],['Ônibus escolar','seg 21/09',1],['Sala de espera da UBS','qua 23/09',1]];
+var BL=['Vacinar com tríplice viral','Não vacinar e monitorar','Dispensar a vacina'];
+var CT=[
+['Bebê de 8 meses, sem nenhuma dose',0,'De 6 meses a 11 meses e 29 dias, aplica-se uma dose de tríplice viral. Ela não substitui as doses do calendário.'],
+['Gestante de 24 semanas, sem comprovante',1,'A vacina é contraindicada na gestação. Orientar, monitorar os sintomas e avisar o pré-natal.'],
+['Adulto de 28 anos, 2 doses no cartão',2,'Esquema completo comprovado: não precisa de vacina. Continua em monitoramento.'],
+['Adulto de 35 anos, sem comprovante',0,'Só conta como vacinado quem tem comprovante. Sem ele, vacina-se.'],
+['Bebê de 4 meses',1,'Menor de 6 meses não pode receber a vacina. Monitorar e orientar a família.'],
+['Paciente em quimioterapia',1,'Imunodeficiência é contraindicação. Monitorar e orientar o serviço que o acompanha.']];
+var NIT=2+EV.length+CT.length,s;
+function h(t){return t}
+function bar(){var p=Math.min(100,s.h/TOTAL*100);return '<div class="clock"><div class="tag">Relógio do bloqueio</div><div><b>'+s.h+'h</b> de '+TOTAL+'h</div><div class="track"><div class="fill'+(s.h>TOTAL*.8?' hot':'')+'" style="width:'+p+'%"></div></div></div>'}
+function draw(body){app.innerHTML=bar()+body;window.scrollTo(0,0)}
+function inicio(){s={h:0,ok:0,i:0};
+app.innerHTML='<div class="tag">Vigilância epidemiológica</div><h1>Corrida contra o sarampo</h1><div class="card"><p>Um menino de 6 anos, sem vacina, com exantema. Da notificação ao bloqueio vacinal, você tem <b>72 horas</b>. Cada decisão certa gasta pouco tempo. Cada erro custa horas que o vírus aproveita.</p><p class="mut">Quatro etapas: notificar, colher, rastrear os contatos e decidir a vacina de seis pessoas.</p><button class="go" id="b">Começar a investigação</button></div>';
+document.getElementById('b').onclick=function(){etapa(0)}}
+function etapa(i){var E=ETAPAS[i];
+draw('<div class="card"><div class="tag">Etapa '+(i+1)+' de 4: '+E.n+'</div><p>'+E.q+'</p><div id="o"></div><div id="f"></div></div>');
+var box=document.getElementById('o'),done=false;
+E.o.forEach(function(op){var b=document.createElement('button');b.className='opt';b.textContent=op[0];
+b.onclick=function(){if(done)return;done=true;var ok=op[1]===1;s.h+=E.c[ok?0:1];if(ok)s.ok++;
+b.classList.add(ok?'ok':'no');
+if(!ok)[].forEach.call(box.children,function(x,k){if(E.o[k][1])x.classList.add('ok')});
+fim(op[2],ok,function(){i===0?etapa(1):eventos()})};box.appendChild(b)})}
+function fim(txt,ok,next){var f=document.getElementById('f');
+f.innerHTML='<div class="fb'+(ok?'':' bad')+'">'+(ok?'Certo. ':'Não foi essa. ')+txt+'</div><button class="go">Continuar</button>';
+document.querySelector('.fill').style.width=Math.min(100,s.h/TOTAL*100)+'%';
+f.querySelector('button').onclick=next}
+function eventos(){
+var l=EV.map(function(e,k){return '<label class="ev"><input type="checkbox" data-k="'+k+'"><span><b>'+e[0]+'</b><br><span class="mut">'+e[1]+'</span></span></label>'}).join('');
+draw('<div class="card"><div class="tag">Etapa 3 de 4: rastrear contatos</div><p>O exantema do Davi começou em <b>21/09</b>. Marque os eventos em que ele pode ter exposto outras pessoas e que entram na lista de contatos.</p>'+l+'<div id="f"></div><button class="go" id="c">Fechar a lista</button></div>');
+document.getElementById('c').onclick=function(){
+var erros=0,res=[];EV.forEach(function(e,k){var m=document.querySelector('[data-k="'+k+'"]');m.disabled=true;var acerto=(m.checked?1:0)===e[2];
+if(acerto)s.ok++;else erros++;res.push((acerto?'✔ ':'✘ ')+e[0]+': '+(e[2]?'dentro da janela.':'fora da janela.'))});
+s.h+=20+6*erros;this.remove();
+var f=document.getElementById('f');
+f.innerHTML='<div class="fb'+(erros?' bad':'')+'"><p><b>A janela de transmissão vai de 6 dias antes até 4 dias depois do início do exantema: 15/09 a 25/09.</b></p><p>'+res.join('<br>')+'</p>'+(erros?'<p>Cada erro (contato esquecido ou evento sem exposição) custou 6 horas.</p>':'')+'</div><button class="go">Ir para o bloqueio</button>';
+document.querySelector('.fill').style.width=Math.min(100,s.h/TOTAL*100)+'%';
+f.querySelector('button').onclick=function(){bloqueio(0)}}}
+function bloqueio(j){var c=CT[j];
+draw('<div class="card"><div class="tag">Etapa 4 de 4: bloqueio vacinal ('+(j+1)+' de '+CT.length+')</div><h2>'+c[0]+'</h2><div id="o"></div><div id="f"></div></div>');
+var box=document.getElementById('o'),done=false;
+BL.forEach(function(t,k){var b=document.createElement('button');b.className='opt';b.textContent=t;
+b.onclick=function(){if(done)return;done=true;var ok=k===c[1];s.h+=ok?4:8;if(ok)s.ok++;
+b.classList.add(ok?'ok':'no');box.children[c[1]].classList.add('ok');
+fim(c[2],ok,function(){j+1<CT.length?bloqueio(j+1):final()})};box.appendChild(b)})}
+function final(){var dentro=s.h<=TOTAL,pct=Math.round(s.ok/NIT*100),r;
+if(dentro&&pct>=85)r=['Detetive-chefe','Bloqueio no prazo e quase sem erro.'];
+else if(dentro)r=['Investigador','No prazo, mas com tropeços no caminho.'];
+else r=['Aprendiz','O prazo estourou. Vacine mesmo assim: o bloqueio tardio ainda protege.'];
+var b=0;try{b=(JSON.parse(localStorage.getItem(KEY))||{}).best||0;if(pct>b){b=pct;localStorage.setItem(KEY,JSON.stringify({best:pct}))}
+var d=JSON.parse(localStorage.getItem('sj:dias'))||[],t=new Date(),k=t.getFullYear()+'-'+('0'+(t.getMonth()+1)).slice(-2)+'-'+('0'+t.getDate()).slice(-2);
+if(d.indexOf(k)<0){d.push(k);localStorage.setItem('sj:dias',JSON.stringify(d))}}catch(e){}
+var desfecho=dentro?'Dois dias depois, o IgM veio reagente: sarampo confirmado. Nos 30 dias de monitoramento, nenhum contato adoeceu.':'Dois dias depois, o IgM veio reagente: sarampo confirmado. Fora do prazo, dois contatos não vacinados adoeceram na terceira semana.';
+draw('<div class="card"><div class="tag">Resultado</div><div class="big">'+r[0]+'</div><p>'+r[1]+'</p><p><b>'+s.h+'h</b> de '+TOTAL+'h usadas. <b>'+s.ok+' de '+NIT+'</b> decisões certas ('+pct+'%). Melhor marca: '+b+'%.</p><p>'+desfecho+'</p><p class="mut">Lembre: todos os contatos seguem em monitoramento por 30 dias, vacinados ou não.</p><button class="go" id="r">Jogar de novo</button></div>');
+document.getElementById('r').onclick=inicio}
+inicio()})();
+</script>
+</body>
+</html>

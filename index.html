@@ -231,6 +231,7 @@ var ESPECIAIS = [
   { href:'cruzadinha-saude-publica.html', titulo:'Cruzadinha da saúde pública', desc:'Vigilância epidemiológica na prática, Bahia e mundo, gestão do SUS e história da saúde pública.', chips:['3 desafios'], arte:'cruz', tom:'green', key:'cruzadinha-saude-publica:v5', tipo:'cruz', total:3 },
   { href:'cruzadinha-saude-do-trabalhador.html', titulo:'Cruzadinha da saúde do trabalhador', desc:'Política e rede do SUS, notificação e informação, adoecimento e ação em saúde do trabalhador.', chips:['3 desafios'], arte:'cruz', tom:'orange', key:'cruzadinha-saude-trabalhador:v2', tipo:'cruz', total:3 },
   { href:'detetive-de-surtos.html', titulo:'Detetive de surtos', desc:'Do alerta ao encerramento: investigue um surto de DTA, analise a curva e a taxa de ataque e decida as medidas.', chips:['8 etapas'], arte:'surto', tom:'violet', key:'detetive-surtos:v1', tipo:'ficha' },
+  { href:'corrida-contra-o-sarampo.html', titulo:'Corrida contra o sarampo', desc:'Notifique, colha, rastreie os contatos e faça o bloqueio vacinal antes que as 72 horas acabem.', chips:['4 etapas'], arte:'relogio', tom:'orange', key:'corrida-sarampo:v1', tipo:'ficha' },
   { href:'territorio-em-alerta.html', titulo:'Território em Alerta', desc:'Leia mapas de uma região de saúde: taxas, semáforo do LIRAa, tendência, vizinhança e cobertura vacinal.', chips:['5 missões'], arte:'mapa', tom:'rose', key:'territorio-alerta:v1', tipo:'ficha' }
 ];
 
@@ -264,6 +265,10 @@ function arteSurto(){
   o+='<line x1="26" y1="97" x2="196" y2="97" stroke="var(--tone)" stroke-width="2.5"/>';
   return svg(o);
 }
+function arteRelogio(){
+  var o='<circle cx="110" cy="58" r="38" class="bar" stroke="var(--tone)" stroke-width="3.5"/><path d="M110 58 L110 34 M110 58 L128 68" stroke="var(--tone)" stroke-width="4" stroke-linecap="round" fill="none"/><circle cx="110" cy="58" r="4" fill="var(--tone)"/>';
+  return svg(o);
+}
 function arteMapa(){
   var pol=['M34 28 L80 18 L96 44 L68 62 L36 56 Z','M80 18 L128 24 L136 52 L96 44 Z','M128 24 L178 30 L184 62 L136 52 Z',
            'M36 56 L68 62 L62 92 L32 84 Z','M68 62 L96 44 L136 52 L124 90 L62 92 Z','M136 52 L184 62 L170 94 L124 90 Z'];
@@ -273,7 +278,7 @@ function arteMapa(){
   return svg(o);
 }
 
-var ARTE={cruz:arteCruz, surto:arteSurto, mapa:arteMapa};
+var ARTE={cruz:arteCruz, surto:arteSurto, mapa:arteMapa, relogio:arteRelogio};
 
 /* ---------- leitura do progresso salvo pelos jogos (neste navegador) ---------- */
 function lerJSON(k){ try{ return JSON.parse(localStorage.getItem(k)||'null'); }catch(e){ return null; } }
