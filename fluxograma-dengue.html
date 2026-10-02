@@ -311,7 +311,9 @@ function responde(valor, botao, todasOpts, node){
   document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
   if(certo){
     botao.classList.add('correct');
-    avancaTrilha(node, valor);
+    const porque = (mode==='blitz') ? null : explicaAcerto(node, caso, valor);
+    if(porque){ mostraAcerto(porque, ()=>avancaTrilha(node, valor)); }
+    else { avancaTrilha(node, valor); }
   } else {
     botao.classList.add('wrong');
     mistakes[node]++;
@@ -346,6 +348,25 @@ function avancaTrilha(node, valor){
     stepState.node = prox;
     setTimeout(renderNode, 500);
   }
+}
+
+function mostraAcerto(texto, onNext){
+  const f = el('feedback'); f.className = 'feedback show ok';
+  const p = el('feedbackText'); p.textContent = '';
+  const b = document.createElement('b'); b.textContent = 'Por quê: ';
+  p.append(b, texto);
+  el('feedbackBtn').onclick = ()=>{ f.classList.remove('show'); onNext(); };
+  el('feedbackBtn').focus({preventScroll:true});
+  f.scrollIntoView({block:'nearest', behavior:'smooth'});
+}
+const porqueAcerto = {
+  n1:{true:"Há sinal de alarme: o paciente sai dos grupos A e B e entra no fluxo de C ou D, com reposição volêmica e internação.", false:"Sem sinal de alarme: o caso é A ou B, e o que separa os dois é sangramento, prova do laço e risco."},
+  n2:{true:"Choque, sangramento grave ou disfunção de órgão: dengue grave, Grupo D, que exige expansão rápida e UTI.", false:"Só o sinal de alarme, sem choque nem gravidade: Grupo C."},
+  n3:{true:"Sangramento espontâneo, prova do laço positiva ou grupo de risco, sem alarme: Grupo B, com hemograma e observação até o resultado.", false:"Sem sangramento, sem prova do laço positiva e sem risco: Grupo A, com tratamento ambulatorial."},
+};
+function explicaAcerto(node, caso, valor){
+  if(node==='cond') return null;
+  return porqueAcerto[node][valor];
 }
 
 function perdeVida(msg){

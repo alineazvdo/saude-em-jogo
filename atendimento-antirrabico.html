@@ -302,7 +302,9 @@ function responde(valor, botao, node){
   document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
   if(certo){
     botao.classList.add('correct');
-    avancaTrilha(node, valor);
+    const porque = (mode==='blitz') ? null : explicaAcerto(node, caso, valor);
+    if(porque){ mostraAcerto(porque, ()=>avancaTrilha(node, valor)); }
+    else { avancaTrilha(node, valor); }
   } else {
     botao.classList.add('wrong');
     mistakes[node]++;
@@ -334,6 +336,24 @@ function avancaTrilha(node, valor){
     stepState.node = prox;
     setTimeout(renderNode, 500);
   }
+}
+
+function mostraAcerto(texto, onNext){
+  const f = el('feedback'); f.className = 'feedback show ok';
+  const p = el('feedbackText'); p.textContent = '';
+  const b = document.createElement('b'); b.textContent = 'Por quê: ';
+  p.append(b, texto);
+  el('feedbackBtn').onclick = ()=>{ f.classList.remove('show'); onNext(); };
+  el('feedbackBtn').focus({preventScroll:true});
+  f.scrollIntoView({block:'nearest', behavior:'smooth'});
+}
+const porqueAcerto = {
+  n1:{true:"O ferimento se enquadra nos critérios de gravidade (região do corpo, profundidade ou extensão, mucosa ou morcego). A gravidade, junto com a possibilidade de observar o animal, define a conduta.", false:"Nenhum critério de gravidade presente: o ferimento é leve. Em ferimento leve, o soro não está indicado."},
+  n2:{true:"Cão ou gato sadio e disponível pode ser observado por 10 dias, e o que acontece com o animal nesse período orienta a conduta.", false:"Animal que desapareceu, silvestre ou morcego não pode ser observado, então a conduta passa a depender só do tipo de ferimento."},
+};
+function explicaAcerto(node, caso, valor){
+  if(node==='cond') return null;
+  return porqueAcerto[node][valor];
 }
 
 function perdeVida(msg){

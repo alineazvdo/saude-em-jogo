@@ -298,7 +298,9 @@ function responde(valor, botao, node){
   document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
   if(certo){
     botao.classList.add('correct');
-    avancaTrilha(node, valor);
+    const porque = (mode==='blitz') ? null : explicaAcerto(node, caso, valor);
+    if(porque){ mostraAcerto(porque, ()=>avancaTrilha(node, valor)); }
+    else { avancaTrilha(node, valor); }
   } else {
     botao.classList.add('wrong');
     mistakes[node]++;
@@ -330,6 +332,24 @@ function avancaTrilha(node, valor){
     stepState.node = prox;
     setTimeout(renderNode, 500);
   }
+}
+
+function mostraAcerto(texto, onNext){
+  const f = el('feedback'); f.className = 'feedback show ok';
+  const p = el('feedbackText'); p.textContent = '';
+  const b = document.createElement('b'); b.textContent = 'Por quê: ';
+  p.append(b, texto);
+  el('feedbackBtn').onclick = ()=>{ f.classList.remove('show'); onNext(); };
+  el('feedbackBtn').focus({preventScroll:true});
+  f.scrollIntoView({block:'nearest', behavior:'smooth'});
+}
+const porqueAcerto = {
+  n1:{true:"A febre já caiu: o paciente está na fase crítica ou na recuperação, e é justamente na queda da febre que os sinais de alarme costumam surgir.", false:"Febre alta ainda presente: é a fase febril."},
+  n2:{true:"A fase crítica começa na queda da febre, em geral entre o 3º e o 7º dia, e o risco de extravasamento plasmático continua.", false:"O quadro melhora, com reabsorção do líquido extravasado e diurese normal: fase de recuperação."},
+};
+function explicaAcerto(node, caso, valor){
+  if(node==='cond') return null;
+  return porqueAcerto[node][valor];
 }
 
 function perdeVida(msg){
