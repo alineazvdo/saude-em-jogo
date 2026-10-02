@@ -153,6 +153,7 @@ footer{margin-top:44px;color:var(--muted);font-size:.9rem;max-width:70ch}
     <button class="chip" data-grupo="B" aria-pressed="false">Grupo B</button>
     <button class="chip" data-grupo="C" aria-pressed="false">Grupo C</button>
     <button class="chip" data-grupo="D" aria-pressed="false">Grupo D</button>
+    <button class="chip" data-grupo="erros" aria-pressed="false">Meus erros</button>
   </div>
 
   <div class="hud">
@@ -238,12 +239,13 @@ const el = id => document.getElementById(id);
 function embaralha(a){ const b=[...a]; for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [b[i],b[j]]=[b[j],b[i]];} return b; }
 
 function montaFila(){
-  let base = grupoFiltro==='todos' ? casos : casos.filter(c=>c.grupo===grupoFiltro);
+  let base = grupoFiltro==='todos' ? casos : (grupoFiltro==='erros' ? casos.filter((c,i)=>lerErros().indexOf(i)>=0) : casos.filter(c=>c.grupo===grupoFiltro));
   fila = embaralha(base);
   idx = 0;
 }
 
 function iniciaPartida(){
+  atualizaChipErros();
   streak = 0; lives = 3; mistakes = {n1:0,n2:0,n3:0,cond:0};
   montaFila();
   el('endscreen').classList.remove('show');
@@ -334,6 +336,7 @@ function responde(valor, botao, todasOpts, node){
   } else {
     botao.classList.add('wrong');
     mistakes[node]++;
+    registraErro(caso); stepState.errou = true;
     if(mode==='blitz'){ perdeVida(explicaErro(node, caso)); return; }
     mostraFeedback(false, explicaErro(node, caso), ()=>{ document.querySelectorAll('.opt').forEach(b=>{b.disabled=false;b.classList.remove('wrong');}); });
   }
@@ -359,6 +362,7 @@ function avancaTrilha(node, valor){
   else prox = 'fim';
   if(prox==='fim'){
     clearInterval(timer);
+    if(!stepState.errou) limpaErro(stepState.caso);
     streak++;
     setTimeout(()=>{ idx++; carregaCaso(); }, 900);
   } else {
@@ -386,6 +390,13 @@ function explicaAcerto(node, caso, valor){
   return porqueAcerto[node][valor];
 }
 
+const ERROS_KEY = ('fluxograma-dengue') + ':erros';
+function lerErros(){ try{ return JSON.parse(localStorage.getItem(ERROS_KEY)||'[]'); }catch(e){ return []; } }
+function gravaErros(a){ try{ localStorage.setItem(ERROS_KEY, JSON.stringify(a)); }catch(e){} atualizaChipErros(); }
+function registraErro(caso){ const i = casos.indexOf(caso); if(i<0) return; const a = lerErros(); if(a.indexOf(i)<0){ a.push(i); gravaErros(a); } }
+function limpaErro(caso){ const i = casos.indexOf(caso); const a = lerErros(); const j = a.indexOf(i); if(j>=0){ a.splice(j,1); gravaErros(a); } }
+function atualizaChipErros(){ const b = document.querySelector('[data-grupo="erros"]'); if(b) b.textContent = 'Meus erros (' + lerErros().length + ')'; }
+
 function perdeVida(msg){
   clearInterval(timer);
   lives--; atualizaLives(); streak = 0;
@@ -409,7 +420,7 @@ function fimDePartida(zerouVidas){
   el('endscreen').classList.add('show');
   el('endSummary').textContent = zerouVidas
     ? `Vidas esgotadas no Blitz. Sequência perfeita: ${streak}.`
-    : `Casos deste filtro encerrados. Sequência perfeita: ${streak}.`;
+    : (grupoFiltro==='erros' && !fila.length ? 'Você não tem erros guardados. Jogue as outras rodadas e os casos errados aparecem aqui.' : `Casos deste filtro encerrados. Sequência perfeita: ${streak}.`);
   const total = Object.values(mistakes).reduce((a,b)=>a+b,0) || 1;
   const nomes = {n1:'Nó: "tem sinal de alarme?"', n2:'Nó: "tem choque/gravidade?"', n3:'Nó: "tem sangramento/risco?"', cond:'Escolha da conduta'};
   const heat = el('heat'); heat.innerHTML='';

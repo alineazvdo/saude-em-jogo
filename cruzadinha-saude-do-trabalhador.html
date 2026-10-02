@@ -395,7 +395,14 @@ function doReset(){
   save(); updateTime(); updateView(); renderTabs();
 }
 
-function winNow(){ solved=true; stopTimer(); save(); showWin(true); renderTabs(); setStatus('Desafio concluído em '+fmt(elapsed)+(hints?' (com '+hints+(hints===1?' palavra revelada)':' palavras reveladas)'):'.')); }
+function registraDia(){
+  try{
+    var d=new Date(), k=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    var dias=JSON.parse(localStorage.getItem('sj:dias')||'[]');
+    if(dias.indexOf(k)===-1){ dias.push(k); localStorage.setItem('sj:dias',JSON.stringify(dias.slice(-90))); }
+  }catch(e){}
+}
+function winNow(){ registraDia(); solved=true; stopTimer(); save(); showWin(true); renderTabs(); setStatus('Desafio concluído em '+fmt(elapsed)+(hints?' (com '+hints+(hints===1?' palavra revelada)':' palavras reveladas)'):'.')); }
 function showWin(animate){
   $('#winTime').textContent=fmt(elapsed);
   $('#winNext').textContent=(pi<PUZZLES.length-1)?'Próximo desafio':'Voltar ao Desafio 1';

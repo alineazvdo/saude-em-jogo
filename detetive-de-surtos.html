@@ -368,7 +368,14 @@ function steps(i){ var ul=h('ul',{class:'steps','aria-label':'Progresso'}); for(
 
 var KEY='detetive-surtos:v1';
 function best(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}').best||0; }catch(e){ return 0; } }
-function saveBest(v){ try{ if(v>best()) localStorage.setItem(KEY,JSON.stringify({best:v})); }catch(e){} }
+function registraDia(){
+  try{
+    var d=new Date(), k=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    var dias=JSON.parse(localStorage.getItem('sj:dias')||'[]');
+    if(dias.indexOf(k)===-1){ dias.push(k); localStorage.setItem('sj:dias',JSON.stringify(dias.slice(-90))); }
+  }catch(e){}
+}
+function saveBest(v){ registraDia(); try{ if(v>best()) localStorage.setItem(KEY,JSON.stringify({best:v})); }catch(e){} }
 
 /* =====================  PONTUAÇÃO  ===================== */
 function scoreQuestion(q, chosen){
