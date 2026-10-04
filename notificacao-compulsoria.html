@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="light dark">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Notificação compulsória: prazo e fluxo | Saúde em jogo</title>
+<meta name="description" content="Imediata, semanal ou negativa: qual o prazo, quem notifica e para quem, segundo as normas de notificação compulsória.">
+<meta name="theme-color" content="#F6F1E7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1A14" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://alineazvdo.github.io/saude-em-jogo/notificacao-compulsoria.html">
+<meta property="og:site_name" content="Saúde em jogo">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Notificação compulsória: prazo e fluxo | Saúde em jogo">
+<meta property="og:description" content="Imediata, semanal ou negativa: qual o prazo, quem notifica e para quem, segundo as normas de notificação compulsória.">
+<meta property="og:image" content="https://alineazvdo.github.io/saude-em-jogo/social.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Saúde em jogo, escrito em quadrinhos de cruzadinha, com o Ú em amarelo">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" sizes="48x48" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+/* Saúde em jogo: tema compartilhado dos jogos de fluxo */
+:root{
+  color-scheme:light;
+  --on-fill:#FFFFFF;
+  --bg:#F6F1E7; --surface:#FFFFFF; --ink:#22392E; --muted:#647062; --line:#D5CBB4; --edge:#22392E; --emph:#22392E;
+  --cell:#FFFFFF; --sel:#FFD23F; --sel-ink:#22392E; --focus:#0B5FA5;
+  --t-green:#0E7C66; --t-orange:#B4470A; --t-blue:#1F5FA8; --t-violet:#5B3FB4; --t-rose:#B0356B; --t-soon:#75806F;
+  --a-bg:#0E7C66; --b-bg:#1F5FA8; --c-bg:#B4470A; --d-bg:#B0356B;
+  --ok:#0E7C66; --bad:#B0356B;
+  --display:'Bricolage Grotesque','Trebuchet MS','Segoe UI',system-ui,sans-serif;
+  --body:'Atkinson Hyperlegible','Segoe UI',Verdana,system-ui,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --on-fill:#16241B;
+    --bg:#0F1A14; --surface:#182A20; --ink:#F1EBDD; --muted:#B3BCA9; --line:#33483B; --edge:#6F8B78; --emph:#FFD23F;
+    --cell:#1D3327; --sel:#FFD23F; --sel-ink:#16241B; --focus:#7CC0FF;
+    --t-green:#3FCFAA; --t-orange:#FF9A5C; --t-blue:#7CB7FF; --t-violet:#B79CFF; --t-rose:#FF8FBB; --t-soon:#8D9885;
+    --a-bg:#3FCFAA; --b-bg:#7CB7FF; --c-bg:#FF9A5C; --d-bg:#FF8FBB;
+    --ok:#3FCFAA; --bad:#FF8FBB;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --on-fill:#16241B;
+  --bg:#0F1A14; --surface:#182A20; --ink:#F1EBDD; --muted:#B3BCA9; --line:#33483B; --edge:#6F8B78; --emph:#FFD23F;
+  --cell:#1D3327; --sel:#FFD23F; --sel-ink:#16241B; --focus:#7CC0FF;
+  --t-green:#3FCFAA; --t-orange:#FF9A5C; --t-blue:#7CB7FF; --t-violet:#B79CFF; --t-rose:#FF8FBB; --t-soon:#8D9885;
+  --a-bg:#3FCFAA; --b-bg:#7CB7FF; --c-bg:#FF9A5C; --d-bg:#FF8FBB;
+  --ok:#3FCFAA; --bad:#FF8FBB;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+button{font-family:inherit}
+
+.app{max-width:980px;margin:0 auto;padding:22px 16px 64px}
+.back{margin:0 0 14px;font-size:.95rem}
+.back a{font-weight:700}
+
+.brand{display:flex;flex-wrap:wrap;align-items:center;gap:18px 22px;margin-bottom:6px}
+.tiles{display:flex;gap:5px}
+.tile{width:clamp(36px,9vw,52px);aspect-ratio:1;display:grid;place-items:center;background:var(--cell);border:2px solid var(--edge);border-radius:5px;font-family:var(--display);font-weight:800;font-size:clamp(1.15rem,4.6vw,1.7rem);line-height:1}
+.tile.hl{background:var(--sel);color:var(--sel-ink);border-color:var(--emph)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(1.7rem,5.8vw,2.6rem);line-height:1.05;letter-spacing:-0.02em;margin:14px 0 0}
+.lede{margin:12px 0 0;color:var(--muted);max-width:62ch;font-size:1.05rem}
+
+.modebar{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 4px}
+.chip{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:8px 16px;font-family:var(--display);font-weight:700;font-size:.9rem;cursor:pointer}
+.chip[aria-pressed="true"]{border-color:var(--emph);background:var(--sel);color:var(--sel-ink)}
+.hint{margin:8px 0 26px;color:var(--muted);font-size:.9rem;max-width:62ch}
+
+.hud{display:flex;flex-wrap:wrap;gap:10px 24px;align-items:center;margin-bottom:18px;font-family:var(--display);font-weight:700;font-size:.95rem}
+.hud b{font-weight:800}
+.hud .timer{color:var(--t-orange)}
+.hud .lives{letter-spacing:2px}
+
+.trail{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.crumb{border:2px solid var(--line);border-radius:10px;padding:6px 12px;font-size:.85rem;background:var(--surface);color:var(--muted)}
+.crumb b{color:var(--ink)}
+
+.board{display:grid;grid-template-columns:1fr;gap:18px}
+@media (min-width:760px){ .board{grid-template-columns:0.85fr 1.15fr} }
+
+.card{background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:18px 20px}
+.card h2{font-family:var(--display);font-weight:800;font-size:1rem;margin:0 0 10px;text-transform:none}
+.paciente dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:5px 10px;font-size:.92rem}
+.paciente dt{color:var(--muted)}
+.paciente dd{margin:0}
+
+.node h2{font-size:1.15rem;margin-bottom:14px}
+.opts{display:grid;gap:10px}
+.opt{border:2px solid var(--edge);background:var(--cell);color:var(--ink);border-radius:12px;padding:13px 16px;font-size:1rem;text-align:left;cursor:pointer;line-height:1.35}
+.opt:hover{background:var(--sel);color:var(--sel-ink);border-color:var(--emph)}
+.opt.correct{background:var(--ok);border-color:var(--ok);color:var(--on-fill)}
+.opt.wrong{background:var(--bad);border-color:var(--bad);color:var(--on-fill)}
+
+.feedback{margin-top:14px;border-radius:12px;padding:12px 14px;font-size:.95rem;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:color-mix(in srgb, var(--ok) 16%, transparent);border:2px solid var(--ok)}
+.feedback.bad{background:color-mix(in srgb, var(--bad) 16%, transparent);border:2px solid var(--bad)}
+.feedback button{margin-top:10px;border:none;background:var(--edge);color:var(--bg);border-radius:8px;padding:8px 14px;font-weight:700;cursor:pointer}
+
+.outcome{border-radius:12px;padding:14px 16px;margin-bottom:14px;color:var(--on-fill);font-family:var(--display)}
+.outcome.a{background:var(--a-bg)} .outcome.b{background:var(--b-bg)} .outcome.c{background:var(--c-bg)} .outcome.d{background:var(--d-bg)}
+.outcome b{display:block;font-size:1.1rem;font-weight:800}
+
+.endscreen{display:none}
+.endscreen.show{display:block}
+.heat{display:grid;gap:10px;margin:14px 0 20px}
+.heatrow{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;font-size:.9rem}
+.bar{background:var(--line);border-radius:8px;height:10px;overflow:hidden}
+.bar > span{display:block;height:100%;background:var(--bad)}
+.cta{border:none;background:var(--emph);color:var(--bg);border-radius:10px;padding:12px 20px;font-family:var(--display);font-weight:800;font-size:1rem;cursor:pointer}
+
+footer{margin-top:44px;color:var(--muted);font-size:.9rem;max-width:70ch}
+
+</style>
+</head>
+<body>
+<div class="app">
+  <p class="back"><a href="index.html">‹ Saúde em jogo</a></p>
+  <div class="brand">
+    <div class="tiles" aria-hidden="true"><span class="tile">N</span><span class="tile hl">C</span></div>
+  </div>
+  <h1>Notificação compulsória: prazo e fluxo</h1>
+  <p class="lede">Cada caso tem duas perguntas: primeiro, qual a modalidade de notificação; depois, o prazo, quem notifica ou para quem. O jogo trata das regras gerais e de poucos agravos, não da lista inteira.</p>
+
+  <div class="modebar" role="group" aria-label="Modo de jogo">
+    <button class="chip" data-mode="treino" aria-pressed="true">Treino livre</button>
+    <button class="chip" data-mode="blitz" aria-pressed="false">Blitz (misturado, com tempo)</button>
+  </div>
+  <p class="hint" id="modeHint">Sem tempo, tentativas ilimitadas em cada nó.</p>
+
+  <div class="modebar" id="groupBar" role="group" aria-label="Filtrar por desfecho"></div>
+
+  <div class="hud">
+    <span><b id="hudCaso">Caso 1</b> de <span id="hudTotal">8</span></span>
+    <span>Sequência perfeita: <b id="hudStreak">0</b></span>
+    <span id="hudTimerWrap" style="display:none">Tempo: <b class="timer" id="hudTimer">40</b>s</span>
+    <span id="hudLivesWrap" style="display:none">Vidas: <b class="lives" id="hudLives">♥♥♥</b></span>
+  </div>
+
+  <div class="trail" id="trail"></div>
+
+  <div class="board" id="board">
+    <div class="card paciente">
+      <h2>Caso</h2>
+      <dl id="pacienteInfo"></dl>
+    </div>
+    <div class="card node" id="nodeCard">
+      <div id="outcomeBanner"></div>
+      <h2 id="questionText"></h2>
+      <div class="opts" id="opts"></div>
+      <div class="feedback" id="feedback">
+        <p id="feedbackText"></p>
+        <button id="feedbackBtn">Continuar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="endscreen" id="endscreen">
+    <div class="card">
+      <h2>Mapa mestre</h2>
+      <p id="endSummary" style="color:var(--muted)"></p>
+      <div class="heat" id="heat"></div>
+      <button class="cta" id="playAgain">Jogar de novo</button>
+    </div>
+  </div>
+
+  <footer>
+    <p>Base: Portaria de Consolidação GM/MS nº 4/2017 (Anexo V), com as definições de notificação imediata, semanal e negativa, e Portaria GM/MS nº 217/2023. A lista nacional foi alterada por portarias de 2024 a 2026 que não foram lidas na íntegra: confira os agravos e as periodicidades na lista vigente. Casos fictícios. Progresso salvo só neste navegador.</p>
+  </footer>
+</div>
+
+<script>
+const C = {"storageKey": "notificacao-compulsoria", "start": "n1", "condQ": "", "condHeat": "", "groups": [{"id": "Imed", "chip": "Imediata", "label": "Imediata", "color": "a", "conduta": ""}, {"id": "Sem", "chip": "Semanal", "label": "Semanal", "color": "a", "conduta": ""}, {"id": "Fluxo", "chip": "Negativa e quem notifica", "label": "Negativa e quem notifica", "color": "a", "conduta": ""}], "nodes": {"n1": {"multi": "e1", "next": "n2", "heat": "Pergunta 1"}, "n2": {"multi": "e2", "next": "fim", "heat": "Pergunta 2"}}, "casos": [{"grupo": "Imed", "dados": {"Situação": "Um trabalhador sofre um acidente de trabalho sem gravidade", "Dados": "Foi atendido na UPA, com alta no mesmo dia"}, "e1": {"q": "Qual a modalidade de notificação de acidente de trabalho na lista nacional?", "ops": ["Imediata, em até 24 horas", "Semanal", "Negativa", "Facultativa, só se for grave"], "ok": 0, "rot": "Imediata", "why": "Desde a Portaria GM/MS 217/2023, qualquer acidente de trabalho entra na lista, com notificação em até 24 horas, seja qual for a gravidade."}, "e2": {"q": "Que portaria passou a exigir a notificação de qualquer acidente de trabalho, e não só dos graves?", "ops": ["Portaria GM/MS 217/2023", "Portaria GM/MS 204/2016", "Portaria GM/MS 1.271/2014", "Portaria GM/MS 777/2004"], "ok": 0, "rot": "Portaria 217/2023", "why": "A Portaria 217/2023 trocou \"acidente de trabalho: grave, fatal e em crianças e adolescentes\" por \"acidente de trabalho\"."}}, {"grupo": "Sem", "dados": {"Situação": "Uma técnica de enfermagem se fura com agulha usada, com sangue de paciente"}, "e1": {"q": "Qual a modalidade de notificação do acidente de trabalho com exposição a material biológico?", "ops": ["Semanal", "Imediata, em até 24 horas", "Negativa", "Não é de notificação compulsória"], "ok": 0, "rot": "Semanal", "why": "O acidente de trabalho com exposição a material biológico segue como notificação semanal na lista nacional."}, "e2": {"q": "A quem é feita a notificação semanal?", "ops": ["À Secretaria Municipal de Saúde do local de atendimento", "Direto ao Ministério da Saúde", "Somente à empresa", "Ao Conselho de Saúde"], "ok": 0, "rot": "À secretaria municipal", "why": "A notificação semanal é feita à Secretaria Municipal de Saúde do local de atendimento, e o compartilhamento com as demais esferas segue o fluxo da SVS/MS."}}, {"grupo": "Fluxo", "dados": {"Situação": "Um hospital não identificou, durante a semana epidemiológica, nenhum caso de doença, agravo ou evento da lista"}, "e1": {"q": "Que comunicação a norma prevê nesse caso?", "ops": ["Notificação negativa", "Notificação imediata", "Notificação semanal de caso", "Nenhuma comunicação é devida"], "ok": 0, "rot": "Notificação negativa", "why": "A notificação negativa é a comunicação semanal de que nenhum caso da lista foi identificado."}, "e2": {"q": "Quem faz essa comunicação e com que frequência?", "ops": ["O responsável pelo estabelecimento, toda semana", "O médico, uma vez por mês", "O gestor estadual, uma vez por ano", "A vigilância, só durante surtos"], "ok": 0, "rot": "Responsável pelo estabelecimento, toda semana", "why": "É feita pelo responsável pelo estabelecimento de saúde à autoridade de saúde, semanalmente."}}, {"grupo": "Imed", "dados": {"Situação": "Um óbito com suspeita de febre de chikungunya é atendido em uma unidade de saúde"}, "e1": {"q": "Qual a modalidade de notificação?", "ops": ["Imediata, em até 24 horas", "Semanal", "Negativa", "Só depois da confirmação laboratorial"], "ok": 0, "rot": "Imediata", "why": "O óbito com suspeita de chikungunya consta como notificação imediata. Notifica-se na suspeita, sem esperar o exame."}, "e2": {"q": "A autoridade que recebe a notificação imediata deve informar as demais esferas de gestão em até:", "ops": ["24 horas", "48 horas", "72 horas", "7 dias"], "ok": 0, "rot": "24 horas", "why": "A autoridade de saúde que recebe a notificação imediata a repassa, em até 24 horas, às demais esferas de gestão do SUS."}}, {"grupo": "Imed", "dados": {"Situação": "Um médico atende a suspeita de um agravo de notificação imediata", "Dados": "O sistema de informação está fora do ar"}, "e1": {"q": "Como a norma manda comunicar?", "ops": ["Pelo meio de comunicação mais rápido disponível", "Esperar o sistema voltar para digitar a ficha", "Aguardar o fechamento da semana epidemiológica", "Enviar ofício pelo correio"], "ok": 0, "rot": "Meio mais rápido", "why": "A notificação imediata é feita pelo meio de comunicação mais rápido disponível, como o telefone, sem esperar o sistema."}, "e2": {"q": "Em que prazo, a partir do conhecimento do caso?", "ops": ["Até 24 horas", "Até 7 dias", "Até 48 horas", "Até 15 dias"], "ok": 0, "rot": "Até 24 horas", "why": "A notificação imediata tem prazo de até 24 horas a partir do conhecimento do caso."}}, {"grupo": "Fluxo", "dados": {"Situação": "Uma clínica particular atende uma pessoa com agravo da lista nacional"}, "e1": {"q": "A clínica precisa notificar?", "ops": ["Sim: a lista vale para serviços públicos e privados", "Não: só os serviços públicos notificam", "Só se a pessoa for usuária do SUS", "Só se houver surto"], "ok": 0, "rot": "Sim, serviços públicos e privados", "why": "A lista nacional vale para os serviços de saúde públicos e privados em todo o território nacional."}, "e2": {"q": "Quem é obrigado a notificar?", "ops": ["Os profissionais de saúde e os responsáveis pelos serviços, públicos ou privados", "Somente o médico", "Somente o gestor municipal", "Somente o laboratório"], "ok": 0, "rot": "Profissionais e responsáveis pelos serviços", "why": "A notificação é obrigatória para os profissionais de saúde e para os responsáveis pelos estabelecimentos de saúde, públicos ou privados."}}, {"grupo": "Sem", "dados": {"Situação": "Um profissional atende, na segunda-feira, um caso de agravo de notificação semanal"}, "e1": {"q": "Qual o prazo máximo da notificação semanal, a partir do conhecimento do caso?", "ops": ["Até 7 dias", "Até 24 horas", "Até 15 dias", "Até 30 dias"], "ok": 0, "rot": "Até 7 dias", "why": "A notificação semanal é feita em até 7 dias a partir do conhecimento do caso."}, "e2": {"q": "Se o agravo fosse de notificação imediata, qual seria o prazo?", "ops": ["Até 24 horas", "Até 48 horas", "Até 72 horas", "Até 7 dias"], "ok": 0, "rot": "Até 24 horas", "why": "A notificação imediata é de até 24 horas."}}]};
+/* Saúde em jogo: motor compartilhado dos jogos de fluxo. Cada página define antes a constante C (casos, nós e desfechos). */
+const casos = C.casos;
+const groups = {}; C.groups.forEach(g=>{ groups[g.id]=g; });
+const condTextos = [...new Set(C.groups.map(g=>g.conduta))];
+
+let mode = 'treino';
+let grupoFiltro = 'todos';
+let fila = [];
+let idx = 0;
+let streak = 0;
+let lives = 3;
+let timer = null, timeLeft = 40;
+let mistakes = {};
+let stepState = null;
+
+const el = id => document.getElementById(id);
+function embaralha(a){ const b=[...a]; for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [b[i],b[j]]=[b[j],b[i]];} return b; }
+
+function zeraErros(){ mistakes = {}; Object.keys(C.nodes).forEach(k=>{ mistakes[k]=0; }); mistakes.cond = 0; }
+
+function montaChips(){
+  const bar = el('groupBar');
+  bar.innerHTML = '<button class="chip" data-grupo="todos" aria-pressed="true">Todos</button>';
+  C.groups.forEach(g=>{ bar.innerHTML += `<button class="chip" data-grupo="${g.id}" aria-pressed="false">${g.chip}</button>`; });
+  bar.innerHTML += '<button class="chip" data-grupo="erros" aria-pressed="false">Meus erros</button>';
+  document.querySelectorAll('[data-grupo]').forEach(b=>{
+    b.onclick = ()=>{
+      document.querySelectorAll('[data-grupo]').forEach(x=>x.setAttribute('aria-pressed','false'));
+      b.setAttribute('aria-pressed','true');
+      grupoFiltro = b.dataset.grupo;
+      iniciaPartida();
+    };
+  });
+}
+
+function montaFila(){
+  const base = grupoFiltro==='todos' ? casos : (grupoFiltro==='erros' ? casos.filter((c,i)=>lerErros().indexOf(i)>=0) : casos.filter(c=>c.grupo===grupoFiltro));
+  fila = embaralha(base);
+  idx = 0;
+}
+
+function iniciaPartida(){
+  atualizaChipErros();
+  streak = 0; lives = 3; zeraErros();
+  montaFila();
+  el('endscreen').classList.remove('show');
+  el('board').style.display='grid';
+  document.querySelector('.hud').style.display='flex';
+  el('trail').style.display='flex';
+  el('hudLivesWrap').style.display = mode==='blitz' ? 'inline' : 'none';
+  el('hudTimerWrap').style.display = mode==='blitz' ? 'inline' : 'none';
+  atualizaLives();
+  carregaCaso();
+}
+
+function atualizaLives(){ el('hudLives').textContent = '♥'.repeat(Math.max(lives,0)) + '♡'.repeat(Math.max(3-lives,0)); }
+
+function carregaCaso(){
+  clearInterval(timer);
+  if(idx >= fila.length){ return fimDePartida(); }
+  const caso = fila[idx];
+  el('hudCaso').textContent = 'Caso ' + (idx+1);
+  el('hudTotal').textContent = fila.length;
+  el('hudStreak').textContent = streak;
+  const dl = el('pacienteInfo'); dl.innerHTML='';
+  for(const [k,v] of Object.entries(caso.dados)){ dl.innerHTML += `<dt>${k}</dt><dd>${v}</dd>`; }
+  el('trail').innerHTML='';
+  el('outcomeBanner').innerHTML='';
+  stepState = {caso, node:(C.start||'n1')};
+  if(mode==='blitz'){
+    timeLeft = 40;
+    el('hudTimer').textContent = timeLeft;
+    timer = setInterval(()=>{
+      timeLeft--; el('hudTimer').textContent = timeLeft;
+      if(timeLeft<=0){ clearInterval(timer); perdeVida('O tempo acabou antes de fechar a conduta.'); }
+    },1000);
+  }
+  renderNode();
+}
+
+function renderNode(){
+  el('feedback').classList.remove('show');
+  const {caso, node} = stepState;
+  let pergunta, opts;
+  if(node==='cond'){
+    const g = groups[caso.grupo];
+    el('outcomeBanner').innerHTML = `<div class="outcome ${g.color}"><b>${g.label}</b></div>`;
+    pergunta = C.condQ;
+    opts = embaralha(condTextos).map(t=>({t, v:t===g.conduta}));
+  } else {
+    const n = C.nodes[node];
+    if(n.multi){ const e = caso[n.multi]; pergunta = e.q; opts = embaralha(e.ops.map((t,i)=>({t, v:i===e.ok}))); }
+    else { pergunta = n.q; opts = [{t:n.yes, v:true},{t:n.no, v:false}]; }
+  }
+  el('questionText').textContent = pergunta;
+  const optsEl = el('opts'); optsEl.innerHTML='';
+  opts.forEach(o=>{
+    const b = document.createElement('button');
+    b.className='opt'; b.textContent=o.t;
+    b.onclick = ()=> responde(o.v, b, node);
+    optsEl.appendChild(b);
+  });
+}
+
+function responde(valor, botao, node){
+  const {caso} = stepState;
+  const certo = node==='cond' ? valor===true : (C.nodes[node].multi ? valor===true : valor===!!caso[C.nodes[node].field]);
+  document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+  if(certo){
+    botao.classList.add('correct');
+    const porque = (mode==='blitz') ? null : explicaAcerto(node, caso, valor);
+    if(porque){ mostraAcerto(porque, ()=>avancaTrilha(node, valor)); }
+    else { avancaTrilha(node, valor); }
+  } else {
+    botao.classList.add('wrong');
+    mistakes[node]++;
+    registraErro(caso); stepState.errou = true;
+    if(mode==='blitz'){ perdeVida(explicaErro(node, caso)); return; }
+    mostraFeedback(false, explicaErro(node, caso), ()=>{ document.querySelectorAll('.opt').forEach(b=>{b.disabled=false;b.classList.remove('wrong');}); });
+  }
+}
+
+function explicaErro(node, caso){
+  if(node==='cond') return 'Essa conduta é de outro desfecho. Revise antes de continuar.';
+  const n = C.nodes[node];
+  if(n.multi){ const e = caso[n.multi]; return 'A resposta certa é: ' + e.ops[e.ok] + '. ' + e.why; }
+  return caso[n.field] ? n.errYes : n.errNo;
+}
+
+function avancaTrilha(node, valor){
+  let rotulo, prox;
+  if(node==='cond'){ rotulo = 'Conduta correta'; prox = 'fim'; }
+  else {
+    const n = C.nodes[node];
+    if(n.multi){ rotulo = caso_atual().e_rot(n.multi); prox = n.next; }
+    else { rotulo = valor ? n.trailYes : n.trailNo; prox = valor ? n.yesNext : n.noNext; }
+  }
+  el('trail').innerHTML += `<span class="crumb"><b>${rotulo}</b></span>`;
+  if(prox==='fim'){
+    clearInterval(timer);
+    if(!stepState.errou) limpaErro(stepState.caso);
+    streak++;
+    setTimeout(()=>{ idx++; carregaCaso(); }, 900);
+  } else {
+    stepState.node = prox;
+    setTimeout(renderNode, 500);
+  }
+}
+
+function mostraAcerto(texto, onNext){
+  const f = el('feedback'); f.className = 'feedback show ok';
+  const p = el('feedbackText'); p.textContent = '';
+  const b = document.createElement('b'); b.textContent = 'Por quê: ';
+  p.append(b, texto);
+  el('feedbackBtn').onclick = ()=>{ f.classList.remove('show'); onNext(); };
+  el('feedbackBtn').focus({preventScroll:true});
+  f.scrollIntoView({block:'nearest', behavior:'smooth'});
+}
+function explicaAcerto(node, caso, valor){
+  if(node==='cond') return null;
+  const n = C.nodes[node];
+  if(n.multi) return caso[n.multi].why;
+  return valor ? (n.okYes || n.errYes) : (n.okNo || n.errNo);
+}
+
+const ERROS_KEY = (C.storageKey) + ':erros';
+function lerErros(){ try{ return JSON.parse(localStorage.getItem(ERROS_KEY)||'[]'); }catch(e){ return []; } }
+function gravaErros(a){ try{ localStorage.setItem(ERROS_KEY, JSON.stringify(a)); }catch(e){} atualizaChipErros(); }
+function registraErro(caso){ const i = casos.indexOf(caso); if(i<0) return; const a = lerErros(); if(a.indexOf(i)<0){ a.push(i); gravaErros(a); } }
+function limpaErro(caso){ const i = casos.indexOf(caso); const a = lerErros(); const j = a.indexOf(i); if(j>=0){ a.splice(j,1); gravaErros(a); } }
+function atualizaChipErros(){ const b = document.querySelector('[data-grupo="erros"]'); if(b) b.textContent = 'Meus erros (' + lerErros().length + ')'; }
+
+function caso_atual(){ const c = stepState.caso; return {e_rot:(k)=>c[k].rot}; }
+function perdeVida(msg){
+  clearInterval(timer);
+  lives--; atualizaLives(); streak = 0;
+  mostraFeedback(false, msg, ()=>{
+    if(lives<=0){ fimDePartida(true); }
+    else { idx++; carregaCaso(); }
+  });
+}
+
+function mostraFeedback(ok, texto, onNext){
+  const f = el('feedback'); f.classList.add('show'); f.className = 'feedback show ' + (ok?'ok':'bad');
+  el('feedbackText').textContent = texto;
+  el('feedbackBtn').onclick = ()=>{ f.classList.remove('show'); onNext(); };
+}
+
+function fimDePartida(zerouVidas){
+  clearInterval(timer);
+  el('board').style.display='none';
+  document.querySelector('.hud').style.display='none';
+  el('trail').style.display='none';
+  el('endscreen').classList.add('show');
+  el('endSummary').textContent = zerouVidas
+    ? `Vidas esgotadas no Blitz. Sequência perfeita: ${streak}.`
+    : (grupoFiltro==='erros' && !fila.length ? 'Você não tem erros guardados. Jogue as outras rodadas e os casos errados aparecem aqui.' : `Casos deste filtro encerrados. Sequência perfeita: ${streak}.`);
+  const total = Object.values(mistakes).reduce((a,b)=>a+b,0) || 1;
+  const nomes = {}; Object.keys(C.nodes).forEach(k=>{ nomes[k]=C.nodes[k].heat; }); nomes.cond = C.condHeat;
+  const heat = el('heat'); heat.innerHTML='';
+  Object.entries(mistakes).forEach(([k,v])=>{
+    const pct = Math.round((v/total)*100);
+    heat.innerHTML += `<div class="heatrow"><span>${nomes[k]}: ${v} erro(s)</span><div class="bar"><span style="width:${v?Math.max(pct,8):0}%"></span></div></div>`;
+  });
+  salvaRecorde(zerouVidas);
+}
+
+function salvaRecorde(zerouVidas){
+  try{
+    const KEY = C.storageKey;
+    const atual = JSON.parse(localStorage.getItem(KEY)||'{}');
+    const melhor = Math.max(atual.melhorSequencia||0, streak);
+    const completo = !zerouVidas && grupoFiltro==='todos';
+    const erros = Object.values(mistakes).reduce((a,b)=>a+b,0);
+    const novo = {melhorSequencia:melhor, s1:!!atual.s1, s2:!!atual.s2, s3:!!atual.s3};
+    if(completo){
+      novo.s1 = true;
+      if(erros===0) novo.s2 = true;
+      if(mode==='blitz') novo.s3 = true;
+    }
+    localStorage.setItem(KEY, JSON.stringify(novo));
+    const d = new Date();
+    const hoje = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    const dias = JSON.parse(localStorage.getItem('sj:dias')||'[]');
+    if(dias.indexOf(hoje)===-1){ dias.push(hoje); localStorage.setItem('sj:dias', JSON.stringify(dias.slice(-90))); }
+  }catch(e){}
+}
+
+document.querySelectorAll('[data-mode]').forEach(b=>{
+  b.onclick = ()=>{
+    document.querySelectorAll('[data-mode]').forEach(x=>x.setAttribute('aria-pressed','false'));
+    b.setAttribute('aria-pressed','true');
+    mode = b.dataset.mode;
+    el('modeHint').textContent = mode==='blitz'
+      ? 'Casos de todos os desfechos, misturados. 40s por caso, 3 vidas, qualquer erro custa uma vida.'
+      : 'Sem tempo, tentativas ilimitadas em cada nó.';
+    el('groupBar').style.display = mode==='blitz' ? 'none' : 'flex';
+    if(mode==='blitz') grupoFiltro='todos';
+    iniciaPartida();
+  };
+});
+el('playAgain').onclick = iniciaPartida;
+
+montaChips();
+iniciaPartida();
+</script>
+</body>
+</html>
