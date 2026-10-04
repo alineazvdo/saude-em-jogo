@@ -201,6 +201,7 @@ var FONTE_HANS = 'Protocolo Clínico e Diretrizes Terapêuticas da Hanseníase (
 var FONTE_TB = 'Manual de Recomendações para o Controle da Tuberculose no Brasil e Registro de pessoas com tuberculose e acompanhamento do tratamento (Ministério da Saúde, 2023)';
 var FONTE_FICHA_DENGUE = 'Ficha de Investigação de Dengue e Febre de Chikungunya (SVS/Sinan); Dengue: diagnóstico e manejo clínico (Ministério da Saúde, 6ª ed., 2024); prazo de encerramento de 60 dias';
 var FONTE_ESC = 'Protocolo Clínico e Diretrizes Terapêuticas dos Acidentes Escorpiônicos (Ministério da Saúde, 2026)';
+var FONTE_PEP = 'Protocolo Clínico e Diretrizes Terapêuticas para Profilaxia Pós-Exposição (PEP) de Risco à Infecção pelo HIV, IST e Hepatites Virais (Portaria SCTIE/MS nº 54/2021), conferido com o resumo da Conitec';
 var FONTE_NEXO = 'Doenças relacionadas ao trabalho: manual de procedimentos para os serviços de saúde (Ministério da Saúde e OPAS, 2001)';
 
 var LINHAS = [
@@ -221,7 +222,8 @@ var LINHAS = [
     { href:'tuberculose-tipo-entrada.html', passo:'Registrar', titulo:'Tuberculose: tipo de entrada', desc:'Caso novo, recidiva, reingresso após abandono ou transferência.', chips:['8 casos'], key:'tuberculose-tipo-entrada', tipo:'fluxo', conf:FONTE_TB },
     { href:'hanseniase-classificar-tratar.html', passo:'Classificar', titulo:'Hanseníase: classificar e tratar', desc:'Paucibacilar ou multibacilar, com ou sem incapacidade, e o esquema.', chips:['8 casos'], key:'hanseniase-classificar-tratar', tipo:'fluxo', conf:false }
   ]},
-  { id:'trab', nome:'Saúde do trabalhador', tom:'green', sub:'Da notificação do acidente ao nexo com o trabalho.', estacoes:[
+  { id:'trab', nome:'Saúde do trabalhador', tom:'green', sub:'Do atendimento do acidente ao nexo com o trabalho.', estacoes:[
+    { href:'pep-material-biologico.html', passo:'Atender', titulo:'Acidente com material biológico: PEP do HIV', desc:'Material de risco, tipo de exposição, prazo de 72 horas e a situação da pessoa-fonte: a PEP está indicada?', chips:['8 casos'], key:'pep-material-biologico', tipo:'fluxo', conf:FONTE_PEP },
     { href:'ficha-sinan-acidente-trabalho.html', passo:'Notificar', titulo:'Ficha do SINAN em jogo: acidente de trabalho grave', desc:'Ocupação, CNAE, CAT e o que a ficha incompleta faz com a vigilância.', chips:['5 casos'], key:'ficha-sinan-acidente-trabalho:v1', tipo:'ficha', conf:false },
     { href:'nexo-ou-nao.html', passo:'Relacionar', titulo:'Nexo ou não?', desc:'Ocupação, exposição e diagnóstico: classifique a relação com o trabalho pelo critério de Schilling.', chips:['8 casos'], key:'nexo-ou-nao', tipo:'fluxo', conf:FONTE_NEXO }
   ]}

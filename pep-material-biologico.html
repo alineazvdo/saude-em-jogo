@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="light dark">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Acidente com material biológico: PEP do HIV | Saúde em jogo</title>
+<meta name="description" content="Decida se a profilaxia pós-exposição ao HIV está indicada após um acidente com material biológico, seguindo os quatro passos do Ministério da Saúde.">
+<meta name="theme-color" content="#F6F1E7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1A14" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://alineazvdo.github.io/saude-em-jogo/pep-material-biologico.html">
+<meta property="og:site_name" content="Saúde em jogo">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Acidente com material biológico: PEP do HIV | Saúde em jogo">
+<meta property="og:description" content="Decida se a profilaxia pós-exposição ao HIV está indicada após um acidente com material biológico, seguindo os quatro passos do Ministério da Saúde.">
+<meta property="og:image" content="https://alineazvdo.github.io/saude-em-jogo/social.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Saúde em jogo, escrito em quadrinhos de cruzadinha, com o Ú em amarelo">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" sizes="48x48" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+/* Saúde em jogo: tema compartilhado dos jogos de fluxo */
+:root{
+  color-scheme:light;
+  --on-fill:#FFFFFF;
+  --bg:#F6F1E7; --surface:#FFFFFF; --ink:#22392E; --muted:#647062; --line:#D5CBB4; --edge:#22392E; --emph:#22392E;
+  --cell:#FFFFFF; --sel:#FFD23F; --sel-ink:#22392E; --focus:#0B5FA5;
+  --t-green:#0E7C66; --t-orange:#B4470A; --t-blue:#1F5FA8; --t-violet:#5B3FB4; --t-rose:#B0356B; --t-soon:#75806F;
+  --a-bg:#0E7C66; --b-bg:#1F5FA8; --c-bg:#B4470A; --d-bg:#B0356B;
+  --ok:#0E7C66; --bad:#B0356B;
+  --display:'Bricolage Grotesque','Trebuchet MS','Segoe UI',system-ui,sans-serif;
+  --body:'Atkinson Hyperlegible','Segoe UI',Verdana,system-ui,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --on-fill:#16241B;
+    --bg:#0F1A14; --surface:#182A20; --ink:#F1EBDD; --muted:#B3BCA9; --line:#33483B; --edge:#6F8B78; --emph:#FFD23F;
+    --cell:#1D3327; --sel:#FFD23F; --sel-ink:#16241B; --focus:#7CC0FF;
+    --t-green:#3FCFAA; --t-orange:#FF9A5C; --t-blue:#7CB7FF; --t-violet:#B79CFF; --t-rose:#FF8FBB; --t-soon:#8D9885;
+    --a-bg:#3FCFAA; --b-bg:#7CB7FF; --c-bg:#FF9A5C; --d-bg:#FF8FBB;
+    --ok:#3FCFAA; --bad:#FF8FBB;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --on-fill:#16241B;
+  --bg:#0F1A14; --surface:#182A20; --ink:#F1EBDD; --muted:#B3BCA9; --line:#33483B; --edge:#6F8B78; --emph:#FFD23F;
+  --cell:#1D3327; --sel:#FFD23F; --sel-ink:#16241B; --focus:#7CC0FF;
+  --t-green:#3FCFAA; --t-orange:#FF9A5C; --t-blue:#7CB7FF; --t-violet:#B79CFF; --t-rose:#FF8FBB; --t-soon:#8D9885;
+  --a-bg:#3FCFAA; --b-bg:#7CB7FF; --c-bg:#FF9A5C; --d-bg:#FF8FBB;
+  --ok:#3FCFAA; --bad:#FF8FBB;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+button{font-family:inherit}
+
+.app{max-width:980px;margin:0 auto;padding:22px 16px 64px}
+.back{margin:0 0 14px;font-size:.95rem}
+.back a{font-weight:700}
+
+.brand{display:flex;flex-wrap:wrap;align-items:center;gap:18px 22px;margin-bottom:6px}
+.tiles{display:flex;gap:5px}
+.tile{width:clamp(36px,9vw,52px);aspect-ratio:1;display:grid;place-items:center;background:var(--cell);border:2px solid var(--edge);border-radius:5px;font-family:var(--display);font-weight:800;font-size:clamp(1.15rem,4.6vw,1.7rem);line-height:1}
+.tile.hl{background:var(--sel);color:var(--sel-ink);border-color:var(--emph)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(1.7rem,5.8vw,2.6rem);line-height:1.05;letter-spacing:-0.02em;margin:14px 0 0}
+.lede{margin:12px 0 0;color:var(--muted);max-width:62ch;font-size:1.05rem}
+
+.modebar{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 4px}
+.chip{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:8px 16px;font-family:var(--display);font-weight:700;font-size:.9rem;cursor:pointer}
+.chip[aria-pressed="true"]{border-color:var(--emph);background:var(--sel);color:var(--sel-ink)}
+.hint{margin:8px 0 26px;color:var(--muted);font-size:.9rem;max-width:62ch}
+
+.hud{display:flex;flex-wrap:wrap;gap:10px 24px;align-items:center;margin-bottom:18px;font-family:var(--display);font-weight:700;font-size:.95rem}
+.hud b{font-weight:800}
+.hud .timer{color:var(--t-orange)}
+.hud .lives{letter-spacing:2px}
+
+.trail{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.crumb{border:2px solid var(--line);border-radius:10px;padding:6px 12px;font-size:.85rem;background:var(--surface);color:var(--muted)}
+.crumb b{color:var(--ink)}
+
+.board{display:grid;grid-template-columns:1fr;gap:18px}
+@media (min-width:760px){ .board{grid-template-columns:0.85fr 1.15fr} }
+
+.card{background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:18px 20px}
+.card h2{font-family:var(--display);font-weight:800;font-size:1rem;margin:0 0 10px;text-transform:none}
+.paciente dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:5px 10px;font-size:.92rem}
+.paciente dt{color:var(--muted)}
+.paciente dd{margin:0}
+
+.node h2{font-size:1.15rem;margin-bottom:14px}
+.opts{display:grid;gap:10px}
+.opt{border:2px solid var(--edge);background:var(--cell);color:var(--ink);border-radius:12px;padding:13px 16px;font-size:1rem;text-align:left;cursor:pointer;line-height:1.35}
+.opt:hover{background:var(--sel);color:var(--sel-ink);border-color:var(--emph)}
+.opt.correct{background:var(--ok);border-color:var(--ok);color:var(--on-fill)}
+.opt.wrong{background:var(--bad);border-color:var(--bad);color:var(--on-fill)}
+
+.feedback{margin-top:14px;border-radius:12px;padding:12px 14px;font-size:.95rem;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:color-mix(in srgb, var(--ok) 16%, transparent);border:2px solid var(--ok)}
+.feedback.bad{background:color-mix(in srgb, var(--bad) 16%, transparent);border:2px solid var(--bad)}
+.feedback button{margin-top:10px;border:none;background:var(--edge);color:var(--bg);border-radius:8px;padding:8px 14px;font-weight:700;cursor:pointer}
+
+.outcome{border-radius:12px;padding:14px 16px;margin-bottom:14px;color:var(--on-fill);font-family:var(--display)}
+.outcome.a{background:var(--a-bg)} .outcome.b{background:var(--b-bg)} .outcome.c{background:var(--c-bg)} .outcome.d{background:var(--d-bg)}
+.outcome b{display:block;font-size:1.1rem;font-weight:800}
+
+.endscreen{display:none}
+.endscreen.show{display:block}
+.heat{display:grid;gap:10px;margin:14px 0 20px}
+.heatrow{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;font-size:.9rem}
+.bar{background:var(--line);border-radius:8px;height:10px;overflow:hidden}
+.bar > span{display:block;height:100%;background:var(--bad)}
+.cta{border:none;background:var(--emph);color:var(--bg);border-radius:10px;padding:12px 20px;font-family:var(--display);font-weight:800;font-size:1rem;cursor:pointer}
+
+footer{margin-top:44px;color:var(--muted);font-size:.9rem;max-width:70ch}
+
+.outcome.e{background:var(--t-violet)}
+</style>
+</head>
+<body>
+<div class="app">
+  <p class="back"><a href="index.html">‹ Saúde em jogo</a></p>
+  <div class="brand">
+    <div class="tiles" aria-hidden="true"><span class="tile">P</span><span class="tile hl">E</span><span class="tile">P</span></div>
+  </div>
+  <h1>Acidente com material biológico: PEP do HIV</h1>
+  <p class="lede">Um profissional de saúde se acidentou. Siga os quatro passos do Ministério da Saúde e decida se a PEP do HIV está indicada. As hepatites B e C não entram neste jogo.</p>
+
+  <div class="modebar" role="group" aria-label="Modo de jogo">
+    <button class="chip" data-mode="treino" aria-pressed="true">Treino livre</button>
+    <button class="chip" data-mode="blitz" aria-pressed="false">Blitz (misturado, com tempo)</button>
+  </div>
+  <p class="hint" id="modeHint">Sem tempo, tentativas ilimitadas em cada nó.</p>
+
+  <div class="modebar" id="groupBar" role="group" aria-label="Filtrar por desfecho"></div>
+
+  <div class="hud">
+    <span><b id="hudCaso">Caso 1</b> de <span id="hudTotal">8</span></span>
+    <span>Sequência perfeita: <b id="hudStreak">0</b></span>
+    <span id="hudTimerWrap" style="display:none">Tempo: <b class="timer" id="hudTimer">40</b>s</span>
+    <span id="hudLivesWrap" style="display:none">Vidas: <b class="lives" id="hudLives">♥♥♥</b></span>
+  </div>
+
+  <div class="trail" id="trail"></div>
+
+  <div class="board" id="board">
+    <div class="card paciente">
+      <h2>Acidente em atendimento</h2>
+      <dl id="pacienteInfo"></dl>
+    </div>
+    <div class="card node" id="nodeCard">
+      <div id="outcomeBanner"></div>
+      <h2 id="questionText"></h2>
+      <div class="opts" id="opts"></div>
+      <div class="feedback" id="feedback">
+        <p id="feedbackText"></p>
+        <button id="feedbackBtn">Continuar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="endscreen" id="endscreen">
+    <div class="card">
+      <h2>Mapa mestre</h2>
+      <p id="endSummary" style="color:var(--muted)"></p>
+      <div class="heat" id="heat"></div>
+      <button class="cta" id="playAgain">Jogar de novo</button>
+    </div>
+  </div>
+
+  <footer>
+    <p>Base: Protocolo Clínico e Diretrizes Terapêuticas para Profilaxia Pós-Exposição (PEP) de Risco à Infecção pelo HIV, IST e Hepatites Virais (Portaria SCTIE/MS nº 54, de 24 de agosto de 2021), conferido com o resumo publicado pela Conitec. O jogo simplifica: não inclui pessoa-fonte desconhecida, gestantes, crianças nem esquemas alternativos. Casos e dados são fictícios. Na prática, siga o protocolo da sua UF. Progresso salvo só neste navegador.</p>
+  </footer>
+</div>
+
+<script>
+const C = {"storageKey": "pep-material-biologico", "start": "n1", "condQ": "Qual a conduta correta?", "condHeat": "Escolha da conduta", "groups": [{"id": "PEP", "chip": "PEP indicada", "label": "PEP indicada", "color": "d", "conduta": "Iniciar a PEP o mais cedo possível, de preferência nas primeiras 2 horas: tenofovir/lamivudina (300 mg/300 mg), 1 comprimido por dia, mais dolutegravir 50 mg, 1 comprimido por dia, por 28 dias. Repetir o teste de HIV em 30 dias."}, {"id": "Sem", "chip": "Sem risco", "label": "Sem risco: PEP não indicada", "color": "a", "conduta": "PEP não indicada e acompanhamento sorológico desnecessário, porque o material ou o tipo de exposição não tem risco de transmitir o HIV."}, {"id": "Prazo", "chip": "Mais de 72 horas", "label": "Fora do prazo", "color": "b", "conduta": "PEP não indicada, pois passou o limite de 72 horas. Como o material e a exposição eram de risco, fazer o acompanhamento sorológico da pessoa exposta."}, {"id": "Reag", "chip": "Já reagente", "label": "Pessoa exposta já reagente", "color": "c", "conduta": "PEP não indicada, porque a pessoa exposta já tem a infecção pelo HIV. Encaminhar para acompanhamento clínico."}, {"id": "Fonte", "chip": "Fonte não reagente", "label": "Pessoa-fonte não reagente", "color": "e", "conduta": "PEP não indicada, pois a pessoa-fonte tem teste não reagente. Só poderia ser indicada se a fonte tivesse tido exposição de risco nos últimos 30 dias (janela imunológica)."}], "nodes": {"n1": {"q": "O material biológico tem risco de transmitir o HIV? (Têm risco: sangue, sêmen, fluidos vaginais, líquidos de serosas, líquido amniótico e líquor. Não têm: suor, lágrima, fezes, urina, vômito, saliva e secreção nasal.)", "yes": "Sim, material de risco", "no": "Não, material sem risco", "field": "matRisco", "yesNext": "n2", "noNext": "cond", "errYes": "O material é de risco para a transmissão do HIV: sangue, sêmen, fluidos vaginais, líquidos de serosas, líquido amniótico ou líquor.", "errNo": "Suor, lágrima, fezes, urina, vômito, saliva e secreção nasal não têm risco de transmitir o HIV (sem sangue).", "trailYes": "Material de risco", "trailNo": "Material sem risco", "heat": "Nó \"material de risco?\""}, "n2": {"q": "O tipo de exposição tem risco de transmitir o HIV? (Têm risco: percutânea, mucosas, pele não íntegra e mordedura com sangue. Não têm: pele íntegra e mordedura sem sangue.)", "yes": "Sim, exposição de risco", "no": "Não, exposição sem risco", "field": "expRisco", "yesNext": "n3", "noNext": "cond", "errYes": "Exposição percutânea, em mucosa, em pele não íntegra ou mordedura com sangue tem risco de transmitir o HIV.", "errNo": "Contato com pele íntegra, ou mordedura sem sangue, não tem risco de transmitir o HIV.", "trailYes": "Exposição de risco", "trailNo": "Exposição sem risco", "heat": "Nó \"exposição de risco?\""}, "n3": {"q": "O atendimento ocorreu em menos de 72 horas após a exposição?", "yes": "Sim, menos de 72 horas", "no": "Não, 72 horas ou mais", "field": "prazo", "yesNext": "n4", "noNext": "cond", "errYes": "Dentro de 72 horas a PEP ainda pode ser indicada, e deve ser iniciada o mais cedo possível.", "errNo": "Passadas 72 horas, a profilaxia com antirretrovirais não está mais indicada. Se material e exposição foram de risco, faz-se o acompanhamento sorológico.", "trailYes": "Dentro de 72 horas", "trailNo": "72 horas ou mais", "heat": "Nó \"menos de 72 horas?\""}, "n4": {"q": "O teste rápido da pessoa exposta é não reagente para HIV?", "yes": "Sim, não reagente", "no": "Não, reagente (TR1 e TR2)", "field": "naoReag", "yesNext": "n5", "noNext": "cond", "errYes": "Com teste rápido não reagente, a pessoa exposta é suscetível ao HIV e segue na avaliação da PEP.", "errNo": "Pessoa exposta com teste reagente (TR1 e TR2) já tem a infecção: a PEP não está indicada e ela é encaminhada para acompanhamento clínico.", "trailYes": "Exposta não reagente", "trailNo": "Exposta já reagente", "heat": "Nó \"exposta não reagente?\""}, "n5": {"q": "A pessoa-fonte tem teste rápido reagente para HIV?", "yes": "Sim, reagente", "no": "Não, não reagente", "field": "fonteReag", "yesNext": "cond", "noNext": "cond", "errYes": "Com a fonte reagente, a PEP está indicada para a pessoa exposta.", "errNo": "Com a fonte não reagente, a PEP não está indicada, a menos que ela tenha tido exposição de risco nos últimos 30 dias (janela imunológica).", "trailYes": "Fonte reagente", "trailNo": "Fonte não reagente", "heat": "Nó \"fonte reagente?\""}}, "casos": [{"grupo": "PEP", "matRisco": true, "expRisco": true, "prazo": true, "naoReag": true, "fonteReag": true, "dados": {"Profissional": "Técnica de enfermagem, 29 anos", "Acidente": "Perfurou o dedo com agulha usada em coleta de sangue", "Material": "Sangue do paciente", "Tempo até o atendimento": "1 hora", "Teste rápido do profissional": "Não reagente", "Pessoa-fonte": "Teste rápido reagente"}}, {"grupo": "PEP", "matRisco": true, "expRisco": true, "prazo": true, "naoReag": true, "fonteReag": true, "dados": {"Profissional": "Médica, 34 anos", "Acidente": "Respingo de sangue nos olhos durante um procedimento, sem óculos de proteção", "Material": "Sangue do paciente", "Tempo até o atendimento": "30 minutos", "Teste rápido do profissional": "Não reagente", "Pessoa-fonte": "Teste rápido reagente"}}, {"grupo": "PEP", "matRisco": true, "expRisco": true, "prazo": true, "naoReag": true, "fonteReag": true, "dados": {"Profissional": "Auxiliar de saúde bucal, 41 anos", "Acidente": "Corte na mão com instrumento sujo de sangue", "Material": "Sangue do paciente", "Tempo até o atendimento": "60 horas", "Teste rápido do profissional": "Não reagente", "Pessoa-fonte": "Teste rápido reagente"}}, {"grupo": "Sem", "matRisco": false, "expRisco": false, "prazo": false, "naoReag": false, "fonteReag": false, "dados": {"Profissional": "Técnico de laboratório, 38 anos", "Acidente": "Respingo na pele do antebraço ao manipular amostra", "Material": "Urina do paciente, sem sangue", "Tempo até o atendimento": "1 hora", "Teste rápido do profissional": "Não reagente", "Pessoa-fonte": "Teste rápido reagente"}}, {"grupo": "Sem", "matRisco": true, "expRisco": false, "prazo": false, "naoReag": false, "fonteReag": false, "dados": {"Profissional": "Enfermeira, 45 anos", "Acidente": "Sangue de um paciente escorreu sobre a pele íntegra do braço, sem ferimento", "Material": "Sangue do paciente", "Tempo até o atendimento": "2 horas", "Teste rápido do profissional": "Não reagente", "Pessoa-fonte": "Teste rápido reagente"}}, {"grupo": "Prazo", "matRisco": true, "expRisco": true, "prazo": false, "naoReag": false, "fonteReag": false, "dados": {"Profissional": "Auxiliar de limpeza, 52 anos", "Acidente": "Picada por agulha com sangue que estava no saco de lixo", "Material": "Sangue", "Tempo até o atendimento": "4 dias (96 horas)", "Teste rápido do profissional": "Não reagente", "Pessoa-fonte": "Desconhecida (agulha descartada no lixo)"}}, {"grupo": "Reag", "matRisco": true, "expRisco": true, "prazo": true, "naoReag": false, "fonteReag": false, "dados": {"Profissional": "Técnica de enfermagem, 36 anos", "Acidente": "Perfurou o dedo com agulha usada em paciente", "Material": "Sangue do paciente", "Tempo até o atendimento": "3 horas", "Teste rápido do profissional": "Reagente (TR1 e TR2), diagnóstico de HIV já conhecido", "Pessoa-fonte": "Teste rápido reagente"}}, {"grupo": "Fonte", "matRisco": true, "expRisco": true, "prazo": true, "naoReag": true, "fonteReag": false, "dados": {"Profissional": "Médico residente, 27 anos", "Acidente": "Perfurou a mão com agulha de sutura usada em paciente", "Material": "Sangue do paciente", "Tempo até o atendimento": "2 horas", "Teste rápido do profissional": "Não reagente", "Pessoa-fonte": "Teste rápido não reagente, sem relato de exposição de risco nos últimos 30 dias"}}]};
+/* Saúde em jogo: motor compartilhado dos jogos de fluxo. Cada página define antes a constante C (casos, nós e desfechos). */
+const casos = C.casos;
+const groups = {}; C.groups.forEach(g=>{ groups[g.id]=g; });
+const condTextos = [...new Set(C.groups.map(g=>g.conduta))];
+
+let mode = 'treino';
+let grupoFiltro = 'todos';
+let fila = [];
+let idx = 0;
+let streak = 0;
+let lives = 3;
+let timer = null, timeLeft = 40;
+let mistakes = {};
+let stepState = null;
+
+const el = id => document.getElementById(id);
+function embaralha(a){ const b=[...a]; for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [b[i],b[j]]=[b[j],b[i]];} return b; }
+
+function zeraErros(){ mistakes = {}; Object.keys(C.nodes).forEach(k=>{ mistakes[k]=0; }); mistakes.cond = 0; }
+
+function montaChips(){
+  const bar = el('groupBar');
+  bar.innerHTML = '<button class="chip" data-grupo="todos" aria-pressed="true">Todos</button>';
+  C.groups.forEach(g=>{ bar.innerHTML += `<button class="chip" data-grupo="${g.id}" aria-pressed="false">${g.chip}</button>`; });
+  bar.innerHTML += '<button class="chip" data-grupo="erros" aria-pressed="false">Meus erros</button>';
+  document.querySelectorAll('[data-grupo]').forEach(b=>{
+    b.onclick = ()=>{
+      document.querySelectorAll('[data-grupo]').forEach(x=>x.setAttribute('aria-pressed','false'));
+      b.setAttribute('aria-pressed','true');
+      grupoFiltro = b.dataset.grupo;
+      iniciaPartida();
+    };
+  });
+}
+
+function montaFila(){
+  const base = grupoFiltro==='todos' ? casos : (grupoFiltro==='erros' ? casos.filter((c,i)=>lerErros().indexOf(i)>=0) : casos.filter(c=>c.grupo===grupoFiltro));
+  fila = embaralha(base);
+  idx = 0;
+}
+
+function iniciaPartida(){
+  atualizaChipErros();
+  streak = 0; lives = 3; zeraErros();
+  montaFila();
+  el('endscreen').classList.remove('show');
+  el('board').style.display='grid';
+  document.querySelector('.hud').style.display='flex';
+  el('trail').style.display='flex';
+  el('hudLivesWrap').style.display = mode==='blitz' ? 'inline' : 'none';
+  el('hudTimerWrap').style.display = mode==='blitz' ? 'inline' : 'none';
+  atualizaLives();
+  carregaCaso();
+}
+
+function atualizaLives(){ el('hudLives').textContent = '♥'.repeat(Math.max(lives,0)) + '♡'.repeat(Math.max(3-lives,0)); }
+
+function carregaCaso(){
+  clearInterval(timer);
+  if(idx >= fila.length){ return fimDePartida(); }
+  const caso = fila[idx];
+  el('hudCaso').textContent = 'Caso ' + (idx+1);
+  el('hudTotal').textContent = fila.length;
+  el('hudStreak').textContent = streak;
+  const dl = el('pacienteInfo'); dl.innerHTML='';
+  for(const [k,v] of Object.entries(caso.dados)){ dl.innerHTML += `<dt>${k}</dt><dd>${v}</dd>`; }
+  el('trail').innerHTML='';
+  el('outcomeBanner').innerHTML='';
+  stepState = {caso, node:(C.start||'n1')};
+  if(mode==='blitz'){
+    timeLeft = 40;
+    el('hudTimer').textContent = timeLeft;
+    timer = setInterval(()=>{
+      timeLeft--; el('hudTimer').textContent = timeLeft;
+      if(timeLeft<=0){ clearInterval(timer); perdeVida('O tempo acabou antes de fechar a conduta.'); }
+    },1000);
+  }
+  renderNode();
+}
+
+function renderNode(){
+  el('feedback').classList.remove('show');
+  const {caso, node} = stepState;
+  let pergunta, opts;
+  if(node==='cond'){
+    const g = groups[caso.grupo];
+    el('outcomeBanner').innerHTML = `<div class="outcome ${g.color}"><b>${g.label}</b></div>`;
+    pergunta = C.condQ;
+    opts = embaralha(condTextos).map(t=>({t, v:t===g.conduta}));
+  } else {
+    const n = C.nodes[node];
+    pergunta = n.q;
+    opts = [{t:n.yes, v:true},{t:n.no, v:false}];
+  }
+  el('questionText').textContent = pergunta;
+  const optsEl = el('opts'); optsEl.innerHTML='';
+  opts.forEach(o=>{
+    const b = document.createElement('button');
+    b.className='opt'; b.textContent=o.t;
+    b.onclick = ()=> responde(o.v, b, node);
+    optsEl.appendChild(b);
+  });
+}
+
+function responde(valor, botao, node){
+  const {caso} = stepState;
+  const certo = node==='cond' ? valor===true : valor===!!caso[C.nodes[node].field];
+  document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+  if(certo){
+    botao.classList.add('correct');
+    const porque = (mode==='blitz') ? null : explicaAcerto(node, caso, valor);
+    if(porque){ mostraAcerto(porque, ()=>avancaTrilha(node, valor)); }
+    else { avancaTrilha(node, valor); }
+  } else {
+    botao.classList.add('wrong');
+    mistakes[node]++;
+    registraErro(caso); stepState.errou = true;
+    if(mode==='blitz'){ perdeVida(explicaErro(node, caso)); return; }
+    mostraFeedback(false, explicaErro(node, caso), ()=>{ document.querySelectorAll('.opt').forEach(b=>{b.disabled=false;b.classList.remove('wrong');}); });
+  }
+}
+
+function explicaErro(node, caso){
+  if(node==='cond') return 'Essa conduta é de outro desfecho. Revise antes de continuar.';
+  const n = C.nodes[node];
+  return caso[n.field] ? n.errYes : n.errNo;
+}
+
+function avancaTrilha(node, valor){
+  let rotulo, prox;
+  if(node==='cond'){ rotulo = 'Conduta correta'; prox = 'fim'; }
+  else {
+    const n = C.nodes[node];
+    rotulo = valor ? n.trailYes : n.trailNo;
+    prox = valor ? n.yesNext : n.noNext;
+  }
+  el('trail').innerHTML += `<span class="crumb"><b>${rotulo}</b></span>`;
+  if(prox==='fim'){
+    clearInterval(timer);
+    if(!stepState.errou) limpaErro(stepState.caso);
+    streak++;
+    setTimeout(()=>{ idx++; carregaCaso(); }, 900);
+  } else {
+    stepState.node = prox;
+    setTimeout(renderNode, 500);
+  }
+}
+
+function mostraAcerto(texto, onNext){
+  const f = el('feedback'); f.className = 'feedback show ok';
+  const p = el('feedbackText'); p.textContent = '';
+  const b = document.createElement('b'); b.textContent = 'Por quê: ';
+  p.append(b, texto);
+  el('feedbackBtn').onclick = ()=>{ f.classList.remove('show'); onNext(); };
+  el('feedbackBtn').focus({preventScroll:true});
+  f.scrollIntoView({block:'nearest', behavior:'smooth'});
+}
+function explicaAcerto(node, caso, valor){
+  if(node==='cond') return null;
+  const n = C.nodes[node];
+  return valor ? (n.okYes || n.errYes) : (n.okNo || n.errNo);
+}
+
+const ERROS_KEY = (C.storageKey) + ':erros';
+function lerErros(){ try{ return JSON.parse(localStorage.getItem(ERROS_KEY)||'[]'); }catch(e){ return []; } }
+function gravaErros(a){ try{ localStorage.setItem(ERROS_KEY, JSON.stringify(a)); }catch(e){} atualizaChipErros(); }
+function registraErro(caso){ const i = casos.indexOf(caso); if(i<0) return; const a = lerErros(); if(a.indexOf(i)<0){ a.push(i); gravaErros(a); } }
+function limpaErro(caso){ const i = casos.indexOf(caso); const a = lerErros(); const j = a.indexOf(i); if(j>=0){ a.splice(j,1); gravaErros(a); } }
+function atualizaChipErros(){ const b = document.querySelector('[data-grupo="erros"]'); if(b) b.textContent = 'Meus erros (' + lerErros().length + ')'; }
+
+function perdeVida(msg){
+  clearInterval(timer);
+  lives--; atualizaLives(); streak = 0;
+  mostraFeedback(false, msg, ()=>{
+    if(lives<=0){ fimDePartida(true); }
+    else { idx++; carregaCaso(); }
+  });
+}
+
+function mostraFeedback(ok, texto, onNext){
+  const f = el('feedback'); f.classList.add('show'); f.className = 'feedback show ' + (ok?'ok':'bad');
+  el('feedbackText').textContent = texto;
+  el('feedbackBtn').onclick = ()=>{ f.classList.remove('show'); onNext(); };
+}
+
+function fimDePartida(zerouVidas){
+  clearInterval(timer);
+  el('board').style.display='none';
+  document.querySelector('.hud').style.display='none';
+  el('trail').style.display='none';
+  el('endscreen').classList.add('show');
+  el('endSummary').textContent = zerouVidas
+    ? `Vidas esgotadas no Blitz. Sequência perfeita: ${streak}.`
+    : (grupoFiltro==='erros' && !fila.length ? 'Você não tem erros guardados. Jogue as outras rodadas e os casos errados aparecem aqui.' : `Casos deste filtro encerrados. Sequência perfeita: ${streak}.`);
+  const total = Object.values(mistakes).reduce((a,b)=>a+b,0) || 1;
+  const nomes = {}; Object.keys(C.nodes).forEach(k=>{ nomes[k]=C.nodes[k].heat; }); nomes.cond = C.condHeat;
+  const heat = el('heat'); heat.innerHTML='';
+  Object.entries(mistakes).forEach(([k,v])=>{
+    const pct = Math.round((v/total)*100);
+    heat.innerHTML += `<div class="heatrow"><span>${nomes[k]}: ${v} erro(s)</span><div class="bar"><span style="width:${v?Math.max(pct,8):0}%"></span></div></div>`;
+  });
+  salvaRecorde(zerouVidas);
+}
+
+function salvaRecorde(zerouVidas){
+  try{
+    const KEY = C.storageKey;
+    const atual = JSON.parse(localStorage.getItem(KEY)||'{}');
+    const melhor = Math.max(atual.melhorSequencia||0, streak);
+    const completo = !zerouVidas && grupoFiltro==='todos';
+    const erros = Object.values(mistakes).reduce((a,b)=>a+b,0);
+    const novo = {melhorSequencia:melhor, s1:!!atual.s1, s2:!!atual.s2, s3:!!atual.s3};
+    if(completo){
+      novo.s1 = true;
+      if(erros===0) novo.s2 = true;
+      if(mode==='blitz') novo.s3 = true;
+    }
+    localStorage.setItem(KEY, JSON.stringify(novo));
+    const d = new Date();
+    const hoje = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    const dias = JSON.parse(localStorage.getItem('sj:dias')||'[]');
+    if(dias.indexOf(hoje)===-1){ dias.push(hoje); localStorage.setItem('sj:dias', JSON.stringify(dias.slice(-90))); }
+  }catch(e){}
+}
+
+document.querySelectorAll('[data-mode]').forEach(b=>{
+  b.onclick = ()=>{
+    document.querySelectorAll('[data-mode]').forEach(x=>x.setAttribute('aria-pressed','false'));
+    b.setAttribute('aria-pressed','true');
+    mode = b.dataset.mode;
+    el('modeHint').textContent = mode==='blitz'
+      ? 'Casos de todos os desfechos, misturados. 40s por caso, 3 vidas, qualquer erro custa uma vida.'
+      : 'Sem tempo, tentativas ilimitadas em cada nó.';
+    el('groupBar').style.display = mode==='blitz' ? 'none' : 'flex';
+    if(mode==='blitz') grupoFiltro='todos';
+    iniciaPartida();
+  };
+});
+el('playAgain').onclick = iniciaPartida;
+
+montaChips();
+iniciaPartida();
+</script>
+</body>
+</html>
