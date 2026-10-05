@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="light dark">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Inspeção no ambiente de trabalho | Saúde em jogo</title>
+<meta name="description" content="Inspecione uma marmoraria depois de um caso suspeito de silicose: encontre os riscos, classifique e escolha a medida mais eficaz.">
+<meta name="theme-color" content="#F6F1E7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1A14" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Saúde em jogo">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Inspeção no ambiente de trabalho | Saúde em jogo">
+<meta property="og:description" content="Inspecione uma marmoraria depois de um caso suspeito de silicose: encontre os riscos, classifique e escolha a medida mais eficaz.">
+<meta property="og:image" content="https://alineazvdo.github.io/saude-em-jogo/social.png">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#F6F1E7;--surface:#FFFFFF;--ink:#22392E;--muted:#647062;--line:#D5CBB4;--edge:#22392E;--emph:#22392E;
+  --cell:#FFFFFF;--sel:#FFD23F;--sel-ink:#22392E;--focus:#0B5FA5;--on-fill:#FFFFFF;
+  --accent:#0E7C66;--ok:#0E7C66;--bad:#B0356B;
+  --c-fis:#0E7C66;--c-qui:#C7381F;--c-bio:#8B5A2B;--c-erg:#C79A00;--c-aci:#1F5FA8;
+  --display:'Bricolage Grotesque','Trebuchet MS','Segoe UI',system-ui,sans-serif;
+  --body:'Atkinson Hyperlegible','Segoe UI',Verdana,system-ui,sans-serif;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  color-scheme:dark;--on-fill:#16241B;
+  --bg:#0F1A14;--surface:#182A20;--ink:#F1EBDD;--muted:#B3BCA9;--line:#33483B;--edge:#6F8B78;--emph:#FFD23F;
+  --cell:#1D3327;--sel:#FFD23F;--sel-ink:#16241B;--focus:#7CC0FF;--accent:#3FCFAA;--ok:#3FCFAA;--bad:#FF8FBB;
+  --c-fis:#3FCFAA;--c-qui:#FF8A70;--c-bio:#D2A574;--c-erg:#FFD23F;--c-aci:#7CB7FF;}}
+:root[data-theme="dark"]{
+  color-scheme:dark;--on-fill:#16241B;
+  --bg:#0F1A14;--surface:#182A20;--ink:#F1EBDD;--muted:#B3BCA9;--line:#33483B;--edge:#6F8B78;--emph:#FFD23F;
+  --cell:#1D3327;--sel:#FFD23F;--sel-ink:#16241B;--focus:#7CC0FF;--accent:#3FCFAA;--ok:#3FCFAA;--bad:#FF8FBB;
+  --c-fis:#3FCFAA;--c-qui:#FF8A70;--c-bio:#D2A574;--c-erg:#FFD23F;--c-aci:#7CB7FF;}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5}
+a{color:inherit}
+button{font-family:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.app{max-width:900px;margin:0 auto;padding:22px 16px 64px}
+.back{margin:0 0 14px;font-size:.95rem}.back a{font-weight:700}
+.tiles{display:flex;gap:5px}
+.tile{width:clamp(36px,9vw,52px);aspect-ratio:1;display:grid;place-items:center;background:var(--cell);border:2px solid var(--edge);border-radius:5px;font-family:var(--display);font-weight:800;font-size:clamp(1.15rem,4.6vw,1.7rem);line-height:1}
+.tile.hl{background:var(--sel);color:var(--sel-ink);border-color:var(--emph)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(1.7rem,5.8vw,2.6rem);line-height:1.05;letter-spacing:-0.02em;margin:14px 0 0}
+h2{font-family:var(--display);font-weight:800;font-size:1.25rem;margin:0 0 8px}
+h3{font-family:var(--display);font-weight:700;font-size:1.02rem;margin:16px 0 8px}
+.lede{margin:12px 0 18px;color:var(--muted);max-width:62ch;font-size:1.05rem}
+.card{background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:18px 20px;margin-top:14px}
+.muted{color:var(--muted)}.small{font-size:.9rem}
+.btn{background:var(--surface);border:2px solid var(--edge);border-radius:10px;padding:10px 18px;min-height:46px;font-weight:700}
+.btn.primary{background:var(--accent);color:var(--on-fill);border-color:var(--accent)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.hud{display:flex;flex-wrap:wrap;gap:8px 22px;font-family:var(--display);font-weight:700;font-size:.95rem;margin:6px 0 4px}
+.hud b{font-weight:800}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
+@media (min-width:640px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.loc{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;background:var(--surface);border:2px solid var(--edge);border-radius:14px;padding:12px 12px 14px;min-height:118px}
+.loc:hover:not(:disabled){background:var(--sel);color:var(--sel-ink);border-color:var(--emph)}
+.loc .ic{font-size:1.9rem;line-height:1}
+.loc b{font-family:var(--display);font-size:.98rem;line-height:1.2}
+.loc em{font-style:normal;font-size:.8rem;color:var(--muted)}
+.loc:disabled{background:color-mix(in srgb,var(--ok) 14%,var(--surface));border-color:var(--ok);cursor:default}
+.big{font-size:2.4rem;line-height:1}
+.opts{display:grid;gap:10px}
+.opt{display:flex;gap:10px;align-items:flex-start;text-align:left;border:2px solid var(--edge);background:var(--cell);border-radius:12px;padding:12px 14px;line-height:1.35;font-size:1rem}
+.opt:hover:not(:disabled){background:var(--sel);color:var(--sel-ink);border-color:var(--emph)}
+.opt .dot{flex:none;width:14px;height:14px;border-radius:50%;margin-top:4px;background:var(--dot,var(--edge));border:2px solid var(--edge)}
+.opt small{display:block;font-weight:700;color:var(--muted);margin-top:2px}
+.opt.ok{background:var(--ok);border-color:var(--ok);color:var(--on-fill)}
+.opt.no{background:var(--bad);border-color:var(--bad);color:var(--on-fill)}
+.opt.ok small,.opt.no small{color:inherit}
+.fb{margin-top:12px;border-radius:12px;padding:12px 14px;font-size:.95rem;border:2px solid var(--ok);background:color-mix(in srgb,var(--ok) 15%,transparent)}
+.fb.bad{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 15%,transparent)}
+.pct{font-family:var(--display);font-weight:800;font-size:3rem;line-height:1}
+.stamp{display:inline-block;font-family:var(--display);font-weight:800;font-size:clamp(1.2rem,4.6vw,1.9rem);letter-spacing:.03em;border:5px solid currentColor;outline:2px solid currentColor;outline-offset:4px;border-radius:10px;padding:4px 16px;transform:rotate(-3deg);margin:8px 0 14px}
+.stamp.good{color:var(--ok)}.stamp.mid{color:#B4470A}.stamp.bad{color:var(--bad)}
+@media (prefers-color-scheme: dark){.stamp.mid{color:#FFD23F}}
+.res{display:grid;grid-template-columns:auto 1fr auto auto;gap:6px 12px;align-items:center;font-size:.95rem;margin-top:8px}
+.res span.x{text-align:center;font-weight:800}
+.res .g{color:var(--ok)}.res .r{color:var(--bad)}
+@media (prefers-reduced-motion:no-preference){.stamp{animation:pop .5s cubic-bezier(.2,1.4,.4,1) both}}
+@keyframes pop{from{transform:rotate(-3deg) scale(2);opacity:0}to{transform:rotate(-3deg) scale(1);opacity:1}}
+footer{margin-top:40px;color:var(--muted);font-size:.9rem;max-width:70ch}
+</style>
+</head>
+<body>
+<div class="app">
+  <p class="back"><a href="index.html">‹ Saúde em jogo</a></p>
+  <div class="tiles" aria-hidden="true"><span class="tile">V</span><span class="tile hl">I</span><span class="tile">S</span><span class="tile">A</span><span class="tile">T</span></div>
+  <h1>Inspeção no ambiente de trabalho</h1>
+  <p class="lede">Uma marmoraria, um caso suspeito de silicose e um dia de inspeção. Percorra os pontos do local, avalie o risco e escolha a medida mais eficaz.</p>
+  <main id="app"></main>
+  <footer>
+    <p>Caso, empresa e pessoas são fictícios. Base: classificação clássica dos riscos ocupacionais em cinco grupos (físicos, químicos, biológicos, ergonômicos e de acidentes), hierarquia das medidas de controle e as normas regulamentadoras NR-10, NR-12, NR-15 e NR-17. O conteúdo ainda não foi conferido ponto a ponto com os textos vigentes: confirme nas normas e nos guias do Ministério da Saúde. Na rotina, siga os instrutivos da sua UF. Progresso salvo só neste navegador.</p>
+    <p><a href="sobre.html">Sobre e referências</a></p>
+  </footer>
+</div>
+<script>
+(function(){
+'use strict';
+var CAT={fis:'Físico',qui:'Químico',bio:'Biológico',erg:'Ergonômico',aci:'Acidente'};
+var CORES={fis:'verde',qui:'vermelho',bio:'marrom',erg:'amarelo',aci:'azul'};
+/* m[0] é sempre a medida correta */
+var L=[
+ {i:'🪨',n:'Serra de corte',c:'qui',o:'Os operadores cortam granito na serra de bancada <b>sem jato de água</b>. Uma nuvem de pó branco fica no ar e se deposita no piso e nas roupas. Eles usam máscara descartável simples. O trabalhador afastado era operador desta serra.',
+  m:[['Trocar o corte a seco pelo corte úmido, com água na lâmina','Substituição'],['Instalar exaustão local na bancada de corte a seco','Engenharia'],['Fazer rodízio entre operadores a cada 2 horas','Administrativa'],['Fornecer respirador PFF2 a todos','EPI']],
+  w:'A poeira respirável de sílica cristalina causa silicose. Quanto mais alto na hierarquia de controle, mais eficaz: o corte úmido tira o pó na origem. Exaustão e respirador entram como complemento, nunca como medida única.'},
+ {i:'🔊',n:'Politriz de bordas',c:'fis',o:'A politriz funciona o dia inteiro. O dosímetro marcou <b>96 dB(A)</b> numa jornada de 8 horas. Os operadores usam o protetor auricular "quando lembram".',
+  m:[['Enclausurar a politriz e fazer manutenção para reduzir o ruído na fonte','Engenharia'],['Suspender o polimento das bordas','Eliminação (inviável: é parte do produto)'],['Fazer rodízio para reduzir o tempo de exposição','Administrativa'],['Exigir o protetor auricular o tempo todo','EPI']],
+  w:'O limite da NR-15 é de 85 dB(A) para 8 horas, e 96 dB(A) está bem acima. Reduzir o ruído na fonte vem antes do protetor, que fica como complemento dentro de um programa de conservação auditiva.'},
+ {i:'🏋️',n:'Pátio de chapas',c:'erg',o:'Dois trabalhadores carregam à mão chapas de granito de cerca de <b>90 kg</b> do cavalete até a bancada, várias vezes por turno. Um deles relata dor lombar frequente.',
+  m:[['Instalar ponte rolante ou ventosa de içamento','Engenharia'],['Treinar a técnica de levantamento de carga','Administrativa'],['Fornecer cinta lombar a todos','EPI'],['Aumentar para três pessoas por chapa','Administrativa']],
+  w:'Carga manual pesada e repetida é risco ergonômico (NR-17). A solução é mecanizar a movimentação. Treinamento e cinta não tiram o peso da coluna.'},
+ {i:'⚙️',n:'Serra circular',c:'aci',o:'A serra circular trabalha com a <b>proteção do disco retirada</b>, "porque atrapalha". O botão de emergência está solto, pendurado num fio.',
+  m:[['Recolocar a proteção fixa e instalar parada de emergência funcional','Engenharia'],['Afixar cartazes de perigo','Administrativa'],['Treinar os operadores sobre o risco','Administrativa'],['Exigir luvas de couro','EPI']],
+  w:'Partes móveis precisam de proteção fixa ou intertravada (NR-12). Cartaz e treinamento não impedem o contato com o disco.'},
+ {i:'⚡',n:'Quadro de energia',c:'aci',o:'Numa bancada que já corta com água, o quadro de energia está <b>aberto, com fios descascados</b>, e o piso ao lado fica encharcado.',
+  m:[['Fechar o quadro, refazer a fiação e instalar DR e aterramento','Engenharia'],['Cortar a energia de toda a oficina','Eliminação (inviável: para a produção)'],['Proibir que se pise perto do quadro','Administrativa'],['Fornecer botas de borracha','EPI']],
+  w:'Eletricidade exposta com água é risco de choque (NR-10), resolvido com instalação segura. Repare na lição: trocar para o corte úmido exige adequar a rede elétrica, ou um risco substitui o outro.'},
+ {i:'🛞',n:'Pátio externo',c:'bio',o:'Pneus velhos e uma calha entupida acumulam <b>água de chuva</b>. O pátio fica ao lado de um bairro com casos recentes de dengue.',
+  m:[['Remover os pneus e desentupir a calha, eliminando os criadouros','Eliminação'],['Cobrir os pneus com lona','Engenharia'],['Pedir nebulização periódica à prefeitura','Administrativa'],['Distribuir repelente aos trabalhadores','EPI']],
+  w:'Água parada é criadouro de Aedes. Eliminar o criadouro é a medida mais eficaz e barata. Nebulização e repelente atuam só sobre o mosquito adulto ou sobre a pessoa.'},
+ {i:'🧯',n:'Extintores e saídas',c:'ok',o:'Extintores <b>dentro da validade</b>, sinalizados e desobstruídos. A saída de emergência está livre e identificada.',
+  w:'Conforme: nada a recomendar aqui. Apontar risco onde não há desgasta a credibilidade da vigilância e consome o tempo da inspeção.'},
+ {i:'🚿',n:'Refeitório e vestiário',c:'ok',o:'Refeitório <b>separado da área de corte</b>, com pia e água potável. Armários em dois compartimentos (roupa de rua e roupa de trabalho) e chuveiro funcionando.',
+  w:'Conforme: separar a roupa de trabalho e permitir o banho antes de ir para casa reduz o pó levado ao refeitório e à família. É um ponto a elogiar no relatório.'}
+];
+var MAX=0;L.forEach(function(l){MAX+=l.c==='ok'?1:2;});
+var KEY='inspecao-ambiente-trabalho:v1',app=document.getElementById('app'),s;
+function sh(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function best(){try{return JSON.parse(localStorage.getItem(KEY)||'{}').best||0;}catch(e){return 0;}}
+function save(p){try{var d=new Date(),k=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2),a=JSON.parse(localStorage.getItem('sj:dias')||'[]');
+  if(a.indexOf(k)<0){a.push(k);localStorage.setItem('sj:dias',JSON.stringify(a.slice(-90)));}
+  if(p>best())localStorage.setItem(KEY,JSON.stringify({best:p}));}catch(e){}}
+function top(){window.scrollTo({top:0});}
+function hud(){var n=Object.keys(s.r).length;return '<div class="hud"><span>Horário: <b>'+('0'+(8+n)).slice(-2)+'h</b></span><span>Pontos inspecionados: <b>'+n+'</b> de '+L.length+'</span><span>Pontuação: <b>'+s.pts+'</b></span></div>';}
+
+function intro(){
+  var b=best();
+  app.innerHTML='<div class="card"><h2>Notificação na mesa</h2><p>Chegou à vigilância a notificação de um trabalhador de 41 anos com <b>suspeita de silicose</b>, operador de serra da Marmoraria Pedra Viva (fictícia). Ele contou que "o pó nunca saía do nariz". Sua equipe faz a inspeção no local.</p>'+
+  '<p>Em cada ponto você decide <b>se há risco e de que tipo</b> e, quando houver, qual é <b>a medida mais eficaz e viável</b>. Cuidado: nem todo ponto tem problema, e a medida mais fácil de pedir nem sempre é a melhor.</p>'+
+  '<p class="small muted">Os cinco grupos de risco e as cores clássicas do mapa de riscos: físico (verde), químico (vermelho), biológico (marrom), ergonômico (amarelo) e acidente (azul).</p>'+
+  (b?'<p class="small muted">Sua melhor pontuação neste navegador: '+b+'%.</p>':'')+
+  '<div class="actions"><button class="btn primary" id="go" type="button">Começar a inspeção</button></div></div>';
+  document.getElementById('go').onclick=function(){s={ord:sh(L.map(function(_,i){return i;})),r:{},pts:0};grade();};
+}
+
+function grade(){
+  app.innerHTML=hud()+'<div class="grid">'+s.ord.map(function(i){var d=s.r[i];
+    return '<button class="loc" type="button" data-i="'+i+'"'+(d?' disabled':'')+'><span class="ic" aria-hidden="true">'+L[i].i+'</span><b>'+L[i].n+'</b>'+(d?'<em>✓ avaliado</em>':'<em>Inspecionar</em>')+'</button>';}).join('')+'</div>';
+  [].forEach.call(app.querySelectorAll('.loc'),function(b){b.onclick=function(){visita(+b.getAttribute('data-i'));};});
+  top();
+}
+
+function lock(box){[].forEach.call(box.children,function(b){b.disabled=true;});}
+function visita(i){
+  var l=L[i],r={cat:false,med:null};
+  app.innerHTML=hud()+'<div class="card"><div class="big" aria-hidden="true">'+l.i+'</div><h2>'+l.n+'</h2><p>'+l.o+'</p><h3>Qual a sua avaliação deste ponto?</h3><div class="opts" id="o1"></div><div id="f1"></div></div><div id="s2"></div>';
+  var o1=document.getElementById('o1'),f1=document.getElementById('f1');
+  var ks=['ok'].concat(Object.keys(CAT));
+  ks.forEach(function(k){
+    var b=document.createElement('button');b.type='button';b.className='opt';b.setAttribute('data-k',k);
+    b.innerHTML=(k==='ok'?'<span class="dot"></span>Sem risco relevante: ponto conforme':'<span class="dot" style="--dot:var(--c-'+k+')"></span>'+CAT[k]+' <span class="muted">('+CORES[k]+')</span>');
+    b.onclick=function(){
+      lock(o1);var ok=(k===l.c);r.cat=ok;if(ok)s.pts++;
+      b.classList.add(ok?'ok':'no');
+      if(!ok)[].forEach.call(o1.children,function(x){if(x.getAttribute('data-k')===l.c)x.classList.add('ok');});
+      var t;
+      if(l.c==='ok')t=ok?'Certo: este ponto está conforme.':'Alarme falso: este ponto está conforme.';
+      else t=ok?'Certo: risco '+CAT[l.c].toLowerCase()+'.':(k==='ok'?'Esse ponto tem risco, e ele passou despercebido: é um risco '+CAT[l.c].toLowerCase()+'.':'O risco aqui é '+CAT[l.c].toLowerCase()+', e não '+CAT[k].toLowerCase()+'.');
+      f1.innerHTML='<div class="fb'+(ok?'':' bad')+'">'+t+(l.c==='ok'?' '+l.w:'')+'</div>';
+      if(l.c==='ok'){fim(i,r,f1);}else{medida(i,r);}
+    };
+    o1.appendChild(b);
+  });
+  top();
+}
+
+function medida(i,r){
+  var l=L[i],box=document.getElementById('s2');
+  box.innerHTML='<div class="card"><h3 style="margin-top:0">Qual a medida mais eficaz e viável?</h3><div class="opts" id="o2"></div><div id="f2"></div></div>';
+  var o2=document.getElementById('o2'),f2=document.getElementById('f2');
+  sh(l.m.map(function(m,k){return{t:m[0],lv:m[1],ok:k===0};})).forEach(function(m){
+    var b=document.createElement('button');b.type='button';b.className='opt';b.innerHTML='<span>'+m.t+'<small></small></span>';
+    b._m=m;
+    b.onclick=function(){
+      lock(o2);r.med=m.ok;if(m.ok)s.pts++;
+      [].forEach.call(o2.children,function(x){x.querySelector('small').textContent=x._m.lv;if(x._m.ok)x.classList.add('ok');});
+      if(!m.ok)b.classList.add('no');
+      f2.innerHTML='<div class="fb'+(m.ok?'':' bad')+'"><b>'+(m.ok?'Medida certa. ':'Não é a mais eficaz. ')+'</b>'+l.w+'</div>';
+      fim(i,r,f2);
+    };
+    o2.appendChild(b);
+  });
+  box.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+
+function fim(i,r,where){
+  s.r[i]=r;
+  var last=Object.keys(s.r).length===L.length;
+  var btn=document.createElement('div');btn.className='actions';
+  btn.innerHTML='<button class="btn primary" type="button">'+(last?'Encerrar e ver o relatório':'Voltar ao pátio')+'</button>';
+  btn.firstChild.onclick=last?relatorio:grade;
+  where.appendChild(btn);
+  btn.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+
+function relatorio(){
+  var p=Math.round(s.pts/MAX*100);save(p);
+  var sil=s.r[0]&&s.r[0].med;
+  var v=p>=85?['good','INSPEÇÃO AFIADA']:(p>=60?['mid','INSPEÇÃO COM RESSALVAS']:['bad','REFAZER A INSPEÇÃO']);
+  var d;
+  if(sil&&p>=75)d='Na reinspeção, 60 dias depois, todas as bancadas cortam com água, o piso deixou de acumular pó e nenhum novo caso suspeito de silicose foi notificado. O trabalhador afastado segue em acompanhamento.';
+  else if(!sil)d='Na reinspeção, a empresa tinha entregue respiradores e mantido o corte a seco. O pó continua no ar e, dois meses depois, chega à vigilância outro caso suspeito de silicose. Equipamento de proteção individual sozinho não resolve a exposição.';
+  else d='A empresa adotou o corte úmido, mas vários pontos ficaram sem recomendação certa. A exposição à sílica caiu, porém outros riscos continuam e o retorno da vigilância ainda será necessário.';
+  var rows=L.map(function(l,i){var r=s.r[i];return '<span>'+l.i+' '+l.n+'</span><span></span><span class="x '+(r.cat?'g':'r')+'" title="Avaliação">'+(r.cat?'✓':'✕')+'</span><span class="x '+(r.med===null?'':(r.med?'g':'r'))+'" title="Medida">'+(r.med===null?'·':(r.med?'✓':'✕'))+'</span>';}).join('');
+  app.innerHTML='<div class="card"><h2>Relatório da inspeção</h2><span class="stamp '+v[0]+'">'+v[1]+'</span><div class="pct">'+p+'%</div><p class="muted small" style="margin:4px 0 0">'+s.pts+' de '+MAX+' pontos</p></div>'+
+  '<div class="card"><h3 style="margin-top:0">O que aconteceu depois</h3><p style="margin:0">'+d+'</p></div>'+
+  '<div class="card"><h3 style="margin-top:0">Ponto a ponto</h3><div class="res"><span class="small muted">Ponto</span><span></span><span class="small muted">Risco</span><span class="small muted">Medida</span>'+rows+'</div></div>'+
+  '<div class="card"><h3 style="margin-top:0">Para levar</h3><ul style="margin:0;padding-left:20px"><li>Na hierarquia de controle, eliminar ou substituir vem antes de engenharia, depois administrativa e, por último, EPI.</li><li>Trocar um processo pode criar outro risco: o corte úmido pede instalação elétrica segura.</li><li>Um ponto conforme também entra no relatório, e apontar problema onde não há custa credibilidade.</li></ul></div>'+
+  '<div class="actions"><button class="btn primary" id="again" type="button">Inspecionar de novo</button><button class="btn" id="home" type="button">Voltar ao início</button></div>';
+  document.getElementById('again').onclick=function(){s={ord:sh(L.map(function(_,i){return i;})),r:{},pts:0};grade();};
+  document.getElementById('home').onclick=intro;
+  top();
+}
+intro();
+})();
+</script>
+</body>
+</html>
