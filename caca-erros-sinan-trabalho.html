@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="light dark">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Caça-erros no Sinan: acidente de trabalho | Saúde em jogo</title>
+<meta name="description" content="Revise fichas de acidente de trabalho já digitadas, ache os erros escondidos antes que o tempo acabe e veja o que cada erro faz com a vigilância.">
+<meta name="theme-color" content="#F6F1E7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1A14" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Saúde em jogo">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Caça-erros no Sinan: acidente de trabalho | Saúde em jogo">
+<meta property="og:description" content="Revise fichas de acidente de trabalho já digitadas, ache os erros escondidos antes que o tempo acabe e veja o que cada erro faz com a vigilância.">
+<meta property="og:image" content="https://alineazvdo.github.io/saude-em-jogo/social.png">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#F6F1E7;--surface:#FFFFFF;--ink:#22392E;--muted:#647062;--line:#D5CBB4;--edge:#22392E;--emph:#22392E;
+  --cell:#FFFFFF;--sel:#FFD23F;--sel-ink:#22392E;--focus:#0B5FA5;--on-fill:#FFFFFF;
+  --accent:#0E7C66;--ok:#0E7C66;--bad:#B0356B;--warn:#B4470A;
+  --display:'Bricolage Grotesque','Trebuchet MS','Segoe UI',system-ui,sans-serif;
+  --body:'Atkinson Hyperlegible','Segoe UI',Verdana,system-ui,sans-serif;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  color-scheme:dark;--on-fill:#16241B;
+  --bg:#0F1A14;--surface:#182A20;--ink:#F1EBDD;--muted:#B3BCA9;--line:#33483B;--edge:#6F8B78;--emph:#FFD23F;
+  --cell:#1D3327;--sel:#FFD23F;--sel-ink:#16241B;--focus:#7CC0FF;--accent:#3FCFAA;--ok:#3FCFAA;--bad:#FF8FBB;--warn:#FFD23F;}}
+:root[data-theme="dark"]{
+  color-scheme:dark;--on-fill:#16241B;
+  --bg:#0F1A14;--surface:#182A20;--ink:#F1EBDD;--muted:#B3BCA9;--line:#33483B;--edge:#6F8B78;--emph:#FFD23F;
+  --cell:#1D3327;--sel:#FFD23F;--sel-ink:#16241B;--focus:#7CC0FF;--accent:#3FCFAA;--ok:#3FCFAA;--bad:#FF8FBB;--warn:#FFD23F;}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5}
+a{color:inherit}
+button{font-family:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.app{max-width:900px;margin:0 auto;padding:22px 16px 64px}
+.back{margin:0 0 14px;font-size:.95rem}.back a{font-weight:700}
+.tiles{display:flex;gap:5px}
+.tile{width:clamp(36px,9vw,52px);aspect-ratio:1;display:grid;place-items:center;background:var(--cell);border:2px solid var(--edge);border-radius:5px;font-family:var(--display);font-weight:800;font-size:clamp(1.15rem,4.6vw,1.7rem);line-height:1}
+.tile.hl{background:var(--sel);color:var(--sel-ink);border-color:var(--emph)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(1.7rem,5.8vw,2.6rem);line-height:1.05;letter-spacing:-0.02em;margin:14px 0 0}
+h2{font-family:var(--display);font-weight:800;font-size:1.25rem;margin:0 0 8px}
+h3{font-family:var(--display);font-weight:700;font-size:1.02rem;margin:14px 0 8px}
+.lede{margin:12px 0 18px;color:var(--muted);max-width:62ch;font-size:1.05rem}
+.card{background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:16px 18px;margin-top:14px}
+.muted{color:var(--muted)}.small{font-size:.9rem}
+.btn{background:var(--surface);border:2px solid var(--edge);border-radius:10px;padding:10px 18px;min-height:46px;font-weight:700}
+.btn.primary{background:var(--accent);color:var(--on-fill);border-color:var(--accent)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.hud{display:flex;flex-wrap:wrap;gap:8px 22px;font-family:var(--display);font-weight:700;font-size:.95rem;margin:6px 0 0}
+.hud b{font-weight:800}.hud .t{color:var(--warn)}
+.bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--warn);width:100%;transition:width 1s linear}
+.story b{background:color-mix(in srgb,var(--sel) 45%,transparent);padding:0 3px;border-radius:3px}
+.ficha{display:grid;gap:8px;margin-top:10px}
+.row{display:grid;grid-template-columns:minmax(0,1fr);gap:2px;text-align:left;background:var(--cell);border:2px solid var(--line);border-radius:12px;padding:9px 12px;min-height:56px}
+@media (min-width:640px){.row{grid-template-columns:240px minmax(0,1fr);gap:12px;align-items:center}}
+.row .k{font-size:.85rem;color:var(--muted)}
+.row .v{font-weight:700}
+.row:hover:not(:disabled){border-color:var(--emph)}
+.row[aria-pressed="true"]{background:var(--sel);color:var(--sel-ink);border-color:var(--emph)}
+.row[aria-pressed="true"] .k{color:inherit}
+.row.hit{background:color-mix(in srgb,var(--ok) 18%,var(--cell));border-color:var(--ok)}
+.row.fa{background:color-mix(in srgb,var(--bad) 18%,var(--cell));border-color:var(--bad)}
+.row.miss{border:2px dashed var(--bad)}
+.row:disabled{cursor:default}
+.badge{display:inline-block;font-family:var(--display);font-weight:700;font-size:.78rem;border-radius:999px;padding:1px 10px;margin-right:6px;border:2px solid currentColor}
+.badge.g{color:var(--ok)}.badge.r{color:var(--bad)}
+.err{border:2px solid var(--line);border-left:8px solid var(--bad);border-radius:12px;padding:10px 12px;margin-top:10px}
+.err.got{border-left-color:var(--ok)}
+.err p{margin:4px 0}
+.pct{font-family:var(--display);font-weight:800;font-size:3rem;line-height:1}
+.stamp{display:inline-block;font-family:var(--display);font-weight:800;font-size:clamp(1.2rem,4.6vw,1.9rem);letter-spacing:.03em;border:5px solid currentColor;outline:2px solid currentColor;outline-offset:4px;border-radius:10px;padding:4px 16px;transform:rotate(-3deg);margin:8px 0 14px}
+.stamp.good{color:var(--ok)}.stamp.mid{color:var(--warn)}.stamp.bad{color:var(--bad)}
+@media (prefers-reduced-motion:no-preference){.stamp{animation:pop .5s cubic-bezier(.2,1.4,.4,1) both}}
+@keyframes pop{from{transform:rotate(-3deg) scale(2);opacity:0}to{transform:rotate(-3deg) scale(1);opacity:1}}
+footer{margin-top:40px;color:var(--muted);font-size:.9rem;max-width:70ch}
+</style>
+</head>
+<body>
+<div class="app">
+  <p class="back"><a href="index.html">‹ Saúde em jogo</a></p>
+  <div class="tiles" aria-hidden="true"><span class="tile">S</span><span class="tile">I</span><span class="tile hl">N</span><span class="tile">A</span><span class="tile">N</span></div>
+  <h1>Caça-erros no Sinan: acidente de trabalho</h1>
+  <p class="lede">As fichas já foram digitadas, e cada uma tem quatro erros escondidos. Compare com o relato, marque os campos errados e termine antes que o tempo acabe.</p>
+  <main id="app"></main>
+  <footer>
+    <p>Casos, pessoas e empresas são fictícios. O jogo simplifica a Ficha de Investigação de Acidente de Trabalho (SVS/Sinan, versão de 2019) e usa os mesmos critérios do jogo "Ficha do SINAN em jogo: acidente de trabalho grave". O conteúdo ainda não foi conferido ponto a ponto com os manuais vigentes: na rotina, siga a ficha, o instrutivo e as normas da sua UF. Progresso salvo só neste navegador.</p>
+    <p><a href="sobre.html">Sobre e referências</a></p>
+  </footer>
+</div>
+<script>
+(function(){
+'use strict';
+var TEMPO=80,NERR=4;
+/* linha: [campo, valor na ficha, valor correto (só se estiver errado), o que isso causa] */
+var CASOS=[
+ {t:'A escada de mão',
+  r:'<b>Josué, 29 anos</b>, <b>servente de obras</b>, carteira assinada na <b>Construtora Alicerce</b> (prédio residencial). Em <b>14 de maio</b>, caiu de uma <b>escada de mão</b>, de uns 3 metros, dentro do canteiro. Teve <b>fratura do antebraço</b>, ficou <b>internado por 2 dias</b> e vai se afastar por semanas. A empresa <b>emitiu a CAT</b>. Você notificou em <b>15 de maio</b>.',
+  f:[['Data da notificação (3)','15/05/2026'],
+     ['Data do acidente (7)','16/05/2026','14/05/2026','Acidente depois da notificação é impossível: a inconsistência trava a análise e desloca o caso no tempo.'],
+     ['Idade (10) e sexo (11)','29 anos, masculino'],
+     ['Ocupação (31)','Trabalhador','Servente de obras','Termo genérico vale quase como campo vazio: a vigilância não descobre que categoria mais se acidenta.'],
+     ['Situação no mercado de trabalho (32)','Empregado registrado com carteira assinada'],
+     ['Local do acidente (34)','Instalações do contratante'],
+     ['Empresa (36) e CNAE (37)','Construtora Alicerce, 4120-4/00 (Construção de edifícios)'],
+     ['Causa do acidente, CID-10 (54)','Y96 – Circunstância relativa às condições de trabalho','W11 – Queda em ou de escada de mão','O Y96 já identifica o agravo no início da ficha e não diz como o acidente aconteceu: some a informação que orienta a prevenção.'],
+     ['Tipo de acidente (55)','Típico'],
+     ['Lesão, CID-10 (64)','S52 – Fratura do antebraço'],
+     ['Regime de tratamento (65)','Ambulatorial','Hospitalar (internado por 2 dias)','A internação é critério de gravidade: o caso grave desaparece do indicador.'],
+     ['Evolução (66)','Incapacidade temporária'],
+     ['CAT emitida (68)','Sim']]},
+ {t:'A entrega das oito da noite',
+  r:'<b>Luan, 22 anos</b>, entregador de moto da <b>Pizzaria Forno Lento</b>, <b>sem carteira assinada</b>, recebe por entrega. Em <b>20 de junho</b>, às 20h, <b>fazendo uma entrega</b>, foi atingido por um <b>carro</b> num cruzamento, na <b>via pública</b>. Teve <b>fratura da perna</b>, na região do tornozelo, foi operado e ficou <b>internado por 3 dias</b>. O dono da pizzaria <b>não emitiu a CAT</b>. Você notificou em <b>21 de junho</b>.',
+  f:[['Data da notificação (3)','21/06/2026'],
+     ['Data do acidente (7)','20/06/2026'],
+     ['Idade (10) e sexo (11)','22 anos, masculino'],
+     ['Ocupação (31)','Entregador de moto'],
+     ['Situação no mercado de trabalho (32)','Empregado registrado com carteira assinada','Empregado não registrado','Esconde a informalidade: é por esse campo que se enxerga quem fica sem cobertura previdenciária.'],
+     ['Local do acidente (34)','Via pública'],
+     ['Empresa (36) e CNAE (37)','Pizzaria Forno Lento, 5320-2/02 (Serviços de entrega rápida)','Pizzaria Forno Lento, 5611-2/01 (Restaurantes e similares). O CNAE é o da empresa que emprega, não o da tarefa.','O caso cai no setor errado do mapa de risco, e a inspeção parte do lugar errado.'],
+     ['Causa do acidente, CID-10 (54)','V23 – Motociclista traumatizado em colisão com automóvel, pick-up ou caminhonete'],
+     ['Tipo de acidente (55)','Trajeto','Típico (aconteceu durante a entrega, a serviço da empresa)','Trajeto leva a prevenção para o trânsito de casa ao trabalho. Aqui o risco está no processo de trabalho.'],
+     ['Lesão, CID-10 (64)','S82 – Fratura da perna, incluindo tornozelo'],
+     ['Regime de tratamento (65)','Hospitalar'],
+     ['Evolução (66)','Incapacidade temporária'],
+     ['CAT emitida (68)','Sim','Não (a empresa não emitiu)','Marca como coberto um trabalhador que está sem cobertura acidentária.']]},
+ {t:'O estilete no depósito',
+  r:'<b>Bianca, 16 anos</b>, <b>repositora de mercadorias</b> do <b>Supermercado Bom Preço</b>, aprendiz com <b>carteira assinada</b>. Em <b>9 de julho</b>, ao abrir uma caixa com um <b>estilete</b>, cortou a palma da mão no depósito da loja. Foi atendida na UPA, levou pontos e teve <b>alta no mesmo dia, sem internação</b>. Recuperou-se por completo. A empresa <b>emitiu a CAT</b>. Você notificou em <b>10 de julho</b>.',
+  f:[['Data da notificação (3)','10/07/2026'],
+     ['Data do acidente (7)','09/07/2026'],
+     ['Idade (10) e sexo (11)','61 anos, feminino','16 anos, feminino','A idade identifica os acidentes com adolescentes, grupo que a vigilância acompanha com prioridade: com 61 anos, ela some desse indicador.'],
+     ['Ocupação (31)','Repositora de mercadorias'],
+     ['Situação no mercado de trabalho (32)','Empregado registrado com carteira assinada'],
+     ['Local do acidente (34)','Instalações do contratante'],
+     ['Empresa (36) e CNAE (37)','Supermercado Bom Preço, 4711-3/02 (Supermercados)'],
+     ['Causa do acidente, CID-10 (54)','W26 – Contato com faca, espada e punhal'],
+     ['Tipo de acidente (55)','Típico'],
+     ['Lesão, CID-10 (64)','T14.9 – Traumatismo não especificado','S61 – Ferimento do punho e da mão','Código genérico não diz a parte do corpo nem a gravidade da lesão.'],
+     ['Regime de tratamento (65)','Hospitalar','Ambulatorial (UPA, alta no mesmo dia)','Infla a internação e distorce a gravidade do caso.'],
+     ['Evolução (66)','Incapacidade parcial permanente','Cura','Exagera a gravidade e infla as incapacidades permanentes.'],
+     ['CAT emitida (68)','Sim']]}
+];
+var KEY='caca-erros-sinan-trabalho:v1',app=document.getElementById('app'),s,tm;
+function best(){try{return JSON.parse(localStorage.getItem(KEY)||'{}').best||0;}catch(e){return 0;}}
+function save(p){try{var d=new Date(),k=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2),a=JSON.parse(localStorage.getItem('sj:dias')||'[]');
+  if(a.indexOf(k)<0){a.push(k);localStorage.setItem('sj:dias',JSON.stringify(a.slice(-90)));}
+  if(p>best())localStorage.setItem(KEY,JSON.stringify({best:p}));}catch(e){}}
+function top(){window.scrollTo({top:0});}
+
+function intro(){
+  clearInterval(tm);var b=best();
+  app.innerHTML='<div class="card"><h2>Mutirão de revisão</h2><p>A regional pediu a revisão de três fichas de acidente de trabalho antes do fechamento da base. Em cada uma, o relato é a verdade e a ficha tem <b>4 erros</b>: campo em branco não há, o problema é o que foi digitado.</p>'+
+  '<ul style="margin:0;padding-left:20px"><li>Você tem <b>'+TEMPO+' segundos</b> por ficha e pode marcar no máximo <b>'+NERR+'</b> campos.</li><li>Marcar um campo certo como errado desconta ponto.</li><li>No fim de cada ficha, você vê o que cada erro causa na análise.</li></ul>'+
+  (b?'<p class="small muted">Sua melhor pontuação neste navegador: '+b+'%.</p>':'')+
+  '<div class="actions"><button class="btn primary" id="go" type="button">Começar a revisão</button></div></div>';
+  document.getElementById('go').onclick=function(){s={i:0,pts:0,res:[]};ficha();};
+}
+
+function ficha(){
+  var C=CASOS[s.i],marks=[],left=TEMPO,done=false;
+  app.innerHTML='<div class="hud"><span>Ficha <b>'+(s.i+1)+'</b> de '+CASOS.length+'</span><span>Marcados: <b id="mk">0</b> de '+NERR+'</span><span>Tempo: <b class="t" id="tp">'+TEMPO+'</b>s</span></div><div class="bar" aria-hidden="true"><i id="br"></i></div>'+
+  '<div class="card story"><h2>'+C.t+'</h2><p style="margin:0">'+C.r+'</p></div>'+
+  '<div class="card"><h3 style="margin-top:0">Ficha digitada: marque os campos errados</h3><div class="ficha" id="fi"></div><div id="fb"></div><div class="actions" id="ac"><button class="btn primary" id="sd" type="button" disabled>Enviar revisão</button></div></div>';
+  var fi=document.getElementById('fi'),sd=document.getElementById('sd');
+  C.f.forEach(function(r,k){
+    var b=document.createElement('button');b.type='button';b.className='row';b.setAttribute('aria-pressed','false');
+    b.innerHTML='<span class="k">'+r[0]+'</span><span class="v">'+r[1]+'</span>';
+    b.onclick=function(){
+      var p=marks.indexOf(k);
+      if(p>=0)marks.splice(p,1);else if(marks.length<NERR)marks.push(k);else return;
+      b.setAttribute('aria-pressed',p>=0?'false':'true');
+      document.getElementById('mk').textContent=marks.length;sd.disabled=!marks.length;
+    };
+    fi.appendChild(b);
+  });
+  sd.onclick=enviar;
+  var br=document.getElementById('br');
+  tm=setInterval(function(){left--;document.getElementById('tp').textContent=left;br.style.width=(left/TEMPO*100)+'%';if(left<=0)enviar();},1000);
+  function enviar(){
+    if(done)return;done=true;clearInterval(tm);
+    var hits=0,fa=0,html='';
+    [].forEach.call(fi.children,function(b,k){
+      var r=C.f[k],err=r.length>2,m=marks.indexOf(k)>=0;b.disabled=true;b.removeAttribute('aria-pressed');
+      if(err&&m){hits++;b.classList.add('hit');}else if(err){b.classList.add('miss');}else if(m){fa++;b.classList.add('fa');}
+    });
+    C.f.forEach(function(r,k){
+      if(r.length<3)return;var m=marks.indexOf(k)>=0;
+      html+='<div class="err'+(m?' got':'')+'"><span class="badge '+(m?'g':'r')+'">'+(m?'Achou':'Escapou')+'</span><b>'+r[0]+'</b><p>Na ficha: '+r[1]+'<br>O certo: <b>'+r[2]+'</b></p><p class="small muted" style="margin:0"><b>O que isso causa: </b>'+r[3]+'</p></div>';
+    });
+    var falsos=C.f.filter(function(r,k){return r.length<3&&marks.indexOf(k)>=0;});
+    if(falsos.length)html+='<div class="err"><span class="badge r">Alarme falso</span><b>'+falsos.map(function(r){return r[0];}).join('; ')+'</b><p class="small muted" style="margin:4px 0 0">Esses campos estavam corretos. Corrigir o que não está errado também gera retrabalho e pode estragar um dado bom.</p></div>';
+    var pts=Math.max(0,hits-fa);s.pts+=pts;s.res.push({hits:hits,fa:fa});
+    document.getElementById('fb').innerHTML='<h3>Você achou '+hits+' de '+NERR+' erros'+(fa?' e marcou '+fa+(fa>1?' campos certos':' campo certo')+' por engano':'')+'</h3>'+html;
+    var last=s.i===CASOS.length-1;
+    document.getElementById('ac').innerHTML='<button class="btn primary" id="nx" type="button">'+(last?'Ver o relatório':'Próxima ficha')+'</button>';
+    document.getElementById('nx').onclick=last?relatorio:function(){s.i++;ficha();top();};
+    document.getElementById('fb').scrollIntoView({block:'nearest',behavior:'smooth'});
+  }
+  top();
+}
+
+function relatorio(){
+  var max=CASOS.length*NERR,p=Math.round(s.pts/max*100);save(p);
+  var v=p>=85?['good','BASE LIMPA']:(p>=60?['mid','BASE COM RESSALVAS']:['bad','BASE COMPROMETIDA']);
+  var ac=0,fal=0;s.res.forEach(function(r){ac+=r.hits;fal+=r.fa;});
+  app.innerHTML='<div class="card"><h2>Relatório da revisão</h2><span class="stamp '+v[0]+'">'+v[1]+'</span><div class="pct">'+p+'%</div>'+
+  '<p class="muted small" style="margin:4px 0 0">Você achou '+ac+' de '+(CASOS.length*NERR)+' erros e fez '+fal+(fal===1?' alarme falso':' alarmes falsos')+'.</p></div>'+
+  '<div class="card"><h3 style="margin-top:0">Para levar</h3><ul style="margin:0;padding-left:20px"><li>Os erros mais traiçoeiros parecem preenchimento normal: Y96 como causa, CNAE da tarefa em vez da empresa e "trajeto" para acidente durante o trabalho.</li><li>A ocupação genérica, a idade trocada e o regime de tratamento errado distorcem indicadores que a vigilância usa todo mês.</li><li>Revisar rápido é uma habilidade: sem relato para comparar, só a leitura atenta separa o campo certo do errado.</li></ul></div>'+
+  '<div class="actions"><button class="btn primary" id="ag" type="button">Revisar de novo</button><button class="btn" id="hm" type="button">Voltar ao início</button></div>';
+  document.getElementById('ag').onclick=function(){s={i:0,pts:0,res:[]};ficha();};
+  document.getElementById('hm').onclick=intro;top();
+}
+intro();
+})();
+</script>
+</body>
+</html>
